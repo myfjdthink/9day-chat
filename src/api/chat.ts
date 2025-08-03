@@ -1,16 +1,22 @@
 /**
  * AI 对话 API 服务
- * 对接 https://api.9day.tech/model/invoke 接口
+ * 对接 https://api.9day.tech/bazi/model/invoke 接口
  */
 
 import request from './request-main'
 import requestUser from './request-user'
+import axios from 'axios'
 
 // API 配置
 const API_BASE_URL = 'https://api.9day.tech'
 const API_ENDPOINTS = {
-  CHAT: '/model/invoke'
+  CHAT: '/bazi/model/invoke'
 }
+
+// 新增：主接口配置
+const N8N_AI_URL = 'https://n8n.9day.tech/webhook/ai-service'
+const N8N_AI_USER = import.meta.env.VITE_N8N_AI_USER || process.env.VITE_N8N_AI_USER
+const N8N_AI_PASS = import.meta.env.VITE_N8N_AI_PASS || process.env.VITE_N8N_AI_PASS
 
 // 请求和响应类型定义
 export interface Message {
@@ -18,10 +24,13 @@ export interface Message {
   content: string
 }
 
+// 根据API文档更新请求参数类型
 export interface ChatRequest {
-  model_name: string
   prompt: string
-  system: string
+  provider?: string
+  model_name?: string
+  system?: string
+  image_paths?: string[]
 }
 
 export interface ChatResponse {
@@ -47,11 +56,42 @@ export class ChatAPIError extends Error {
 }
 
 /**
- * 发送 AI 对话请求
- * @param request 对话请求参数
+ * 发送 AI 对话请求（主接口优先，失败降级到后备接口）
+ * @param chatRequest 对话请求参数
  * @returns Promise<ChatResponse>
  */
 export async function sendChatMessage(chatRequest: ChatRequest): Promise<ChatResponse> {
+  // 1. 主接口（n8n webhook，POST，x-www-form-urlencoded）
+  try {
+    if (N8N_AI_USER && N8N_AI_PASS) {
+      const basicAuth = btoa(`${N8N_AI_USER}:${N8N_AI_PASS}`)
+      const params = new URLSearchParams()
+      params.append('message', chatRequest.prompt)
+      const mainResp = await axios.post(N8N_AI_URL, params, {
+        headers: {
+          'Authorization': `Basic ${basicAuth}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        timeout: 20000
+      })
+      if (mainResp.data && typeof mainResp.data.output === 'string' && mainResp.data.output.trim()) {
+        // 主接口成功，返回兼容 ChatResponse 格式
+        return {
+          success: true,
+          message: '主接口调用成功',
+          data: {
+            content: mainResp.data.output,
+            type: 'text',
+            extra: {}
+          }
+        }
+      }
+    }
+  } catch (mainErr) {
+    // 主接口异常，降级到后备
+    // 可选：console.warn('主接口调用失败，降级到后备接口', mainErr)
+  }
+  // 2. 后备接口（原有）
   try {
     const response = await request({
       url: `${API_BASE_URL}${API_ENDPOINTS.CHAT}`,
@@ -101,42 +141,56 @@ function formatHistoryToText(history: Message[]): string {
  * 创建预设的对话请求
  * @param prompt 用户输入的问题
  * @param system 系统角色设定，默认为专业命理分析师
- * @param modelName 模型名称，默认为 glm-4-flash-250414
+ * @param provider 模型提供商，可选值：ollama、zhipuai、deepseek、gemini、openrouter
+ * @param modelName 模型名称，如果为None则使用当前配置的模型
  * @param history 历史消息记录
+ * @param imagePaths 图片路径列表，可选
  * @returns ChatRequest
  */
 export function createChatRequest(
   prompt: string,
   system: string = '你是一个专业的命理分析师',
-  modelName: string = 'glm-4-flash-250414',
-  history: Message[] = []
+  provider?: string,
+  modelName?: string,
+  history: Message[] = [],
+  imagePaths?: string[]
 ): ChatRequest {
   // 将历史消息和当前问题组合成完整的 prompt
   const historyText = history.length ? formatHistoryToText(history.slice(0, -1)) : ''
   const fullPrompt = `${prompt}${historyText}`
   
-  return {
-    model_name: modelName,
-    prompt: fullPrompt.trim(),
-    system: system.trim()
+  const request: ChatRequest = {
+    prompt: fullPrompt.trim()
   }
+  
+  // 只添加非空的可选参数
+  if (provider) request.provider = provider
+  if (modelName) request.model_name = modelName
+  if (system) request.system = system
+  if (imagePaths && imagePaths.length > 0) request.image_paths = imagePaths
+  
+  return request
 }
 
 /**
  * 便捷的对话函数
  * @param prompt 用户问题
  * @param system 系统角色设定
+ * @param provider 模型提供商
  * @param modelName 模型名称
  * @param history 历史消息记录
+ * @param imagePaths 图片路径列表
  * @returns Promise<string> 返回 AI 回复内容
  */
 export async function chat(
   prompt: string,
   system?: string,
+  provider?: string,
   modelName?: string,
-  history: Message[] = []
+  history: Message[] = [],
+  imagePaths?: string[]
 ): Promise<string> {
-  const chatRequest = createChatRequest(prompt, system, modelName, history)
+  const chatRequest = createChatRequest(prompt, system, provider, modelName, history, imagePaths)
   const response = await sendChatMessage(chatRequest)
   return response.data.content
 }
@@ -149,9 +203,21 @@ export const SYSTEM_ROLES = {
   LIFE_ADVISOR: '你是一个人生导师，善于给出建设性的建议'
 } as const
 
+// 预设的模型提供商
+export const PROVIDERS = {
+  OLLAMA: 'ollama',
+  ZHIPUAI: 'zhipuai',
+  DEEPSEEK: 'deepseek',
+  GEMINI: 'gemini',
+  OPENROUTER: 'openrouter'
+} as const
+
 // 预设的模型
 export const MODELS = {
-  GLM_4_FLASH: 'glm-4-flash-250414'
+  GLM_4_FLASH: 'glm-4.5-flash',
+  GLM_4V: 'glm-4v',
+  DEEPSEEK_CHAT: 'deepseek/deepseek-chat-v3-0324:free',
+  DEEPSEEK_CODER: 'deepseek/deepseek-coder-v2:free'
 } as const
 
 // ===================== 新增：会话与消息持久化 API 封装 =====================

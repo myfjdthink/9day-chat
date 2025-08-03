@@ -22,21 +22,21 @@
           :key="chat.id"
           class="group cursor-pointer p-2 rounded border transition-all"
           :class="chat.id === props.selectedChatId
-            ? 'bg-[#f6edfb] border-[#b67fda] text-[#7a3fa4] font-semibold shadow-sm'
-            : 'bg-white border-transparent hover:bg-gray-50 hover:border-gray-200'"
+            ? 'bg-[#f6edfb] dark:bg-[#2d1b3d] border-[#b67fda] text-[#7a3fa4] dark:text-[#b67fda] font-semibold shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
           @click="emit('select-chat', chat.id)"
         >
           <div class="flex items-center justify-between">
             <div class="flex-1 min-w-0">
-              <p class="text-xs font-medium text-gray-900 truncate">{{ chat.title }}</p>
-              <p class="text-xs text-gray-500">{{ formatDate(chat.date) }}</p>
+              <p class="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">{{ chat.title }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDate(chat.date) }}</p>
             </div>
             <div class="flex items-center gap-1 ml-2">
               <!-- 登录用户显示同步状态，右侧紧凑展示 -->
               <template v-if="isLoggedIn">
-                <span v-if="getSyncStatus(chat.id) === 'synced'" class="text-[10px] text-green-600">已同步</span>
-                <span v-else-if="getSyncStatus(chat.id) === 'pending'" class="text-[10px] text-yellow-600">待同步</span>
-                <span v-else-if="getSyncStatus(chat.id) === 'failed'" class="text-[10px] text-red-600">同步失败</span>
+                <span v-if="getSyncStatus(chat.id) === 'synced'" class="text-[10px] text-green-600 dark:text-green-400">已同步</span>
+                <span v-else-if="getSyncStatus(chat.id) === 'pending'" class="text-[10px] text-yellow-600 dark:text-yellow-400">待同步</span>
+                <span v-else-if="getSyncStatus(chat.id) === 'failed'" class="text-[10px] text-red-600 dark:text-red-400">同步失败</span>
               </template>
               <Button 
                 variant="ghost" 
@@ -44,13 +44,13 @@
                 @click.stop="emit('delete-chat', chat.id)"
                 class="opacity-0 group-hover:opacity-100 p-1 h-auto"
               >
-                <Trash2 class="w-3 h-3 text-red-500" />
+                <Trash2 class="w-3 h-3 text-red-500 dark:text-red-400" />
               </Button>
             </div>
           </div>
         </div>
         
-        <div v-if="chatStore.chatHistory.length === 0" class="text-xs text-gray-400 text-center py-2">
+        <div v-if="chatStore.chatHistory.length === 0" class="text-xs text-gray-400 dark:text-gray-500 text-center py-2">
           暂无对话历史
         </div>
       </div>
@@ -78,34 +78,34 @@
           :key="analysis.id"
           class="group cursor-pointer p-2 rounded border transition-all"
           :class="analysis.id === props.selectedAnalysisId
-            ? 'bg-[#f6edfb] border-[#b67fda] text-[#7a3fa4] font-semibold shadow-sm'
-            : 'bg-white border-transparent hover:bg-gray-50 hover:border-gray-200'"
+            ? 'bg-[#f6edfb] dark:bg-[#2d1b3d] border-[#b67fda] text-[#7a3fa4] dark:text-[#b67fda] font-semibold shadow-sm'
+            : 'bg-white dark:bg-gray-800 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
           @click="emit('select-analysis', analysis.id)"
         >
           <div class="flex items-center justify-between">
             <div class="flex-1 min-w-0">
-              <p class="text-xs font-medium text-gray-900 truncate">{{ analysis.analysis_type }}（{{ analysis.birth_year }}-{{ analysis.birth_month }}-{{ analysis.birth_day }} {{ analysis.birth_time }}）</p>
-              <p class="text-xs text-gray-500">{{ formatDate(new Date(analysis.created_at)) }}</p>
+              <p class="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">{{ analysis.analysis_type }}（{{ analysis.birth_year }}-{{ analysis.birth_month }}-{{ analysis.birth_day }} {{ analysis.birth_time }}）</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDate(new Date(analysis.created_at)) }}</p>
             </div>
             <div class="flex items-center gap-1 ml-2">
-              <span class="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded">
+              <span class="text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
                 {{ analysis.analysis_type }}
               </span>
-              <span v-if="analysis.sync_status === 'pending'" class="text-[10px] text-yellow-500 ml-1">待同步</span>
-              <span v-else-if="analysis.sync_status === 'failed'" class="text-[10px] text-red-500 ml-1">同步失败</span>
-              <span v-else class="text-[10px] text-green-500 ml-1">已同步</span>
+              <span v-if="analysis.sync_status === 'pending'" class="text-[10px] text-yellow-500 dark:text-yellow-400 ml-1">待同步</span>
+              <span v-else-if="analysis.sync_status === 'failed'" class="text-[10px] text-red-500 dark:text-red-400 ml-1">同步失败</span>
+              <span v-else class="text-[10px] text-green-500 dark:text-green-400 ml-1">已同步</span>
               <Button 
                 variant="ghost" 
                 size="sm" 
                 @click.stop="emit('delete-analysis', analysis.id)"
                 class="opacity-0 group-hover:opacity-100 p-1 h-auto"
               >
-                <Trash2 class="w-3 h-3 text-red-500" />
+                <Trash2 class="w-3 h-3 text-red-500 dark:text-red-400" />
               </Button>
             </div>
           </div>
         </div>
-        <div v-if="analyses.length === 0" class="text-xs text-gray-400 text-center py-2">
+        <div v-if="analyses.length === 0" class="text-xs text-gray-400 dark:text-gray-500 text-center py-2">
           暂无分析历史
         </div>
       </div>

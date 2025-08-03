@@ -27,6 +27,32 @@ interface State {
   user: UserInfo | null
 }
 
+// ========== 新增：本地 token 过期管理 ==========
+// token 过期天数
+const TOKEN_EXPIRE_DAYS = 30
+// token 过期时间存储 key
+const TOKEN_EXPIRE_AT_KEY = 'access_token_expire_at'
+
+// 获取本地 token 过期时间
+function getExpireAt() {
+  const expireAt = localStorage.getItem(TOKEN_EXPIRE_AT_KEY)
+  return expireAt ? parseInt(expireAt) : null
+}
+// 设置本地 token 过期时间
+function setExpireAt(days: number) {
+  const expireAt = Date.now() + days * 24 * 60 * 60 * 1000
+  localStorage.setItem(TOKEN_EXPIRE_AT_KEY, expireAt.toString())
+}
+// 清除本地 token 过期时间
+function clearExpireAt() {
+  localStorage.removeItem(TOKEN_EXPIRE_AT_KEY)
+}
+// 判断 token 是否已过期
+function isTokenExpired() {
+  const expireAt = getExpireAt()
+  return expireAt !== null && Date.now() > expireAt
+}
+
 export const useUserStore = defineStore('user', {
   state: (): State => ({
     token: localStorage.getItem('access_token'),
@@ -38,6 +64,7 @@ export const useUserStore = defineStore('user', {
       const res = await apiLogin({ username, password })
       this.token = res.access_token
       localStorage.setItem('access_token', res.access_token)
+      setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
       // 登录后获取用户信息
       await this.fetchUser()
       // 登录后自动拉取云端会话
@@ -47,8 +74,9 @@ export const useUserStore = defineStore('user', {
     },
     // 获取当前用户信息
     async fetchUser() {
-      if (!this.token) {
-        this.user = null
+      // 检查本地 token 是否过期
+      if (!this.token || isTokenExpired()) {
+        this.logout()
         return
       }
       try {
@@ -64,6 +92,7 @@ export const useUserStore = defineStore('user', {
       this.token = null
       this.user = null
       localStorage.removeItem('access_token')
+      clearExpireAt() // 清理本地过期时间
       // 清理云端对话
       const chatStore = useChatStore()
       chatStore.$reset()
@@ -74,8 +103,9 @@ export const useUserStore = defineStore('user', {
     // 初始化校验登录状态
     init() {
       this.token = localStorage.getItem('access_token')
-      if (!this.token) {
-        this.user = null
+      // 检查本地 token 是否过期
+      if (!this.token || isTokenExpired()) {
+        this.logout()
       }
     }
   }

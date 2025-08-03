@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# 允许所有搜索引擎爬取
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# 站点地图
+Sitemap: https://www.9day.tech/sitemap.xml
+
+# 爬取延迟（秒）
+Crawl-delay: 1 

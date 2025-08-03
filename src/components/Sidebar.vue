@@ -1,7 +1,7 @@
 <template>
   <!-- 折叠按钮，仅在移动端显示 -->
   <button
-    class="sidebar-toggle-btn fixed top-4 left-4 z-50 sm:hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+    class="sidebar-toggle-btn fixed top-4 left-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
     @click="toggleSidebar"
     v-if="!sidebarOpen"
     aria-label="展开侧边栏"
@@ -9,10 +9,10 @@
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
   <transition name="sidebar-slide">
-    <div v-show="sidebarOpen" class="sidebar-wrapper w-64 max-w-xs min-h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
+    <div v-show="sidebarOpen" class="sidebar-wrapper w-64 max-w-xs min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
       <!-- 折叠收起按钮，仅移动端显示 -->
       <button
-        class="sidebar-toggle-btn absolute top-4 right-4 z-50 sm:hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
+        class="sidebar-toggle-btn absolute top-4 right-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
         @click="toggleSidebar"
         aria-label="收起侧边栏"
       >
@@ -30,7 +30,7 @@
         <div class="p-4 flex flex-col gap-3">
           <!-- 新建对话 主按钮 薰衣草色 -->
           <Button
-            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg bg-[#b67fda] text-white text-base shadow-sm hover:bg-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/40 transition-all"
+            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg bg-[#b67fda] text-white text-base shadow-sm hover:bg-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/40 transition-all dark:bg-[#b67fda] dark:text-white dark:hover:bg-[#a06cc7]"
             @click="handleNewChat"
           >
             <Plus class="w-5 h-5 opacity-80 text-white" />
@@ -38,7 +38,7 @@
           </Button>
           <!-- 新建分析 次按钮 薰衣草色线框 -->
           <Button
-            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] hover:border-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/30 text-base transition-all"
+            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] hover:border-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/30 text-base transition-all dark:border-[#b67fda] dark:text-[#b67fda] dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:border-[#a06cc7]"
             @click="handleNewAnalysis"
           >
             <Star class="w-5 h-5 opacity-80 text-[#b67fda]" />
@@ -53,8 +53,8 @@
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'home'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1]'"
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoHome"
             >
               <Home :class="['w-5 h-5 opacity-80', activeTab === 'home' ? 'text-white' : 'text-[#0b3289]']" />
@@ -63,18 +63,18 @@
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'calendar'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1]'"
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoCalendar"
             >
               <Database :class="['w-5 h-5 opacity-80', activeTab === 'calendar' ? 'text-white' : 'text-[#0b3289]']" />
-              好运日历
+              个人运历
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'ai-chat'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1]'"
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAIChat"
             >
               <MessageCircle :class="['w-5 h-5 opacity-80', activeTab === 'ai-chat' ? 'text-white' : 'text-[#0b3289]']" />
@@ -83,12 +83,22 @@
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'analysis'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1]'"
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAnalysis"
             >
               <Star :class="['w-5 h-5 opacity-80', activeTab === 'analysis' ? 'text-white' : 'text-[#0b3289]']" />
               八字分析
+            </Button>
+            <Button
+              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
+              :class="activeTab === 'zodiac-fortune'
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              @click="handleGoZodiacFortune"
+            >
+              <Star :class="['w-5 h-5 opacity-80', activeTab === 'zodiac-fortune' ? 'text-white' : 'text-[#0b3289]']" />
+              生肖运势
             </Button>
           </nav>
         </div>
@@ -280,6 +290,9 @@ onMounted(() => {
     isDark.value = false
     document.documentElement.classList.remove('dark')
   }
+  // 新增：无论在哪个tab，侧边栏挂载时都初始化对话和分析历史，保证两个区块都能显示
+  chatStore.initializeStore()
+  baziStore.initializeStore()
 })
 
 const handleNewAnalysis = () => {
@@ -302,6 +315,11 @@ const handleGoAnalysis = () => {
 const handleGoCalendar = () => {
   emit('set-active-tab', 'calendar')
   router.push('/calendar')
+}
+
+const handleGoZodiacFortune = () => {
+  emit('set-active-tab', 'zodiac-fortune')
+  router.push('/zodiac-fortune')
 }
 </script>
 

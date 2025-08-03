@@ -1,5 +1,8 @@
 <template>
-  <div class="flex h-screen bg-gray-50">
+  <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <!-- SEO组件 -->
+    <SEO />
+    
     <!-- 右上角暗黑模式切换按钮 -->
     <Button
       variant="ghost"
@@ -45,6 +48,7 @@ import Chat from '@/views/Chat.vue'
 import Analysis from '@/views/Analysis.vue'
 import { useChatStore } from '@/stores/chat'
 import { useBaziStore } from '@/stores/bazi'
+import SEO from './components/SEO.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -97,7 +101,9 @@ const setActiveTab = (tab: string) => {
   const routeMap: Record<string, string> = {
     'home': '/',
     'ai-chat': '/chat',
-    'analysis': '/analysis'
+    'analysis': '/analysis',
+    'calendar': '/calendar',
+    'zodiac-fortune': '/zodiac-fortune'
   }
   
   const targetRoute = routeMap[tab] || '/'

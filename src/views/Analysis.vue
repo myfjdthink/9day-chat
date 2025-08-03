@@ -1,5 +1,12 @@
 <template>
-  <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900 relative"> <!-- 加 relative -->
+  <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900 relative">
+    <!-- SEO组件 -->
+    <SEO 
+      title="八字运势分析 - 北斗九号日历"
+      description="基于传统命理学的专业八字分析，精准预测你的当年当月运势与注意事项。包括基础分析、用神分析、AI智能预测、运势评分。"
+      keywords="八字分析,运势预测,命理分析,用神分析,AI预测,运势评分,生辰八字,命理服务"
+    />
+    
     <div class="max-w-6xl mx-auto">
       <!-- 输入部分 -->
       <div v-if="!analysisResult" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -162,23 +169,58 @@
       <div v-if="analysisResult" class="mt-12 space-y-8">
         <!-- 报告内容区域，支持滚动 -->
         <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-h-[80vh] overflow-y-auto">
-          <h2 class="text-xl font-semibold mb-4 dark:text-gray-100">分析结果</h2>
-          <!-- 分析时间和类型 -->
-          <div class="mb-6 text-sm text-gray-600 dark:text-gray-300">
-            <p>分析类型：{{ analysisResult.分析类型 }}</p>
-            <p>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</p>
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold mb-2 dark:text-gray-100">八字分析报告</h2>
+            <!-- 分析时间和类型 -->
+            <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
+              <div class="flex items-center space-x-1">
+                <CalendarIcon class="w-4 h-4" />
+                <span>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <Settings class="w-4 h-4" />
+                <span>分析类型：{{ analysisResult.分析类型 }}</span>
+              </div>
+            </div>
           </div>
+          
           <!-- 分析内容 -->
-          <div class="space-y-6">
+          <div class="space-y-8">
             <template v-for="(content, type) in analysisResult.分析结果" :key="type">
-              <div class="border-t pt-4 dark:border-gray-700">
-                <h3 class="text-lg font-medium mb-3 dark:text-gray-100">{{ type }}</h3>
+              <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700">
+                <!-- 标题区域 -->
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">{{ getAnalysisTypeIcon(type) }}</span>
+                  </div>
+                  <h3 class="text-xl font-semibold dark:text-gray-100">{{ type }}分析</h3>
+                  <div class="flex-1"></div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded">
+                    {{ getAnalysisTypeDescription(type) }}
+                  </div>
+                </div>
+                
                 <!-- 分析内容 markdown 渲染区 -->
-                <div class="prose max-w-none dark:prose-invert" v-html="formatMarkdown(content)"></div>
+                <div class="prose max-w-none dark:prose-invert prose-sm">
+                  <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
+                </div>
               </div>
             </template>
           </div>
+          
+          <!-- 分析总结 -->
+          <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
+            <div class="flex items-center space-x-2 mb-2">
+              <Star class="w-5 h-5 text-blue-600" />
+              <h4 class="font-medium text-blue-800 dark:text-blue-200">分析总结</h4>
+            </div>
+            <p class="text-sm text-blue-700 dark:text-blue-300">
+              本次分析涵盖了 {{ Object.keys(analysisResult.分析结果).length }} 个维度，
+              为您提供了全面的八字分析报告。建议您根据分析结果，结合实际情况做出相应的调整和规划。
+            </p>
+          </div>
         </div>
+        
         <!-- 底部操作栏：sticky 定位在主内容区底部，不遮挡侧边栏 -->
         <div class="sticky bottom-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg">
           <div class="w-full max-w-4xl mx-auto flex justify-center gap-6 px-2">
@@ -187,6 +229,7 @@
               variant="secondary"
               @click="handleSaveReport"
             >
+              <Download class="w-4 h-4 mr-2" />
               保存报告
             </Button>
             <Button
@@ -194,6 +237,7 @@
               variant="outline"
               @click="handleResetAnalysis"
             >
+              <RefreshCw class="w-4 h-4 mr-2" />
               重新分析
             </Button>
             <Button
@@ -201,6 +245,7 @@
               variant="default"
               @click="handleChatWithReport"
             >
+              <MessageSquare class="w-4 h-4 mr-2" />
               对话报告
             </Button>
           </div>
@@ -235,13 +280,14 @@ import type { Ref } from 'vue'
 import type { BaziAnalysis } from '@/api/bazi'
 
 // UI Components
-import { User, Settings, Calendar as CalendarIcon, Star } from 'lucide-vue-next'
+import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare, TrendingUp, Clock, Calendar } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import Card from '@/components/ui/Card.vue'
 import CardContent from '@/components/ui/CardContent.vue'
 import Checkbox from '@/components/ui/Checkbox.vue'
 import Modal from '@/components/ui/Modal.vue'
+import SEO from '@/components/SEO.vue'
 
 // Third-party libraries
 import dayjs from 'dayjs'
@@ -252,7 +298,7 @@ import { marked } from 'marked'
 import html2canvas from 'html2canvas'
 
 // API
-import { analyzeBazi } from '@/api/bazi'
+import { analyzeBazi, ANALYSIS_PARTS, PROVIDERS, MODELS } from '@/api/bazi'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
@@ -305,15 +351,21 @@ const formatDateTime = (dateTime: string): string => {
 
 // 格式化Markdown内容
 const formatMarkdown = (content: string): string => {
-  return marked(content)
+  // 移除 "流年/流月/流日信息：" 这样的标题
+  let processedContent = content.replace(/^#\s*流年\/流月\/流日信息：?\s*\n*/g, '')
+  
+  // 如果内容以 # 开头，移除第一个标题
+  processedContent = processedContent.replace(/^#\s*[^#\n]*\n*/g, '')
+  
+  return marked(processedContent)
 }
 
 // 获取分析范围数组，严格按选项返回
 const getAnalysisParts = (): string[] => {
   const parts: string[] = []
-  if (analysisScope.year) parts.push('流年')
-  if (analysisScope.month) parts.push('流月')
-  if (analysisScope.day) parts.push('流日')
+  if (analysisScope.year) parts.push(ANALYSIS_PARTS.FLOW_YEAR)
+  if (analysisScope.month) parts.push(ANALYSIS_PARTS.FLOW_MONTH)
+  if (analysisScope.day) parts.push(ANALYSIS_PARTS.FLOW_DAY)
   return parts
 }
 
@@ -338,7 +390,10 @@ const handleStartAnalysis = async (): Promise<void> => {
       birth_datetime: birthDateTimeBeijing,
       current_datetime: currentDateTimeBeijing,
       gender: gender.value,
-      analysis_parts: analysisParts
+      analysis_parts: analysisParts,
+      // 可选：指定模型提供商和模型名称
+      // provider: 'zhipuai',
+      // model_name: 'glm-4-flash-250414'
     })
     if (response.success) {
       analysisResult.value = response.data
@@ -354,21 +409,25 @@ const handleStartAnalysis = async (): Promise<void> => {
         birth_month: dt.month() + 1,
         birth_day: dt.date(),
         birth_time: dt.format('HH:mm'),
-        gender: (gender.value === '男' ? 'male' : 'female') as 'male' | 'female', // 类型断言，确保类型安全
-        analysis_type: 'basic', // 可根据 analysisTypes 进一步细化
+        gender: (gender.value === '男' ? 'male' : 'female') as 'male' | 'female',
+        analysis_type: 'basic',
         notes: markdownReport,
-        display_name: '', // 可选，前端可不传，后端自动生成
-        user_nickname: userStore.user?.username || '', // 可选
-        analysis_results: response.data.分析结果, // JSON
-        summary: {}, // 可选
-        settings: {}, // 可选
-        extra_metadata: {} // 可选
+        display_name: '',
+        user_nickname: userStore.user?.username || '',
+        analysis_results: response.data.分析结果,
+        summary: {},
+        settings: {},
+        extra_metadata: {}
       }
       // ======================================
-      console.log('addAnalysis 参数', params)
       await baziStore.addAnalysis(params)
       // 新增：分析成功后，若用户无八字信息则自动保存
       await trySaveUserBaziInfo()
+      // 新增：分析成功后自动跳转到分析结果页面
+      const latest = baziStore.sortedAnalyses[0]
+      if (latest) {
+        router.push({ path: '/analysis', query: { analysisId: latest.id } })
+      }
     } else {
       throw new Error(response.message || '分析失败')
     }
@@ -567,11 +626,64 @@ const handleLoginConfirm = () => {
 const handleLoginCancel = () => {
   showLoginModal.value = false
 }
+
+// 根据分析类型返回图标
+const getAnalysisTypeIcon = (type: string) => {
+  switch (type) {
+    case '八字排盘':
+      return '🔮'
+    case '五行分析':
+      return '⚖️'
+    case '用神分析':
+      return '🎯'
+    case '格局判断':
+      return '🎲'
+    case '运势预测':
+      return '🔮'
+    case '性格分析':
+      return '🧠'
+    case '人生建议':
+      return '💡'
+    default:
+      return '📝'
+  }
+}
+
+// 根据分析类型返回描述
+const getAnalysisTypeDescription = (type: string) => {
+  switch (type) {
+    case '八字排盘':
+      return '详细解读您的八字命盘，包括五行、十神、神煞等'
+    case '五行分析':
+      return '深入分析您的五行属性，揭示性格特点和运势走向'
+    case '用神分析':
+      return '根据您的八字，为您推荐最佳用神，助您趋吉避凶'
+    case '格局判断':
+      return '判断您的八字格局，分析您的命运走向'
+    case '运势预测':
+      return '基于您的八字，预测未来一年的运势变化'
+    case '性格分析':
+      return '通过您的八字，分析您的性格特征和潜在优势'
+    case '人生建议':
+      return '基于您的八字，提供具体的人生建议和规划'
+    default:
+      return '详细分析您的八字信息'
+  }
+}
 </script>
 
 <style>
 .prose {
-  @apply text-gray-800;
+  @apply text-gray-800 dark:text-gray-200;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply text-gray-800 dark:text-gray-200;
 }
 
 .prose h3 {
@@ -579,14 +691,42 @@ const handleLoginCancel = () => {
 }
 
 .prose p {
-  @apply my-2;
+  @apply my-2 text-gray-800 dark:text-gray-200;
 }
 
 .prose ul {
-  @apply list-disc list-inside my-2;
+  @apply list-disc list-inside my-2 text-gray-800 dark:text-gray-200;
 }
 
 .prose li {
-  @apply my-1;
+  @apply my-1 text-gray-800 dark:text-gray-200;
+}
+
+.prose strong {
+  @apply text-gray-800 dark:text-gray-200 font-semibold;
+}
+
+.prose em {
+  @apply text-gray-800 dark:text-gray-200 italic;
+}
+
+.prose a {
+  @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 text-gray-700 dark:text-gray-300;
+}
+
+.prose code {
+  @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-1 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-4 rounded-lg overflow-x-auto;
+}
+
+.prose pre code {
+  @apply bg-transparent text-inherit p-0;
 }
 </style>

@@ -29,13 +29,14 @@ const response2 = await chat(
 ### 高级用法
 
 ```typescript
-import { sendChatMessage, createChatRequest, ChatAPIError } from '@/api/chat'
+import { sendChatMessage, createChatRequest, ChatAPIError, PROVIDERS, MODELS } from '@/api/chat'
 
 // 创建自定义请求
 const request = createChatRequest(
   '请分析我的八字',
   '你是一个专业的八字分析师，精通传统命理学',
-  'glm-4-flash-250414'
+  PROVIDERS.ZHIPUAI,
+  MODELS.GLM_4_FLASH
 )
 
 // 发送请求并处理响应
@@ -63,13 +64,39 @@ SYSTEM_ROLES.BAZI_EXPERT     // 八字分析专家
 SYSTEM_ROLES.LIFE_ADVISOR    // 人生导师
 ```
 
+## 支持的模型提供商
+
+```typescript
+import { PROVIDERS } from '@/api/chat'
+
+PROVIDERS.OLLAMA      // 'ollama'
+PROVIDERS.ZHIPUAI     // 'zhipuai'
+PROVIDERS.DEEPSEEK    // 'deepseek'
+PROVIDERS.GEMINI      // 'gemini'
+PROVIDERS.OPENROUTER  // 'openrouter'
+```
+
 ## 支持的模型
 
 ```typescript
 import { MODELS } from '@/api/chat'
 
-MODELS.GLM_4_FLASH  // 'glm-4-flash-250414'
+MODELS.GLM_4_FLASH      // 'glm-4-flash-250414'
+MODELS.GLM_4V           // 'glm-4v'
+MODELS.DEEPSEEK_CHAT    // 'deepseek/deepseek-chat-v3-0324:free'
+MODELS.DEEPSEEK_CODER   // 'deepseek/deepseek-coder-v2:free'
 ```
+
+## 请求参数说明
+
+### 必需参数
+- `prompt`: 输入提示文本
+
+### 可选参数
+- `provider`: 模型提供商，可选值：ollama、zhipuai、deepseek、gemini、openrouter
+- `model_name`: 模型名称，如果不指定则使用当前配置的默认模型
+- `system`: 系统提示，如果不指定则使用默认值："你是一位专业的AI助手，请根据用户的问题提供准确、有用的回答。"
+- `image_paths`: 图片路径列表，用于图像分析
 
 ## 错误处理
 
@@ -106,7 +133,7 @@ try {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { chat, ChatAPIError, SYSTEM_ROLES } from '@/api/chat'
+import { chat, ChatAPIError, SYSTEM_ROLES, PROVIDERS, MODELS } from '@/api/chat'
 
 const isLoading = ref(false)
 const response = ref('')
@@ -114,8 +141,18 @@ const response = ref('')
 const handleChat = async (userInput: string) => {
   isLoading.value = true
   try {
+    // 基础对话
     const result = await chat(userInput, SYSTEM_ROLES.FORTUNE_TELLER)
     response.value = result
+    
+    // 高级对话（指定提供商和模型）
+    const advancedResult = await chat(
+      userInput,
+      SYSTEM_ROLES.FORTUNE_TELLER,
+      PROVIDERS.ZHIPUAI,
+      MODELS.GLM_4_FLASH
+    )
+    response.value = advancedResult
   } catch (error) {
     console.error('对话失败:', error)
     // 处理错误...
@@ -133,6 +170,7 @@ const handleChat = async (userInput: string) => {
 3. **用户体验**: 在请求期间显示加载状态
 4. **频率限制**: 避免过于频繁的 API 调用
 5. **内容过滤**: 根据需要对用户输入和 AI 输出进行内容过滤
+6. **参数选择**: 对于简单对话，只需要提供 `prompt` 参数即可；对于特定需求，可以添加相应的可选参数
 
 ## API 响应格式
 

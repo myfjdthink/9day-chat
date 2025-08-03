@@ -10,7 +10,11 @@
         <p class="text-gray-500 dark:text-gray-300 mb-6">{{ message }}</p>
         <div class="flex justify-center gap-4">
           <Button variant="default" @click="onConfirm">{{ confirmText }}</Button>
-          <Button variant="outline" @click="onCancel">{{ cancelText }}</Button>
+          <Button
+            v-if="cancelText"
+            variant="outline"
+            @click="onCancel"
+          >{{ cancelText }}</Button>
         </div>
       </div>
     </div>
