@@ -72,3 +72,22 @@ dist
 # Temporary folders
 tmp/
 temp/
+
+# Archive files
+*.tar
+*.tar.gz
+*.tar.bz2
+*.zip
+*.rar
+*.7z
+
+# Docker files
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+.dockerignore
+.docker
+
+# Build artifacts
+build/
+*.build
