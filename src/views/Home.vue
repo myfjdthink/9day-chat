@@ -2,9 +2,9 @@
   <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="北斗九号日历 - AI智能八字运势分析平台"
-      description="专业的AI智能八字运势分析、择日推荐、生肖运势服务。基于传统命理学，结合AI技术，为您提供精准的运势预测和人生指导。"
-      keywords="八字分析,AI智能对话,择日推荐,生肖运势,命理预测,风水大师,黄道吉日,运势分析,AI助手,命理服务"
+      title="北斗九号日历 - 专业八字运势分析平台"
+      description="专业的八字运势分析、择日推荐、生肖运势服务。基于传统命理学，结合现代技术，为您提供精准的运势预测和人生指导。"
+      keywords="八字分析,命理问答,择日推荐,生肖运势,命理预测,运势咨询,黄道吉日,运势分析,命理指导,命理服务"
     />
     
     <div class="max-w-6xl mx-auto">
@@ -13,8 +13,8 @@
         <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
           <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
         </div>
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">AI智能八字运势分析平台</h1>
-        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业八字分析、智能对话、择日推荐、生肖运势，一站式命理服务平台</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">专业八字运势分析平台</h1>
+        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业八字分析、命理问答、择日推荐、生肖运势，一站式命理服务平台</p>
 
         <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-2 md:space-y-0">
           <Button
@@ -23,7 +23,7 @@
             @click="router.push('/chat')"
           >
             <MessageCircle class="w-5 h-5 mr-2" />
-            开始智能对话
+            开始命理问答
           </Button>
           <Button
             size="lg"
@@ -49,9 +49,9 @@
                 <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                   <MessageCircle class="w-5 h-5 text-white" />
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">AI智能对话</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">命理问答</h3>
               </div>
-              <p class="text-gray-600 dark:text-gray-300 mb-3">与AI大师自然交流，获得八字运势、生活、事业等多领域的专业解答</p>
+              <p class="text-gray-600 dark:text-gray-300 mb-3">专业解答八字运势、生活、事业等多领域问题，为您指引人生方向</p>
               <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 mb-3">
                 <div class="text-xs text-blue-600 dark:text-blue-300 font-medium mb-1">💡 使用示例</div>
                 <div class="text-xs text-blue-700 dark:text-blue-200">

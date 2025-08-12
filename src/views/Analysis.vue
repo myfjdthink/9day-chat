@@ -3,8 +3,8 @@
     <!-- SEO组件 -->
     <SEO 
       title="八字运势分析 - 北斗九号日历"
-      description="基于传统命理学的专业八字分析，精准预测你的当年当月运势与注意事项。包括基础分析、用神分析、AI智能预测、运势评分。"
-      keywords="八字分析,运势预测,命理分析,用神分析,AI预测,运势评分,生辰八字,命理服务"
+      description="基于传统命理学的专业八字分析，精准预测你的当年当月运势与注意事项。包括基础分析、用神分析、运势预测、运势评分。"
+      keywords="八字分析,运势预测,命理分析,用神分析,运势评分,生辰八字,命理服务,命理指导"
     />
     
     <div class="max-w-6xl mx-auto">
@@ -116,8 +116,8 @@
                       class="mt-1"
                     />
                     <div>
-                      <h3 class="font-medium text-gray-900 dark:text-gray-100">AI智能分析</h3>
-                      <p class="text-sm text-gray-500 dark:text-gray-300">运势预测、性格分析、人生建议</p>
+                      <h3 class="font-medium text-gray-900 dark:text-gray-100">运势预测</h3>
+                      <p class="text-sm text-gray-500 dark:text-gray-300">运势分析、性格分析、人生建议</p>
                     </div>
                   </div>
                 </CardContent>
@@ -127,7 +127,7 @@
 
           <!-- AI Analysis Scope -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">AI分析范围</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">选择分析范围</label>
             <div class="flex space-x-3">
               <Button
                 :variant="analysisScope.year ? 'default' : 'outline'"
@@ -184,10 +184,14 @@
             </div>
           </div>
           
-          <!-- 分析内容 -->
+          <!-- 分析内容 - 使用虚拟列表优化长列表渲染 -->
           <div class="space-y-8">
-            <template v-for="(content, type) in analysisResult.分析结果" :key="type">
-              <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700">
+            <template v-for="[type, content] in Object.entries(analysisResult.分析结果).slice(0, visibleItems)" :key="type">
+              <div 
+                class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
+                v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
+                :data-type="type"
+              >
                 <!-- 标题区域 -->
                 <div class="flex items-center space-x-3 mb-4">
                   <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
@@ -200,9 +204,15 @@
                   </div>
                 </div>
                 
-                <!-- 分析内容 markdown 渲染区 -->
+                <!-- 分析内容 markdown 渲染区 - 懒加载优化 -->
                 <div class="prose max-w-none dark:prose-invert prose-sm">
-                  <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
+                  <div v-if="visibleSections[type]" v-html="formatMarkdown(content)" class="leading-relaxed"></div>
+                  <div v-else class="h-32 flex items-center justify-center">
+                    <div class="animate-pulse">
+                      <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+                      <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-2/3"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </template>
@@ -259,7 +269,7 @@
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
         </svg>
-        <div class="text-lg text-white font-semibold">AI正在分析，请稍候...</div>
+        <div class="text-lg text-white font-semibold">正在为您分析，请稍候...</div>
       </div>
     </div>
     <Modal
@@ -275,19 +285,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, defineAsyncComponent, onUnmounted } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+import type { ObjectDirective, DirectiveBinding } from 'vue'
+
+interface ExtendedHTMLElement extends HTMLElement {
+  _observe_visibility_observer?: ReturnType<typeof useIntersectionObserver>
+}
+
+// 注册observe-visibility指令
+const vObserveVisibility: ObjectDirective<ExtendedHTMLElement> = {
+  mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<(isVisible: boolean) => void>) => {
+    const observer = useIntersectionObserver(el, ([{ isIntersecting }]) => {
+      binding.value(isIntersecting)
+    })
+    el._observe_visibility_observer = observer
+  },
+  unmounted: (el: ExtendedHTMLElement) => {
+    if (el._observe_visibility_observer) {
+      el._observe_visibility_observer.stop()
+    }
+  }
+}
 import type { Ref } from 'vue'
 import type { BaziAnalysis } from '@/api/bazi'
 
-// UI Components
-import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare, TrendingUp, Clock, Calendar } from 'lucide-vue-next'
-import Button from '@/components/ui/Button.vue'
-import Input from '@/components/ui/Input.vue'
-import Card from '@/components/ui/Card.vue'
-import CardContent from '@/components/ui/CardContent.vue'
-import Checkbox from '@/components/ui/Checkbox.vue'
-import Modal from '@/components/ui/Modal.vue'
-import SEO from '@/components/SEO.vue'
+// UI Components - 异步加载非关键组件
+const Button = defineAsyncComponent(() => import('@/components/ui/Button.vue'))
+const Input = defineAsyncComponent(() => import('@/components/ui/Input.vue'))
+const Card = defineAsyncComponent(() => import('@/components/ui/Card.vue'))
+const CardContent = defineAsyncComponent(() => import('@/components/ui/CardContent.vue'))
+const Checkbox = defineAsyncComponent(() => import('@/components/ui/Checkbox.vue'))
+const Modal = defineAsyncComponent(() => import('@/components/ui/Modal.vue'))
+const SEO = defineAsyncComponent(() => import('@/components/SEO.vue'))
+
+// 按需导入图标
+import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare } from 'lucide-vue-next'
 
 // Third-party libraries
 import dayjs from 'dayjs'
@@ -298,7 +331,8 @@ import { marked } from 'marked'
 import html2canvas from 'html2canvas'
 
 // API
-import { analyzeBazi, ANALYSIS_PARTS, PROVIDERS, MODELS } from '@/api/bazi'
+import { analyzeBazi, ANALYSIS_PARTS } from '@/api/bazi'
+import { PROVIDERS, MODELS } from '@/api/config'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
@@ -328,6 +362,30 @@ const birthDateTime = ref<string>('1983-12-11T08:00')
 const isAnalyzing = ref<boolean>(false)
 const analysisResult = ref<{ 分析类型: string; 分析时间: string; 分析结果: Record<string, string> } | null>(null)
 
+// 虚拟列表相关状态
+const visibleItems = ref(3) // 初始显示3个项目
+const visibleSections = reactive<Record<string, boolean>>({})
+const intersectionObserver = ref<IntersectionObserver | null>(null)
+
+// 处理元素可见性变化
+const handleVisibilityChange = (type: string, isVisible: boolean): void => {
+  if (isVisible && !visibleSections[type]) {
+    visibleSections[type] = true
+    // 如果当前可见的是最后一个项目，增加可见项目数量
+    const currentItems = Object.keys(analysisResult.value?.分析结果 || {}).slice(0, visibleItems.value)
+    if (currentItems[currentItems.length - 1] === type) {
+      visibleItems.value += 2
+    }
+  }
+}
+
+// 清理观察器
+onUnmounted(() => {
+  if (intersectionObserver.value) {
+    intersectionObserver.value.disconnect()
+  }
+})
+
 const analysisTypes = reactive<AnalysisTypes>({
   basic: true,
   deity: true,
@@ -349,15 +407,22 @@ const formatDateTime = (dateTime: string): string => {
   return dayjs(dateTime).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')
 }
 
-// 格式化Markdown内容
+// 格式化Markdown内容 - 使用缓存优化性能
+const markdownCache = new Map<string, string>()
 const formatMarkdown = (content: string): string => {
+  if (markdownCache.has(content)) {
+    return markdownCache.get(content)!
+  }
+
   // 移除 "流年/流月/流日信息：" 这样的标题
   let processedContent = content.replace(/^#\s*流年\/流月\/流日信息：?\s*\n*/g, '')
   
   // 如果内容以 # 开头，移除第一个标题
   processedContent = processedContent.replace(/^#\s*[^#\n]*\n*/g, '')
   
-  return marked(processedContent)
+  const result = marked(processedContent)
+  markdownCache.set(content, result)
+  return result
 }
 
 // 获取分析范围数组，严格按选项返回
@@ -503,9 +568,13 @@ const userHasBaziInfo = computed(() => {
 })
 
 // 页面加载时自动填充
-onMounted(() => {
-  baziStore.initializeStore()
-  baziStore.loadAnalysesFromBackend()
+onMounted(async () => {
+  // 初始化数据
+  await Promise.all([
+    baziStore.initializeStore(),
+    baziStore.loadAnalysesFromBackend()
+  ])
+
   // 自动填充用户八字信息
   if (userStore.user && userHasBaziInfo.value) {
     // 组装 yyyy-MM-ddTHH:mm 作为 v-model
@@ -520,6 +589,22 @@ onMounted(() => {
     birthDateTime.value = '1999-09-09T09:09'
     gender.value = '男'
   }
+
+  // 初始化Intersection Observer
+  intersectionObserver.value = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const type = entry.target.getAttribute('data-type')
+        if (type) {
+          handleVisibilityChange(type, entry.isIntersecting)
+        }
+      })
+    },
+    {
+      root: reportRef.value,
+      threshold: 0.1
+    }
+  )
 })
 
 // ========== 新增：首次填写自动保存为用户默认出生日期 ========== //
@@ -568,6 +653,21 @@ watch(
     }
   },
   { immediate: true }
+)
+
+// 监听分析结果变化，初始化visibleSections
+watch(
+  () => analysisResult.value,
+  (newResult) => {
+    if (newResult) {
+      // 重置可见项目数量
+      visibleItems.value = 3
+      // 初始化可见状态
+      Object.keys(newResult.分析结果).forEach(type => {
+        visibleSections[type] = false
+      })
+    }
+  }
 )
 
 // 展示历史分析
@@ -673,60 +773,154 @@ const getAnalysisTypeDescription = (type: string) => {
 </script>
 
 <style>
+/* 基础文本样式 */
 .prose {
-  @apply text-gray-800 dark:text-gray-200;
+  color: #1f2937; /* text-gray-800 */
 }
 
+.dark .prose {
+  color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+/* 标题样式 */
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply text-gray-800 dark:text-gray-200;
+  color: #1f2937; /* text-gray-800 */
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 {
+  color: #e5e7eb; /* dark:text-gray-200 */
 }
 
 .prose h3 {
-  @apply text-lg font-medium mt-4 mb-2;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+  margin-top: 1rem; /* mt-4 */
+  margin-bottom: 0.5rem; /* mb-2 */
 }
 
+/* 段落样式 */
 .prose p {
-  @apply my-2 text-gray-800 dark:text-gray-200;
+  margin-top: 0.5rem; /* my-2 */
+  margin-bottom: 0.5rem; /* my-2 */
+  color: #1f2937; /* text-gray-800 */
 }
 
+.dark .prose p {
+  color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+/* 列表样式 */
 .prose ul {
-  @apply list-disc list-inside my-2 text-gray-800 dark:text-gray-200;
+  list-style-type: disc; /* list-disc */
+  list-style-position: inside; /* list-inside */
+  margin-top: 0.5rem; /* my-2 */
+  margin-bottom: 0.5rem; /* my-2 */
+  color: #1f2937; /* text-gray-800 */
+}
+
+.dark .prose ul {
+  color: #e5e7eb; /* dark:text-gray-200 */
 }
 
 .prose li {
-  @apply my-1 text-gray-800 dark:text-gray-200;
+  margin-top: 0.25rem; /* my-1 */
+  margin-bottom: 0.25rem; /* my-1 */
+  color: #1f2937; /* text-gray-800 */
 }
 
+.dark .prose li {
+  color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+/* 强调样式 */
 .prose strong {
-  @apply text-gray-800 dark:text-gray-200 font-semibold;
+  color: #1f2937; /* text-gray-800 */
+  font-weight: 600; /* font-semibold */
+}
+
+.dark .prose strong {
+  color: #e5e7eb; /* dark:text-gray-200 */
 }
 
 .prose em {
-  @apply text-gray-800 dark:text-gray-200 italic;
+  color: #1f2937; /* text-gray-800 */
+  font-style: italic; /* italic */
 }
 
+.dark .prose em {
+  color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+/* 链接样式 */
 .prose a {
-  @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300;
+  color: #2563eb; /* text-blue-600 */
 }
 
+.dark .prose a {
+  color: #60a5fa; /* dark:text-blue-400 */
+}
+
+.prose a:hover {
+  color: #1d4ed8; /* hover:text-blue-800 */
+}
+
+.dark .prose a:hover {
+  color: #93c5fd; /* dark:hover:text-blue-300 */
+}
+
+/* 引用样式 */
 .prose blockquote {
-  @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 text-gray-700 dark:text-gray-300;
+  border-left-width: 4px; /* border-l-4 */
+  border-left-color: #d1d5db; /* border-gray-300 */
+  padding-left: 1rem; /* pl-4 */
+  color: #374151; /* text-gray-700 */
 }
 
+.dark .prose blockquote {
+  border-left-color: #4b5563; /* dark:border-gray-600 */
+  color: #d1d5db; /* dark:text-gray-300 */
+}
+
+/* 代码样式 */
 .prose code {
-  @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-1 py-0.5 rounded text-sm;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #1f2937; /* text-gray-800 */
+  padding: 0.125rem 0.25rem; /* px-1 py-0.5 */
+  border-radius: 0.25rem; /* rounded */
+  font-size: 0.875rem; /* text-sm */
+}
+
+.dark .prose code {
+  background-color: #374151; /* dark:bg-gray-700 */
+  color: #e5e7eb; /* dark:text-gray-200 */
 }
 
 .prose pre {
-  @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-4 rounded-lg overflow-x-auto;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #1f2937; /* text-gray-800 */
+  padding: 1rem; /* p-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  overflow-x: auto; /* overflow-x-auto */
+}
+
+.dark .prose pre {
+  background-color: #374151; /* dark:bg-gray-700 */
+  color: #e5e7eb; /* dark:text-gray-200 */
 }
 
 .prose pre code {
-  @apply bg-transparent text-inherit p-0;
+  background-color: transparent; /* bg-transparent */
+  color: inherit; /* text-inherit */
+  padding: 0; /* p-0 */
 }
 </style>

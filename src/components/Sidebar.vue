@@ -78,7 +78,7 @@
               @click="handleGoAIChat"
             >
               <MessageCircle :class="['w-5 h-5 opacity-80', activeTab === 'ai-chat' ? 'text-white' : 'text-[#0b3289]']" />
-              AI对话
+              命理问答
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"

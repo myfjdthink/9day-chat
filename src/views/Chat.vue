@@ -2,9 +2,9 @@
   <div class="flex-1 flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="AI智能对话 - 北斗九号日历"
-      description="与AI大师自然交流，获得八字运势、生活、事业等多领域的专业解答。支持中文对话，实时响应，多轮对话记忆。"
-      keywords="AI对话,八字分析,运势咨询,命理问答,智能助手,在线算命,八字解读"
+      title="命理问答 - 北斗九号日历"
+      description="温和专业的命理咨询，为您解答八字运势、人生方向、事业发展等困惑。知心交谈，专业解答。"
+      keywords="命理问答,八字解答,运势咨询,人生指导,命理咨询,在线算命,八字解读"
     />
     
     <!-- Top Bar -->
@@ -12,7 +12,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <img src="@/assets/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-          <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">AI智能对话</h1>
+          <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
         </div>
         <!-- 移除重复的暗黑模式按钮 -->
       </div>
@@ -28,8 +28,8 @@
           <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
             <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
           </div>
-          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始与AI助手对话吧！</h2>
-          <p class="text-gray-500 dark:text-gray-300">您可以咨询任何问题，我会尽力为您解答</p>
+          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
+          <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
                   <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
                   <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
                 </div>
-                <span class="text-sm text-gray-500 dark:text-gray-300">AI正在思考...</span>
+                <span class="text-sm text-gray-500 dark:text-gray-300">正在为您认真分析...</span>
               </div>
             </div>
           </div>
@@ -304,7 +304,8 @@ import type { Message as APIMessage } from '@/api/chat'
 import { Moon, Plus } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
-import { chat, ChatAPIError, SYSTEM_ROLES } from '@/api/chat'
+import { chat, ChatAPIError } from '@/api/chat'
+import { SYSTEM_ROLES } from '@/api/config'
 import { useChatStore } from '@/stores/chat'
 import { useRoute, useRouter } from 'vue-router'
 import type { Message as StoreMessage } from '@/stores/chat'
@@ -735,7 +736,13 @@ const handleQuickActionWithReport = async (record: any) => {
   chatStore.setLoading(true)
 
   try {
-    // 只保留 user 和 assistant 类型的消息，过滤掉 report，避免类型错误
+    // 获取最新的 report 消息作为上下文
+    const latestReportMsg = chatStore.currentMessages
+      .filter(msg => msg.role === 'report')
+      .slice(-1)[0]
+    const reportContext = latestReportMsg ? JSON.parse(latestReportMsg.content).content : undefined
+
+    // 只保留 user 和 assistant 类型的消息
     const history: APIMessage[] = chatStore.currentMessages
       .filter(isUserOrAssistant)
       .map((msg) => ({
@@ -743,12 +750,18 @@ const handleQuickActionWithReport = async (record: any) => {
         content: msg.content
       }))
 
+    // 构建包含报告的 prompt
+    const fullPrompt = reportContext 
+      ? `【分析报告】\n${reportContext}\n【历史对话】\n${formatHistory(history)}\n【用户提问】\n${prompt}`
+      : prompt
+
+    // 调用 chat API
     const aiResponse = await chat(
-      prompt,
+      fullPrompt,
       SYSTEM_ROLES.FORTUNE_TELLER,
-      undefined, // provider
-      undefined, // modelName
-      history
+      undefined,
+      undefined,
+      reportContext ? [] : history // 有报告时不传历史
     )
     
     chatStore.addMessage({
