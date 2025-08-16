@@ -692,10 +692,6 @@ onMounted(() => {
   if (!chatStore.currentConversationId) {
     chatStore.createConversation()
   }
-  // 如果没有指定场景，默认设置为 exam
-  if (!route.params.scene) {
-    router.replace('/chat/exam')
-  }
   // 初始化后自动滚动到最新消息
   nextTick(() => {
     scrollToBottom()
