@@ -20,6 +20,25 @@
 
     <!-- 分析报告消息渲染在消息区 -->
 
+    <!-- Quick Actions -->
+    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
+      <div class="max-w-4xl mx-auto grid grid-cols-4 gap-2">
+        <Button
+          v-for="action in quickActions"
+          :key="action.type"
+          type="button"
+          size="sm"
+          variant="outline"
+          class="flex items-center justify-center space-x-1 text-xs"
+          :disabled="chatStore.isLoading"
+          @click="handleQuickAction(action.type)"
+        >
+          <span :class="action.iconColor">{{ action.icon }}</span>
+          <span>{{ action.name }}</span>
+        </Button>
+      </div>
+    </div>
+
     <!-- Chat Area -->
     <div class="flex-1 flex flex-col overflow-hidden">
       <!-- Welcome Screen -->
@@ -136,52 +155,23 @@
       <!-- Input Area (Fixed at bottom) -->
       <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
         <div class="max-w-4xl mx-auto">
-          <!-- 快速按钮区域 -->
-          <div class="mb-3 flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('bazi')"
-            >
-              <span class="text-purple-600">🔮</span>
-              <span>对话八字</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('exam')"
-            >
-              <span class="text-blue-600">📚</span>
-              <span>考公考编</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('love')"
-            >
-              <span class="text-pink-600">💕</span>
-              <span>感情运势</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('health')"
-            >
-              <span class="text-green-600">🏥</span>
-              <span>健康运势</span>
-            </Button>
+          <!-- 推荐问题区域 -->
+          <div v-if="recommendQuestions.length > 0" class="mb-4">
+            <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">推荐问题：</div>
+            <div class="flex flex-wrap gap-2">
+              <Button
+                v-for="question in recommendQuestions"
+                :key="question"
+                type="button"
+                size="sm"
+                variant="ghost"
+                class="text-xs"
+                :disabled="chatStore.isLoading"
+                @click="handleRecommendQuestion(question)"
+              >
+                {{ question }}
+              </Button>
+            </div>
           </div>
           
           <form @submit.prevent="handleSubmit" class="flex space-x-2 items-center">
@@ -299,13 +289,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, defineProps, nextTick } from 'vue'
 import type { Message as APIMessage } from '@/api/chat'
 import { Moon, Plus } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import { chat, ChatAPIError } from '@/api/chat'
-// import { SYSTEM_ROLES } from '@/api/config'
+import { SYSTEM_ROLES } from '@/api/chat'
 import { useChatStore } from '@/stores/chat'
 import { useRoute, useRouter } from 'vue-router'
 import type { Message as StoreMessage } from '@/stores/chat'
@@ -314,14 +304,81 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
-import { defineProps, nextTick } from 'vue'
 import Modal from '@/components/ui/Modal.vue'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
 import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
 
+// 类型定义
+type Scene = keyof typeof sceneQuestions
+
 const props = defineProps<{ conversationId?: string | null }>()
+
+// 快速操作按钮配置
+// 场景推荐问题配置
+const sceneQuestions = {
+  bazi: [
+    '我的八字命格有什么特点？',
+    '我的事业发展方向是什么？',
+    '我今年的运势如何？'
+  ],
+  exam: [
+    '我适合考什么类型的岗位？',
+    '什么时候考试运势最好？',
+    '如何提高考试成功率？'
+  ],
+  love: [
+    '我今年的感情运势如何？',
+    '我适合什么类型的伴侣？',
+    '什么时候是我的桃花运高峰期？'
+  ],
+  health: [
+    '我需要注意哪些健康问题？',
+    '如何根据八字调养身体？',
+    '哪些食物对我的身体有益？'
+  ],
+  career: [
+    '我适合从事什么行业？',
+    '今年的事业机会在哪里？',
+    '如何提升职场竞争力？'
+  ],
+  wealth: [
+    '我今年的财运如何？',
+    '哪些投资方向适合我？',
+    '如何趋吉避凶增加收入？'
+  ],
+  family: [
+    '我的家庭关系会如何发展？',
+    '如何改善家人关系？',
+    '适合什么时候考虑婚姻大事？'
+  ],
+  travel: [
+    '今年适合去哪些方向旅行？',
+    '什么时候出行最吉利？',
+    '如何避免出行风险？'
+  ]
+}
+
+// 当前场景的推荐问题
+const recommendQuestions = ref<string[]>([])
+
+// 处理推荐问题点击
+const handleRecommendQuestion = (question: string) => {
+  input.value = question
+  handleSubmit()
+}
+
+const quickActions = [
+  { type: 'bazi', name: '对话八字', icon: '🔮', iconColor: 'text-purple-600' },
+  { type: 'exam', name: '考公考编', icon: '📚', iconColor: 'text-blue-600' },
+  { type: 'love', name: '感情运势', icon: '💕', iconColor: 'text-pink-600' },
+  { type: 'health', name: '健康运势', icon: '🏥', iconColor: 'text-green-600' },
+  // { type: 'career', name: '事业运势', icon: '💼', iconColor: 'text-yellow-600' },
+  // { type: 'wealth', name: '财运分析', icon: '💰', iconColor: 'text-green-600' },
+  // { type: 'family', name: '家庭关系', icon: '👨‍👩‍👧‍👦', iconColor: 'text-orange-600' },
+  // { type: 'travel', name: '出行运势', icon: '✈️', iconColor: 'text-blue-600' }
+]
 
 // 初始化 markdown-it
 const md = new MarkdownIt({
@@ -637,6 +694,15 @@ watch(() => chatStore.isLoading, (newVal) => {
   }
 })
 
+// 监听路由参数变化，更新推荐问题
+watch(() => route.params.scene, (newScene) => {
+  if (typeof newScene === 'string' && newScene in sceneQuestions) {
+    recommendQuestions.value = sceneQuestions[newScene as keyof typeof sceneQuestions]
+  } else {
+    recommendQuestions.value = []
+  }
+}, { immediate: true })
+
 const showLoginModal = ref(false)
 const handleLoginConfirm = () => {
   showLoginModal.value = false
@@ -659,6 +725,15 @@ const handleQuickAction = async (actionType: string) => {
     showNoAnalysisDialog.value = true
     return
   }
+
+  // 更新路由以反映当前场景
+  router.push({
+    path: `/chat/${actionType}`,
+    query: route.query // 保留其他查询参数
+  })
+
+  // 更新推荐问题
+  recommendQuestions.value = sceneQuestions[actionType as keyof typeof sceneQuestions] || []
 
   // 有历史，让用户选择对应的八字分析
   showQuickActionDialog.value = true

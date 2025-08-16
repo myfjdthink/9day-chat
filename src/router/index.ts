@@ -14,9 +14,10 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/chat',
+      path: '/chat/:scene?',
       name: 'chat',
-      component: Chat
+      component: Chat,
+      props: true
     },
     {
       path: '/analysis',
