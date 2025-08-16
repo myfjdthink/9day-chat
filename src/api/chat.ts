@@ -15,8 +15,8 @@ const API_ENDPOINTS = {
 
 // 新增：主接口配置
 const N8N_AI_URL = 'https://n8n.9day.tech/webhook/ai-service'
-const N8N_AI_USER = import.meta.env.VITE_N8N_AI_USER || process.env.VITE_N8N_AI_USER
-const N8N_AI_PASS = import.meta.env.VITE_N8N_AI_PASS || process.env.VITE_N8N_AI_PASS
+const N8N_AI_USER = import.meta.env.VITE_N8N_AI_USER
+const N8N_AI_PASS = import.meta.env.VITE_N8N_AI_PASS
 
 // 请求和响应类型定义
 export interface Message {
