@@ -110,7 +110,8 @@ const setActiveTab = (tab: string) => {
   }
   
   const targetRoute = routeMap[tab] || '/'
-  if (route.path !== targetRoute) {
+  // 只有当前路由不是目标路由的子路由时才进行跳转
+  if (route.path !== targetRoute && !route.path.startsWith(targetRoute + '/')) {
     router.push(targetRoute)
   }
 }

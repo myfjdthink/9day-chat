@@ -17,51 +17,9 @@
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">基本信息</h2>
           </div>
 
-          <!-- Gender Selection -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">性别</label>
-            <div class="flex space-x-3">
-              <Button
-                :variant="gender === '男' ? 'default' : 'outline'"
-                @click="gender = '男'"
-              >
-                男
-              </Button>
-              <Button
-                :variant="gender === '女' ? 'default' : 'outline'"
-                @click="gender = '女'"
-              >
-                女
-              </Button>
-            </div>
-          </div>
-
-          <!-- Birth Date and Time -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              出生日期和时间 <span class="text-red-500">*</span>
-            </label>
-            <div class="relative">
-              <Input
-                type="datetime-local"
-                v-model="birthDateTime"
-                class="w-full"
-              />
-              <CalendarIcon class="absolute right-3 top-3 w-4 h-4 text-gray-400" />
-            </div>
-
-            <!-- Confirmation Message -->
-            <div class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-md">
-              <div class="flex items-center space-x-2">
-                <CalendarIcon class="w-4 h-4 text-green-600" />
-                <span class="text-sm text-green-800 dark:text-green-200">
-                  已选择：{{ formatDateTime(birthDateTime) }} <span class="text-green-600">(新历)</span>
-                </span>
-              </div>
-            </div>
-
-            <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">出生时间已选择，可点击输入框重新调整</p>
-          </div>
+          <BirthInfoForm
+            v-model="birthInfo"
+          />
         </div>
 
         <!-- Analysis Configuration -->
@@ -357,8 +315,12 @@ interface AnalysisScope {
   day: boolean
 }
 
-const gender = ref<'男' | '女'>('男')
-const birthDateTime = ref<string>('1983-12-11T08:00')
+import BirthInfoForm from '@/components/BirthInfoForm.vue'
+
+const birthInfo = ref({
+  gender: '男' as '男' | '女',
+  birthDateTime: '1983-12-11T08:00'
+})
 const isAnalyzing = ref<boolean>(false)
 const analysisResult = ref<{ 分析类型: string; 分析时间: string; 分析结果: Record<string, string> } | null>(null)
 
@@ -436,7 +398,7 @@ const getAnalysisParts = (): string[] => {
 
 // 新增分析成功后，自动保存到本地+云端
 const handleStartAnalysis = async (): Promise<void> => {
-  if (!birthDateTime.value) {
+      if (!birthInfo.value.birthDateTime) {
     alert('请选择出生日期时间')
     return
   }
@@ -449,12 +411,12 @@ const handleStartAnalysis = async (): Promise<void> => {
 
   try {
     isAnalyzing.value = true
-    const birthDateTimeBeijing = dayjs(birthDateTime.value).tz('Asia/Shanghai').format()
+    const birthDateTimeBeijing = dayjs(birthInfo.value.birthDateTime).tz('Asia/Shanghai').format()
     const currentDateTimeBeijing = dayjs().tz('Asia/Shanghai').format()
     const response = await analyzeBazi({
       birth_datetime: birthDateTimeBeijing,
       current_datetime: currentDateTimeBeijing,
-      gender: gender.value,
+      gender: birthInfo.value.gender,
       analysis_parts: analysisParts,
       // 可选：指定模型提供商和模型名称
       // provider: 'zhipuai',
@@ -463,7 +425,7 @@ const handleStartAnalysis = async (): Promise<void> => {
     if (response.success) {
       analysisResult.value = response.data
       // 生成 markdown 报告
-      const dt = dayjs(birthDateTime.value).tz('Asia/Shanghai')
+      const dt = dayjs(birthInfo.value.birthDateTime).tz('Asia/Shanghai')
       const markdownReport = Object.entries(response.data.分析结果)
         .map(([type, content]) => `### ${type}\n${content}\n`)
         .join('\n')
@@ -474,7 +436,7 @@ const handleStartAnalysis = async (): Promise<void> => {
         birth_month: dt.month() + 1,
         birth_day: dt.date(),
         birth_time: dt.format('HH:mm'),
-        gender: (gender.value === '男' ? 'male' : 'female') as 'male' | 'female',
+        gender: (birthInfo.value.gender === '男' ? 'male' : 'female') as 'male' | 'female',
         analysis_type: 'basic',
         notes: markdownReport,
         display_name: '',
@@ -582,12 +544,16 @@ onMounted(async () => {
     const m = userStore.user.birth_month!.toString().padStart(2, '0')
     const d = userStore.user.birth_day!.toString().padStart(2, '0')
     const t = userStore.user.birth_time!.padStart(5, '0')
-    birthDateTime.value = `${y}-${m}-${d}T${t}`
-    gender.value = userStore.user.gender === 'male' || userStore.user.gender === '男' ? '男' : '女'
+    birthInfo.value = {
+      birthDateTime: `${y}-${m}-${d}T${t}`,
+      gender: userStore.user.gender === 'male' || userStore.user.gender === '男' ? '男' : '女'
+    }
   } else if (!userStore.user) {
     // 未登录，填充默认八字信息
-    birthDateTime.value = '1999-09-09T09:09'
-    gender.value = '男'
+    birthInfo.value = {
+      birthDateTime: '1999-09-09T09:09',
+      gender: '男'
+    }
   }
 
   // 初始化Intersection Observer
@@ -612,8 +578,8 @@ let hasSavedUserBazi = false // 只保存一次
 async function trySaveUserBaziInfo() {
   if (!userStore.user || userHasBaziInfo.value || hasSavedUserBazi) return
   // 解析 birthDateTime
-  const dt = birthDateTime.value
-  if (!dt || !gender.value) return
+  const dt = birthInfo.value.birthDateTime
+  if (!dt || !birthInfo.value.gender) return
   const [date, time] = dt.split('T')
   if (!date || !time) return
   const [year, month, day] = date.split('-').map(Number)
@@ -626,7 +592,7 @@ async function trySaveUserBaziInfo() {
       birth_month: month,
       birth_day: day,
       birth_time: time,
-      gender: gender.value === '男' ? 'male' : 'female'
+      gender: birthInfo.value.gender === '男' ? 'male' : 'female'
     })
     await userStore.fetchUser() // 刷新用户信息
     hasSavedUserBazi = true
