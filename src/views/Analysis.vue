@@ -332,7 +332,7 @@ import html2canvas from 'html2canvas'
 
 // API
 import { analyzeBazi, ANALYSIS_PARTS } from '@/api/bazi'
-import { PROVIDERS, MODELS } from '@/api/config'
+// import { PROVIDERS, MODELS } from '@/api/config'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'

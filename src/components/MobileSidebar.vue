@@ -57,6 +57,10 @@ interface MobileSidebarProps {
 const props = defineProps<MobileSidebarProps>()
 const emit = defineEmits<{
   'set-active-tab': [tab: string]
+  'select-chat': [id: string]
+  'delete-chat': [id: string]
+  'select-analysis': [id: string]
+  'delete-analysis': [id: string]
 }>()
 
 const route = useRoute()

@@ -58,13 +58,14 @@ const handleLogin = async () => {
   if (import.meta.env.VITE_APP_ENV === 'test') {
     // 模拟登录成功的用户数据
     userStore.$patch({
-      isAuthenticated: true,
+      token: 'test-token',
       user: {
         id: 'test-user',
         username: form.value.username,
         email: 'test@example.com'
       }
     })
+    localStorage.setItem('access_token', 'test-token')
     router.push(getRedirectPath())
     return
   }
