@@ -161,10 +161,10 @@ const menuItems = computed(() => [
     handler: handleGoCalendar
   },
   {
-    id: 'ai-chat',
-    label: '命理问答',
+    id: 'evaluation',
+    label: '测评',
     icon: MessageCircle,
-    handler: handleGoAIChat
+    handler: () => router.push('/evaluation')
   },
   {
     id: 'analysis',

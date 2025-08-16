@@ -66,6 +66,7 @@ const emit = defineEmits<{
 const route = useRoute()
 
 const {
+  router,
   handleGoHome,
   handleGoAIChat,
   handleGoAnalysis,
@@ -84,11 +85,11 @@ const mobileMenuItems = computed(() => [
     path: '/'
   },
   {
-    id: 'ai-chat',
-    label: '问答',
+    id: 'evaluation',
+    label: '测评',
     icon: MessageCircle,
-    handler: handleGoAIChat,
-    path: '/chat'
+    handler: () => router.push('/evaluation'),
+    path: '/evaluation'
   },
   {
     id: 'analysis',

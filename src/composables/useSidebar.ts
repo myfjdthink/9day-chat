@@ -119,6 +119,7 @@ export function useSidebar(emit: EmitType) {
 
   return {
     userStore,
+    router,
     defaultAvatar,
     showDropdown,
     handleNewChat,

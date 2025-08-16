@@ -4,6 +4,7 @@ import Chat from '../views/Chat.vue'
 import Analysis from '../views/Analysis.vue'
 import Calendar from '@/views/Calendar.vue'
 import ZodiacFortune from '@/views/ZodiacFortune.vue'
+import Evaluation from '@/views/Evaluation.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,14 +15,9 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/chat',
-      redirect: '/chat/exam'
-    },
-    {
-      path: '/chat/:scene',
-      name: 'chat',
-      component: Chat,
-      props: true
+      path: '/evaluation',
+      name: 'evaluation',
+      component: Evaluation
     },
     {
       path: '/analysis',

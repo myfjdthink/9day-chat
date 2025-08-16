@@ -51,6 +51,7 @@ import Analysis from '@/views/Analysis.vue'
 import { useChatStore } from '@/stores/chat'
 import { useBaziStore } from '@/stores/bazi'
 import SEO from './components/SEO.vue'
+import Button from '@/components/ui/Button.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -102,7 +103,7 @@ const setActiveTab = (tab: string) => {
   // 路由映射
   const routeMap: Record<string, string> = {
     'home': '/',
-    'ai-chat': '/chat',
+    'evaluation': '/evaluation',
     'analysis': '/analysis',
     'calendar': '/calendar',
     'zodiac-fortune': '/zodiac-fortune'
