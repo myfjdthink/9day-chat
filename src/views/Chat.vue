@@ -29,7 +29,10 @@
           type="button"
           size="sm"
           variant="outline"
-          class="flex items-center justify-center space-x-1 text-xs"
+          :class="[
+            'flex items-center justify-center space-x-1 text-xs',
+            route.params.scene === action.type ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600' : ''
+          ]"
           :disabled="chatStore.isLoading"
           @click="handleQuickAction(action.type)"
         >
@@ -153,7 +156,7 @@
       </div>
 
       <!-- Input Area (Fixed at bottom) -->
-      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
+      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full mb-16">
         <div class="max-w-4xl mx-auto">
           <!-- 推荐问题区域 -->
           <div v-if="recommendQuestions.length > 0" class="mb-4">
@@ -164,8 +167,8 @@
                 :key="question"
                 type="button"
                 size="sm"
-                variant="ghost"
-                class="text-xs"
+                variant="outline"
+                class="flex items-center justify-center space-x-1 text-xs"
                 :disabled="chatStore.isLoading"
                 @click="handleRecommendQuestion(question)"
               >
@@ -364,7 +367,28 @@ const sceneQuestions = {
 const recommendQuestions = ref<string[]>([])
 
 // 处理推荐问题点击
-const handleRecommendQuestion = (question: string) => {
+const handleRecommendQuestion = async (question: string) => {
+  // 检查登录状态
+  if (!userStore.user) {
+    showLoginModal.value = true
+    return
+  }
+
+  // 检查是否有八字分析历史
+  if (analyses.value.length === 0) {
+    showNoAnalysisDialog.value = true
+    return
+  }
+
+  // 如果没有选择八字报告，弹出选择框
+  const hasReport = chatStore.currentMessages.some(msg => msg.role === 'report')
+  if (!hasReport) {
+    showQuickActionDialog.value = true
+    selectedActionType.value = route.params.scene as string
+    return
+  }
+
+  // 如果已经选择了八字报告，直接发送问题
   input.value = question
   handleSubmit()
 }
@@ -667,6 +691,10 @@ onMounted(() => {
   chatStore.initializeExampleData()
   if (!chatStore.currentConversationId) {
     chatStore.createConversation()
+  }
+  // 如果没有指定场景，默认设置为 exam
+  if (!route.params.scene) {
+    router.replace('/chat/exam')
   }
   // 初始化后自动滚动到最新消息
   nextTick(() => {
