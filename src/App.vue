@@ -34,8 +34,10 @@
         </div>
       </template>
     </Sidebar>
-    <main class="flex-1">
-      <router-view />
+    <main class="flex-1 sm:ml-64">
+      <div class="pb-16 sm:pb-0"> <!-- 移动端底部导航栏间距 -->
+        <router-view />
+      </div>
     </main>
   </div>
 </template>
