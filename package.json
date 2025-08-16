@@ -12,7 +12,7 @@
   "dependencies": {
     "@types/marked": "^5.0.2",
     "@vueuse/core": "^10.7.0",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.10",
