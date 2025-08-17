@@ -1,10 +1,17 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
-    <div class="container mx-auto px-4 py-8">
+  <div class="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+    <!-- 装饰性背景元素 -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+      <div class="absolute top-0 left-0 w-64 h-64 bg-red-100 dark:bg-red-900 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-100 dark:bg-blue-900 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+      <div class="absolute top-1/2 left-1/2 w-72 h-72 bg-green-100 dark:bg-green-900 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12 relative">
       <!-- 返回按钮 -->
       <Button
         variant="ghost"
-        class="mb-6"
+        class="mb-8 hover:scale-105 transition-transform"
         @click="router.push('/evaluation')"
       >
         <span class="mr-2">←</span>
@@ -12,111 +19,296 @@
       </Button>
 
       <!-- 测评结果 -->
-      <div class="max-w-3xl mx-auto space-y-8">
+      <div class="max-w-4xl mx-auto space-y-10">
         <!-- 标题 -->
-        <div class="text-center">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">考公考编运势分析报告</h1>
-          <p class="text-gray-500 dark:text-gray-400">
-            {{ birthYear }}年{{ birthMonth }}月{{ birthDay }}日 {{ birthTime }}
-          </p>
+        <div class="text-center relative">
+          <div class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-br from-red-500/10 to-blue-500/10 rounded-full blur-2xl"></div>
+          <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 font-serif relative">
+            考公考编运势分析报告
+          </h1>
+          <div class="inline-flex items-center space-x-2 text-lg text-gray-600 dark:text-gray-300 bg-white/50 dark:bg-gray-800/50 px-6 py-2 rounded-full backdrop-blur-sm">
+            <span class="text-red-500 dark:text-red-400">{{ birthYear }}年</span>
+            <span class="text-blue-500 dark:text-blue-400">{{ birthMonth }}月</span>
+            <span class="text-green-500 dark:text-green-400">{{ birthDay }}日</span>
+            <span class="text-purple-500 dark:text-purple-400">{{ birthTime }}</span>
+          </div>
         </div>
 
         <!-- 今年成功率 -->
-        <Card>
+        <Card class="transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
           <CardContent>
-            <div class="space-y-4">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                <span class="mr-2">📊</span>
-                今年成功率分析
-              </h2>
-              <div class="flex items-center justify-center">
-                <div class="relative w-48 h-48">
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-4xl font-bold text-blue-600 dark:text-blue-400">{{ successRate }}%</span>
-                  </div>
-                  <!-- 这里可以添加圆环进度条动画 -->
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center font-serif">
+                  <span class="mr-3 w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                    📊
+                  </span>
+                  今年成功率分析
+                </h2>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  命理推演 · 数据分析
                 </div>
               </div>
-              <p class="text-gray-600 dark:text-gray-300">
-                {{ successRateAnalysis }}
-              </p>
+
+              <div class="flex flex-col md:flex-row items-center justify-between bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200 dark:bg-blue-800 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+                
+                <div class="relative w-48 h-48 mb-6 md:mb-0">
+                  <!-- 圆环进度条 -->
+                  <svg class="w-full h-full transform -rotate-90">
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke-width="12"
+                      stroke="currentColor"
+                      fill="transparent"
+                      class="text-gray-200 dark:text-gray-600"
+                    />
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="88"
+                      stroke-width="12"
+                      stroke="currentColor"
+                      fill="transparent"
+                      :stroke-dasharray="2 * Math.PI * 88"
+                      :stroke-dashoffset="2 * Math.PI * 88 * (1 - successRate / 100)"
+                      class="text-blue-500 dark:text-blue-400 transition-all duration-1000"
+                    />
+                  </svg>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                      <span class="text-5xl font-bold text-blue-600 dark:text-blue-400">{{ successRate }}</span>
+                      <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md:ml-8 flex-1 relative">
+                  <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                      <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span class="text-lg font-medium text-gray-900 dark:text-white">运势分析</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {{ successRateAnalysis }}
+                    </p>
+                    <div class="pt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                      <span class="mr-2">✨</span>
+                      <span>基于八字命理与现代数据分析</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
         <!-- 个性分析 -->
-        <Card>
+        <Card class="transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
           <CardContent>
-            <div class="space-y-4">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                <span class="mr-2">🎯</span>
-                个性特质分析
-              </h2>
-              <div class="space-y-3">
-                <div v-for="(trait, index) in personalityTraits" :key="index" class="flex items-center">
-                  <div class="w-32 flex-shrink-0 text-gray-600 dark:text-gray-400">{{ trait.name }}</div>
-                  <div class="flex-1">
-                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                      <div
-                        class="h-2 bg-blue-600 dark:bg-blue-400 rounded-full"
-                        :style="{ width: `${trait.score}%` }"
-                      ></div>
-                    </div>
-                  </div>
-                  <div class="w-12 text-right text-gray-600 dark:text-gray-400">{{ trait.score }}%</div>
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center font-serif">
+                  <span class="mr-3 w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                    🎯
+                  </span>
+                  个性特质分析
+                </h2>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  天赋禀赋 · 性格倾向
                 </div>
               </div>
-              <p class="text-gray-600 dark:text-gray-300">
-                {{ personalityAnalysis }}
-              </p>
+
+              <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-200 dark:bg-purple-800 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+                
+                <div class="space-y-4">
+                  <div class="grid gap-4">
+                    <div v-for="(trait, index) in personalityTraits" :key="index" 
+                         class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 transform hover:scale-[1.02] transition-all duration-300">
+                      <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-3">
+                          <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+                               :class="{
+                                 'bg-red-100 dark:bg-red-900 text-red-500': index === 0,
+                                 'bg-blue-100 dark:bg-blue-900 text-blue-500': index === 1,
+                                 'bg-green-100 dark:bg-green-900 text-green-500': index === 2,
+                                 'bg-yellow-100 dark:bg-yellow-900 text-yellow-500': index === 3,
+                                 'bg-purple-100 dark:bg-purple-900 text-purple-500': index === 4,
+                               }">
+                            {{ ['壹', '贰', '叁', '肆', '伍'][index] }}
+                          </div>
+                          <span class="font-medium text-gray-900 dark:text-white">{{ trait.name }}</span>
+                        </div>
+                        <span class="text-lg font-semibold"
+                              :class="{
+                                'text-red-500': index === 0,
+                                'text-blue-500': index === 1,
+                                'text-green-500': index === 2,
+                                'text-yellow-500': index === 3,
+                                'text-purple-500': index === 4,
+                              }">
+                          {{ trait.score }}%
+                        </span>
+                      </div>
+                      <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-1000"
+                             :class="{
+                               'bg-red-500': index === 0,
+                               'bg-blue-500': index === 1,
+                               'bg-green-500': index === 2,
+                               'bg-yellow-500': index === 3,
+                               'bg-purple-500': index === 4,
+                             }"
+                             :style="{ width: `${trait.score}%` }">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-4">
+                    <div class="flex items-center space-x-2 mb-2">
+                      <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span class="text-lg font-medium text-gray-900 dark:text-white">综合分析</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {{ personalityAnalysis }}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
         <!-- 未来几年对比 -->
-        <Card>
+        <Card class="transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
           <CardContent>
-            <div class="space-y-4">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                <span class="mr-2">📈</span>
-                未来三年运势对比
-              </h2>
-              <div class="space-y-4">
-                <div v-for="(year, index) in futureYears" :key="index" class="space-y-2">
-                  <div class="flex justify-between text-sm">
-                    <span class="text-gray-600 dark:text-gray-400">{{ year.year }}年</span>
-                    <span class="text-gray-600 dark:text-gray-400">{{ year.score }}%</span>
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center font-serif">
+                  <span class="mr-3 w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                    📈
+                  </span>
+                  未来三年运势对比
+                </h2>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  运势预测 · 趋势分析
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 dark:bg-green-800 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+                
+                <div class="space-y-6">
+                  <div class="grid gap-6">
+                    <div v-for="(year, index) in futureYears" :key="index" 
+                         class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 transform hover:scale-[1.02] transition-all duration-300">
+                      <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                          <div class="w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold"
+                               :class="{
+                                 'bg-blue-100 dark:bg-blue-900 text-blue-600': index === 0,
+                                 'bg-green-100 dark:bg-green-900 text-green-600': index === 1,
+                                 'bg-yellow-100 dark:bg-yellow-900 text-yellow-600': index === 2,
+                               }">
+                            {{ year.year }}
+                          </div>
+                          <div class="flex flex-col">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">运势指数</span>
+                            <span class="text-2xl font-bold"
+                                  :class="{
+                                    'text-blue-600': index === 0,
+                                    'text-green-600': index === 1,
+                                    'text-yellow-600': index === 2,
+                                  }">
+                              {{ year.score }}%
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                          <span class="text-sm"
+                                :class="{
+                                  'text-blue-500': index === 0,
+                                  'text-green-500': index === 1,
+                                  'text-yellow-500': index === 2,
+                                }">
+                            {{ ['平稳', '上升', '变化'][index] }}
+                          </span>
+                          <span class="text-xl transform"
+                                :class="{
+                                  'text-blue-500': index === 0,
+                                  'text-green-500': index === 1,
+                                  'text-yellow-500': index === 2,
+                                }">
+                            {{ ['→', '↗', '↕'][index] }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-1000"
+                             :class="year.class"
+                             :style="{ width: `${year.score}%` }">
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <div
-                      class="h-2 rounded-full"
-                      :class="year.class"
-                      :style="{ width: `${year.score}%` }"
-                    ></div>
+
+                  <div class="mt-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-4">
+                    <div class="flex items-center space-x-2 mb-2">
+                      <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span class="text-lg font-medium text-gray-900 dark:text-white">趋势分析</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {{ futureAnalysis }}
+                    </p>
                   </div>
                 </div>
               </div>
-              <p class="text-gray-600 dark:text-gray-300">
-                {{ futureAnalysis }}
-              </p>
             </div>
           </CardContent>
         </Card>
 
         <!-- 备考建议 -->
-        <Card>
+        <Card class="transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
           <CardContent>
-            <div class="space-y-4">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                <span class="mr-2">📝</span>
-                备考建议
-              </h2>
-              <div class="space-y-3">
-                <div v-for="(advice, index) in examAdvice" :key="index" class="flex space-x-3">
-                  <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center flex-shrink-0">
-                    {{ index + 1 }}
+            <div class="space-y-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center font-serif">
+                  <span class="mr-3 w-10 h-10 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
+                    📝
+                  </span>
+                  备考建议
+                </h2>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  专业指导 · 实践建议
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 dark:bg-yellow-800 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+                
+                <div class="grid gap-4">
+                  <div v-for="(advice, index) in examAdvice" :key="index" 
+                       class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-4 transform hover:scale-[1.02] transition-all duration-300">
+                    <div class="flex space-x-4">
+                      <div class="w-12 h-12 rounded-lg bg-gradient-to-br flex items-center justify-center flex-shrink-0 text-lg font-bold shadow-inner"
+                           :class="{
+                             'from-red-100 to-red-200 dark:from-red-900 dark:to-red-800 text-red-600': index === 0,
+                             'from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 text-orange-600': index === 1,
+                             'from-yellow-100 to-yellow-200 dark:from-yellow-900 dark:to-yellow-800 text-yellow-600': index === 2,
+                             'from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 text-green-600': index === 3,
+                             'from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-600': index === 4,
+                           }">
+                        {{ ['壹', '贰', '叁', '肆', '伍'][index] }}
+                      </div>
+                      <div class="flex-1">
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ advice }}</p>
+                      </div>
+                    </div>
                   </div>
-                  <p class="text-gray-600 dark:text-gray-300">{{ advice }}</p>
                 </div>
               </div>
             </div>
@@ -125,18 +317,60 @@
 
         <!-- 底部按钮组 -->
         <div class="flex flex-wrap justify-center gap-4 pt-8">
-          <Button variant="outline" @click="handleRetry">
-            重新测评
+          <Button 
+            variant="outline" 
+            @click="handleRetry"
+            class="transform hover:scale-105 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <span class="flex items-center space-x-2">
+              <span>🔄</span>
+              <span>重新测评</span>
+            </span>
           </Button>
-          <Button variant="outline" @click="handleChat">
-            深入命理问答
+          <Button 
+            variant="outline" 
+            @click="handleChat"
+            class="transform hover:scale-105 transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900"
+          >
+            <span class="flex items-center space-x-2">
+              <span>💬</span>
+              <span>深入命理问答</span>
+            </span>
           </Button>
-          <Button variant="outline" @click="handleBazi">
-            八字分析
+          <Button 
+            variant="outline" 
+            @click="handleBazi"
+            class="transform hover:scale-105 transition-all duration-300 hover:bg-purple-50 dark:hover:bg-purple-900"
+          >
+            <span class="flex items-center space-x-2">
+              <span>🎯</span>
+              <span>八字分析</span>
+            </span>
           </Button>
-          <Button variant="outline" @click="handleFortune">
-            运势分析
+          <Button 
+            variant="outline" 
+            @click="handleFortune"
+            class="transform hover:scale-105 transition-all duration-300 hover:bg-green-50 dark:hover:bg-green-900"
+          >
+            <span class="flex items-center space-x-2">
+              <span>✨</span>
+              <span>运势分析</span>
+            </span>
           </Button>
+        </div>
+
+        <!-- 底部装饰 -->
+        <div class="mt-12 text-center text-gray-500 dark:text-gray-400 space-y-2">
+          <p class="text-sm">愿此分析助您一臂之力</p>
+          <div class="flex justify-center space-x-2">
+            <span>✧</span>
+            <span>明晰前程</span>
+            <span>✧</span>
+            <span>把握机遇</span>
+            <span>✧</span>
+            <span>金榜题名</span>
+            <span>✧</span>
+          </div>
         </div>
       </div>
     </div>
