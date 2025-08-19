@@ -1,120 +1,73 @@
 <template>
-  <!-- 折叠按钮，仅在移动端显示 -->
-  <button
-    class="sidebar-toggle-btn fixed top-4 left-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-    @click="toggleSidebar"
-    v-if="!sidebarOpen"
-    aria-label="展开侧边栏"
-  >
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-  </button>
-  <transition name="sidebar-slide">
-    <div v-show="sidebarOpen" class="sidebar-wrapper w-64 max-w-xs min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
-      <!-- 折叠收起按钮，仅移动端显示 -->
-      <button
-        class="sidebar-toggle-btn absolute top-4 right-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-        @click="toggleSidebar"
-        aria-label="收起侧边栏"
-      >
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-      <!-- Header -->
-      <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div class="flex items-center space-x-3">
-          <img src="@/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain" />
-          <span class="font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
+  <!-- 顶部导航栏 -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+    <div class="w-full px-4">
+      <div class="flex h-16 items-center justify-between">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain" />
+          <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
         </div>
-      </div>
 
-      <div class="flex-1 flex flex-col overflow-y-auto">
-        <div class="p-4 flex flex-col gap-3">
-          <!-- 新建对话 主按钮 薰衣草色 -->
-          <Button
-            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg bg-[#b67fda] text-white text-base shadow-sm hover:bg-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/40 transition-all dark:bg-[#b67fda] dark:text-white dark:hover:bg-[#a06cc7]"
-            @click="handleNewChat"
-          >
-            <Plus class="w-5 h-5 opacity-80 text-white" />
-            新建对话
-          </Button>
-          <!-- 新建分析 次按钮 薰衣草色线框 -->
-          <Button
-            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] hover:border-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/30 text-base transition-all dark:border-[#b67fda] dark:text-[#b67fda] dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:border-[#a06cc7]"
-            @click="handleNewAnalysis"
-          >
-            <Star class="w-5 h-5 opacity-80 text-[#b67fda]" />
-            新建分析
-          </Button>
-        </div>
-        <!-- 功能菜单 Claude 风格 -->
-        <div class="px-4 py-2 mt-2 flex flex-col gap-2">
-          <div class="text-xs text-gray-500 dark:text-gray-300 mb-2">功能菜单</div>
-          <!-- 两列并排按钮布局 -->
-          <nav class="grid grid-cols-2 gap-2">
+        <!-- 导航菜单 -->
+        <nav class="flex-1 flex items-center justify-center">
+          <div class="flex items-center gap-6">
             <Button
-              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
+              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
               :class="activeTab === 'home'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                ? 'bg-[#B57EDC] text-white'
+                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
               @click="handleGoHome"
             >
-              <Home :class="['w-5 h-5 opacity-80', activeTab === 'home' ? 'text-white' : 'text-[#0b3289]']" />
               首页
             </Button>
             <Button
-              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
-              :class="activeTab === 'calendar'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
+              :class="activeTab === 'Calendar'
+                ? 'bg-[#B57EDC] text-white'
+                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
               @click="handleGoCalendar"
             >
-              <Database :class="['w-5 h-5 opacity-80', activeTab === 'calendar' ? 'text-white' : 'text-[#0b3289]']" />
               个人运历
             </Button>
             <Button
-              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
-              :class="activeTab === 'ai-chat'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
+              :class="activeTab === 'chat'
+                ? 'bg-[#B57EDC] text-white'
+                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
               @click="handleGoAIChat"
             >
-              <MessageCircle :class="['w-5 h-5 opacity-80', activeTab === 'ai-chat' ? 'text-white' : 'text-[#0b3289]']" />
               命理问答
             </Button>
             <Button
-              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
+              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
               :class="activeTab === 'analysis'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                ? 'bg-[#B57EDC] text-white'
+                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
               @click="handleGoAnalysis"
             >
-              <Star :class="['w-5 h-5 opacity-80', activeTab === 'analysis' ? 'text-white' : 'text-[#0b3289]']" />
               八字分析
             </Button>
             <Button
-              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
-              :class="activeTab === 'zodiac-fortune'
-                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
+              :class="activeTab === 'ZodiacFortune'
+                ? 'bg-[#B57EDC] text-white'
+                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
               @click="handleGoZodiacFortune"
             >
-              <Star :class="['w-5 h-5 opacity-80', activeTab === 'zodiac-fortune' ? 'text-white' : 'text-[#0b3289]']" />
               生肖运势
             </Button>
-          </nav>
-        </div>
-        <!-- History Panel -->
-        <!-- History Panel -->
-      </div>
+          </div>
+        </nav>
 
-      <!-- Bottom Section -->
-      <div class="mt-auto p-4 border-t border-gray-200 dark:border-gray-700">
-        <div class="flex items-center justify-start gap-3">
+        <!-- 右侧用户信息和暗黑模式 -->
+        <div class="flex items-center gap-2">
           <template v-if="userStore.user">
             <div class="relative flex items-center gap-2">
               <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="avatar" @click="showDropdown = !showDropdown" />
-              <span class="ml-2 text-base text-gray-900 dark:text-gray-100 font-medium truncate max-w-[120px]">{{ userStore.user.username || userStore.user.email }}</span>
+              <span class="text-base text-gray-900 dark:text-gray-100 font-medium truncate max-w-[120px]">{{ userStore.user.username || userStore.user.email }}</span>
               <transition name="fade">
-                <div v-if="showDropdown" class="absolute left-0 bottom-12 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
+                <div v-if="showDropdown" class="absolute right-0 top-12 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
                   <button
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                     @click="handleGoProfile"
@@ -139,10 +92,25 @@
               <User class="w-5 h-5 text-gray-500 dark:text-gray-300" />
             </Button>
           </template>
+          <!-- 暗黑模式切换按钮 -->
+          <Button
+            variant="ghost"
+            size="icon"
+            class="w-9 h-9"
+            @click="toggleDark"
+            aria-label="切换暗黑模式"
+          >
+            <template v-if="!isDark">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z" /></svg>
+            </template>
+            <template v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+            </template>
+          </Button>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -157,7 +125,6 @@ import girlAvatar from '@/assets/girl.png'
 
 interface SidebarProps {
   activeTab: string
-  selectedChatId?: string | null
 }
 
 defineProps<SidebarProps>()
@@ -170,26 +137,9 @@ const emit = defineEmits<{
   'set-active-tab': [tab: string]
   'select-chat': [id: string]
   'delete-chat': [id: string]
+  'select-analysis': [id: string]
+  'delete-analysis': [id: string]
 }>()
-
-// 新建对话处理
-const handleNewChat = () => {
-  chatStore.createConversation()
-  emit('set-active-tab', 'ai-chat')
-  router.push('/chat')
-}
-
-// 历史记录事件处理
-const handleSelectChat = (id: string) => {
-  chatStore.selectConversation(id)
-  emit('set-active-tab', 'ai-chat')
-  emit('select-chat', id)
-}
-
-const handleDeleteChat = (id: string) => {
-  chatStore.removeConversation(id)
-  emit('delete-chat', id)
-}
 
 // 用户显示名，优先用户名，无则邮箱
 const displayName = computed(() => {
@@ -237,22 +187,7 @@ const handleGoAdmin = async () => {
   }
 }
 
-// 侧边栏折叠状态，默认移动端关闭，PC端始终打开
-const sidebarOpen = ref(window.innerWidth > 640)
-
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
-// 监听窗口变化，移动端自动关闭侧边栏
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    if (window.innerWidth <= 640) {
-      sidebarOpen.value = false
-    } else {
-      sidebarOpen.value = true
-    }
-  })
   userStore.init()
   if (userStore.token) {
     userStore.fetchUser()
@@ -266,20 +201,16 @@ onMounted(() => {
     isDark.value = false
     document.documentElement.classList.remove('dark')
   }
-  // 新增：无论在哪个tab，侧边栏挂载时都初始化对话和分析历史，保证两个区块都能显示
+  // 初始化对话和分析历史
   chatStore.initializeStore()
 })
 
-const handleNewAnalysis = () => {
-  emit('set-active-tab', 'analysis')
-  router.push('/analysis')
-}
 const handleGoHome = () => {
   emit('set-active-tab', 'home')
   router.push('/')
 }
 const handleGoAIChat = () => {
-  emit('set-active-tab', 'ai-chat')
+  emit('set-active-tab', 'chat')
   router.push('/chat')
 }
 const handleGoAnalysis = () => {
@@ -288,12 +219,12 @@ const handleGoAnalysis = () => {
 }
 
 const handleGoCalendar = () => {
-  emit('set-active-tab', 'calendar')
+  emit('set-active-tab', 'Calendar')
   router.push('/calendar')
 }
 
 const handleGoZodiacFortune = () => {
-  emit('set-active-tab', 'zodiac-fortune')
+  emit('set-active-tab', 'ZodiacFortune')
   router.push('/zodiac-fortune')
 }
 </script>
@@ -304,33 +235,5 @@ const handleGoZodiacFortune = () => {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
-}
-/* 侧边栏滑入动画 */
-.sidebar-slide-enter-active, .sidebar-slide-leave-active {
-  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
-}
-.sidebar-slide-enter-from, .sidebar-slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-.sidebar-slide-enter-to, .sidebar-slide-leave-from {
-  transform: translateX(0);
-  opacity: 1;
-}
-/* 折叠按钮样式 */
-.sidebar-toggle-btn {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #333;
-  transition: background 0.2s;
-}
-.sidebar-toggle-btn:active {
-  background: #f3f4f6;
-}
-@media (min-width: 641px) {
-  .sidebar-toggle-btn {
-    display: none;
-  }
 }
 </style>
