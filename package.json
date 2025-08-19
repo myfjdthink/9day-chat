@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "build": "vite build",
+    "preview": "vite preview --host",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix"
