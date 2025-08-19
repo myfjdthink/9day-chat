@@ -8,8 +8,8 @@ import {
   deleteSession,
   createMessage,
   getMessages,
-  Session,
-  ChatMessage,
+  // Session,
+  // ChatMessage,
   updateSession
 } from '@/api/chat'
 
