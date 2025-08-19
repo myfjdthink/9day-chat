@@ -7,198 +7,264 @@
       keywords="命理问答,八字解答,运势咨询,人生指导,命理咨询,在线算命,八字解读"
     />
     
-    <!-- Top Bar -->
-    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <img src="@/assets/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-          <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
-        </div>
-        <!-- 移除重复的暗黑模式按钮 -->
-      </div>
-    </div>
-
-    <!-- 分析报告消息渲染在消息区 -->
-
-    <!-- Chat Area -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Welcome Screen -->
-      <div v-if="chatStore.currentMessages.length === 0" class="flex-1 flex items-center justify-center">
-        <div class="text-center">
-          <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-            <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
-          </div>
-          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
-          <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
-        </div>
-      </div>
-
-      <!-- Messages -->
-      <div v-else ref="messageContainer" class="flex-1 overflow-y-auto p-6 scroll-smooth">
-        <div class="max-w-4xl mx-auto space-y-6">
-          <div 
-            v-for="message in chatStore.currentMessages as unknown as ChatMessage[]" 
-            :key="message.id" 
-            :class="[
-              message.role === 'report'
-                ? 'flex flex-col items-center'
-                // 修正：根据 sender_type 判断左右
-                : message.sender_type === 'user'
-                  ? 'flex flex-row-reverse items-start space-x-reverse space-x-2'
-                  : 'flex flex-row items-start space-x-2'
-            ]"
-          >
-            <!-- 分析报告消息 -->
-            <template v-if="message.role === 'report'">
-              <div class="flex-shrink-0">
-                <img :src="aiAvatar" alt="AI Avatar" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
-              </div>
-              <div
-                class="max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
-                @click="showReportPanel = !showReportPanel"
-              >
-                <div class="font-semibold flex items-center">
-                  <span>{{ JSON.parse(message.content).name }}</span>
-                  <span class="ml-2 text-xs">{{ showReportPanel ? '▲' : '▼' }}</span>
-                </div>
-                <div v-if="showReportPanel" class="mt-2 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300">
-                  {{ JSON.parse(message.content).content }}
-                </div>
-              </div>
-            </template>
-            <!-- 普通消息 -->
-            <template v-else>
-              <!-- 头像，根据 sender_type 区分 -->
-              <div class="flex-shrink-0">
-                <img 
-                  :src="message.sender_type === 'user' ? (userStore.user?.gender === 'female' ? girlAvatar : boyAvatar) : aiAvatar"
-                  :alt="message.sender_type === 'user' ? 'User Avatar' : 'AI Avatar'"
-                  class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
-                />
-              </div>
-              <!-- 消息气泡，根据 sender_type 区分左右样式 -->
-              <div
-                :class="[
-                  'max-w-[70%] px-4 py-2 rounded-lg overflow-hidden',
-                  message.sender_type === 'user'
-                    ? 'border border-[#b67fda] text-[#b67fda] bg-white dark:bg-gray-800 dark:text-[#b67fda] rounded-tr-none'
-                    : message.error
-                    ? 'bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 rounded-tl-none'
-                    : 'border border-[#0b3289] text-[#0b3289] bg-white dark:bg-gray-800 dark:text-[#0b3289] rounded-tl-none'
-                ]"
-              >
-                <!-- Markdown 内容 -->
-                <div 
-                  v-if="!message.error" 
-                  class="prose prose-sm dark:prose-invert max-w-none"
-                  v-html="renderMarkdown(message.content)"
-                  @click="handleContentClick"
-                ></div>
-                <!-- 错误消息 -->
-                <p v-else class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
-                <span class="text-xs opacity-50 mt-1 block text-gray-600 dark:text-gray-400">
-                  {{ new Date(message.timestamp).toLocaleTimeString() }}
-                </span>
-              </div>
-            </template>
-          </div>
-        </div>
-        
-        <!-- Loading indicator -->
-        <div v-if="chatStore.isLoading" class="max-w-4xl mx-auto mt-4">
-          <div class="flex items-start space-x-2">
-            <div class="flex-shrink-0">
-              <img 
-                :src="aiAvatar"
-                alt="AI Avatar"
-                class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
+    <!-- 主体布局：左侧历史 + 右侧聊天 -->
+    <div class="flex h-full">
+      <!-- 左侧历史面板 -->
+      <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+        <!-- 历史面板头部 -->
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">对话历史</h2>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              @click="toggleChatHistory"
+              class="p-1 h-auto"
+            >
+              <ChevronDown 
+                :class="['w-4 h-4 transition-transform', showChatHistory ? 'rotate-180' : '']"
               />
-            </div>
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 max-w-[70%] px-4 py-2 rounded-lg rounded-tl-none">
-              <div class="flex items-center space-x-2">
-                <div class="flex space-x-1">
-                  <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
-                  <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-                  <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                </div>
-                <span class="text-sm text-gray-500 dark:text-gray-300">正在为您认真分析...</span>
-              </div>
-            </div>
+            </Button>
           </div>
         </div>
-      </div>
 
-      <!-- Image Preview -->
-      <div v-if="previewImage" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" @click="closePreview">
-        <img :src="previewImage" alt="Preview" class="max-w-[90%] max-h-[90vh] object-contain" />
-      </div>
-
-      <!-- Input Area (Fixed at bottom) -->
-      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
-        <div class="max-w-4xl mx-auto">
-          <!-- 快速按钮区域 -->
-          <div class="mb-3 flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('bazi')"
-            >
-              <span class="text-purple-600">🔮</span>
-              <span>对话八字</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('exam')"
-            >
-              <span class="text-blue-600">📚</span>
-              <span>考公考编</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('love')"
-            >
-              <span class="text-pink-600">💕</span>
-              <span>感情运势</span>
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              class="flex items-center space-x-1 text-xs"
-              :disabled="chatStore.isLoading"
-              @click="handleQuickAction('health')"
-            >
-              <span class="text-green-600">🏥</span>
-              <span>健康运势</span>
-            </Button>
+        <!-- 历史列表 -->
+        <div v-if="showChatHistory" class="flex-1 overflow-y-auto p-4 space-y-2">
+          <div 
+            v-for="chat in chatStore.chatHistory" 
+            :key="chat.id"
+            class="group cursor-pointer p-3 rounded-lg border transition-all"
+            :class="chat.id === chatStore.currentConversationId
+              ? 'bg-[#f6edfb] dark:bg-[#2d1b3d] border-[#b67fda] text-[#7a3fa4] dark:text-[#b67fda] font-semibold shadow-sm'
+              : 'bg-white dark:bg-gray-800 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
+            @click="selectHistoryChat(chat.id)"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ chat.title }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDate(chat.date) }}</p>
+              </div>
+              <div class="flex items-center gap-1 ml-2">
+                <!-- 登录用户显示同步状态 -->
+                <template v-if="isLoggedIn">
+                  <span v-if="getSyncStatus(chat.id) === 'synced'" class="text-[10px] text-green-600 dark:text-green-400">已同步</span>
+                  <span v-else-if="getSyncStatus(chat.id) === 'pending'" class="text-[10px] text-yellow-600 dark:text-yellow-400">待同步</span>
+                  <span v-else-if="getSyncStatus(chat.id) === 'failed'" class="text-[10px] text-red-600 dark:text-red-400">同步失败</span>
+                </template>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  @click.stop="handleDeleteChat(chat.id)"
+                  class="opacity-0 group-hover:opacity-100 p-1 h-auto"
+                >
+                  <Trash2 class="w-3 h-3 text-red-500 dark:text-red-400" />
+                </Button>
+              </div>
+            </div>
           </div>
           
-          <form @submit.prevent="handleSubmit" class="flex space-x-2 items-center">
-            <Input
-              v-model="input"
-              ref="inputRef"
-              placeholder="输入您的问题..."
-              class="flex-1"
-            />
-            <Button
-              type="submit"
-              variant="default"
-              :disabled="chatStore.isLoading || !input.trim()"
-            >
-              发送
-            </Button>
-          </form>
+          <div v-if="chatStore.chatHistory.length === 0" class="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
+            暂无对话历史
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧聊天区域 -->
+      <div class="flex-1 flex flex-col">
+        <!-- Top Bar -->
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <img src="@/assets/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
+              <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
+            </div>
+            <!-- 移除重复的暗黑模式按钮 -->
+          </div>
+        </div>
+
+        <!-- 分析报告消息渲染在消息区 -->
+
+        <!-- Chat Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+          <!-- Welcome Screen -->
+          <div v-if="chatStore.currentMessages.length === 0" class="flex-1 flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+                <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
+              </div>
+              <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
+              <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <div v-else ref="messageContainer" class="flex-1 overflow-y-auto p-6 scroll-smooth">
+            <div class="max-w-4xl mx-auto space-y-6">
+              <div 
+                v-for="message in chatStore.currentMessages as unknown as ChatMessage[]" 
+                :key="message.id" 
+                :class="[
+                  message.role === 'report'
+                    ? 'flex flex-col items-center'
+                    // 修正：根据 sender_type 判断左右
+                    : message.sender_type === 'user'
+                      ? 'flex flex-row-reverse items-start space-x-reverse space-x-2'
+                      : 'flex flex-row items-start space-x-2'
+                ]"
+              >
+                <!-- 分析报告消息 -->
+                <template v-if="message.role === 'report'">
+                  <div class="flex-shrink-0">
+                    <img :src="aiAvatar" alt="AI Avatar" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
+                  </div>
+                  <div
+                    class="max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
+                    @click="showReportPanel = !showReportPanel"
+                  >
+                    <div class="font-semibold flex items-center">
+                      <span>{{ JSON.parse(message.content).name }}</span>
+                      <span class="ml-2 text-xs">{{ showReportPanel ? '▲' : '▼' }}</span>
+                    </div>
+                    <div v-if="showReportPanel" class="mt-2 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300">
+                      {{ JSON.parse(message.content).content }}
+                    </div>
+                  </div>
+                </template>
+                <!-- 普通消息 -->
+                <template v-else>
+                  <!-- 头像，根据 sender_type 区分 -->
+                  <div class="flex-shrink-0">
+                    <img 
+                      :src="message.sender_type === 'user' ? (userStore.user?.gender === 'female' ? girlAvatar : boyAvatar) : aiAvatar"
+                      :alt="message.sender_type === 'user' ? 'User Avatar' : 'AI Avatar'"
+                      class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                  <!-- 消息气泡，根据 sender_type 区分左右样式 -->
+                  <div
+                    :class="[
+                      'max-w-[70%] px-4 py-2 rounded-lg overflow-hidden',
+                      message.sender_type === 'user'
+                        ? 'border border-[#b67fda] text-[#b67fda] bg-white dark:bg-gray-800 dark:text-[#b67fda] rounded-tr-none'
+                        : message.error
+                        ? 'bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 rounded-tl-none'
+                        : 'border border-[#0b3289] text-[#0b3289] bg-white dark:bg-gray-800 dark:text-[#0b3289] rounded-tl-none'
+                    ]"
+                  >
+                    <!-- Markdown 内容 -->
+                    <div 
+                      v-if="!message.error" 
+                      class="prose prose-sm dark:prose-invert max-w-none"
+                      v-html="renderMarkdown(message.content)"
+                      @click="handleContentClick"
+                    ></div>
+                    <!-- 错误消息 -->
+                    <p v-else class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
+                    <span class="text-xs opacity-50 mt-1 block text-gray-600 dark:text-gray-400">
+                      {{ new Date(message.timestamp).toLocaleTimeString() }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </div>
+            
+            <!-- Loading indicator -->
+            <div v-if="chatStore.isLoading" class="max-w-4xl mx-auto mt-4">
+              <div class="flex items-start space-x-2">
+                <div class="flex-shrink-0">
+                  <img 
+                    :src="aiAvatar"
+                    alt="AI Avatar"
+                    class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
+                  />
+                </div>
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 max-w-[70%] px-4 py-2 rounded-lg rounded-tl-none">
+                  <div class="flex items-center space-x-2">
+                    <div class="flex space-x-1">
+                      <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
+                      <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                      <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                    <span class="text-sm text-gray-500 dark:text-gray-300">正在为您认真分析...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Preview -->
+          <div v-if="previewImage" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" @click="closePreview">
+            <img :src="previewImage" alt="Preview" class="max-w-[90%] max-h-[90vh] object-contain" />
+          </div>
+
+          <!-- Input Area (Fixed at bottom) -->
+          <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
+            <div class="max-w-4xl mx-auto">
+              <!-- 快速按钮区域 -->
+              <div class="mb-3 flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  class="flex items-center space-x-1 text-xs"
+                  :disabled="chatStore.isLoading"
+                  @click="handleQuickAction('bazi')"
+                >
+                  <span class="text-purple-600">🔮</span>
+                  <span>对话八字</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  class="flex items-center space-x-1 text-xs"
+                  :disabled="chatStore.isLoading"
+                  @click="handleQuickAction('exam')"
+                >
+                  <span class="text-blue-600">📚</span>
+                  <span>考公考编</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  class="flex items-center space-x-1 text-xs"
+                  :disabled="chatStore.isLoading"
+                  @click="handleQuickAction('love')"
+                >
+                  <span class="text-pink-600">💕</span>
+                  <span>感情运势</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  class="flex items-center space-x-1 text-xs"
+                  :disabled="chatStore.isLoading"
+                  @click="handleQuickAction('health')"
+                >
+                  <span class="text-green-600">🏥</span>
+                  <span>健康运势</span>
+                </Button>
+              </div>
+              
+              <form @submit.prevent="handleSubmit" class="flex space-x-2 items-center">
+                <Input
+                  v-model="input"
+                  ref="inputRef"
+                  placeholder="输入您的问题..."
+                  class="flex-1"
+                />
+                <Button
+                  type="submit"
+                  variant="default"
+                  :disabled="chatStore.isLoading || !input.trim()"
+                >
+                  发送
+                </Button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -237,7 +303,7 @@
           <p class="text-gray-500 dark:text-gray-300">请选择一条历史对话进入</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
-          <div v-for="chat in chatStore.chatHistory" :key="chat.id" class="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-all cursor-pointer" @click="selectHistoryChat(chat.id)">
+          <div v-for="chat in chatStore.chatHistory" :key="chat.id" class="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-all cursor-pointer" @click="handleSelectHistoryChat(chat.id)">
             <div>
               <div class="font-medium text-gray-900 dark:text-gray-100 text-base">{{ chat.title }}</div>
               <div class="text-xs text-gray-500 dark:text-gray-300 mt-1">{{ formatDate(new Date(chat.date)) }}</div>
@@ -301,13 +367,12 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import type { Message as APIMessage } from '@/api/chat'
-import { Moon, Plus } from 'lucide-vue-next'
+import { Moon, Plus, ChevronDown, Trash2 } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import { chat, ChatAPIError } from '@/api/chat'
-// import { SYSTEM_ROLES } from '@/api/config'
 import { useChatStore } from '@/stores/chat'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import type { Message as StoreMessage } from '@/stores/chat'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
@@ -321,7 +386,60 @@ import girlAvatar from '@/assets/girl.png'
 import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
 
+// 定义系统角色常量
+const SYSTEM_ROLES = {
+  FORTUNE_TELLER: 'fortune_teller'
+} as const
+
 const props = defineProps<{ conversationId?: string | null }>()
+
+// 新增：对话历史相关状态和功能
+const showChatHistory = ref(true)
+const isLoggedIn = computed(() => !!userStore.user)
+
+// 新增：切换对话历史显示/隐藏
+const toggleChatHistory = () => {
+  showChatHistory.value = !showChatHistory.value
+}
+
+// 新增：获取会话同步状态
+function getSyncStatus(chatId: string): 'synced' | 'pending' | 'failed' | 'conflict' | undefined {
+  const conv = chatStore.conversations.find(c => c.id === chatId)
+  return conv?.sync_status
+}
+
+// 新增：删除对话
+const handleDeleteChat = async (id: string) => {
+  chatStore.removeConversation(id)
+}
+
+// 新增：选择历史对话
+const selectHistoryChat = async (id: string) => {
+  await chatStore.selectConversation(id)
+  // 切换对话后自动滚动到最新消息
+  await nextTick()
+  scrollToBottom()
+}
+
+// 新增：格式化日期
+const formatDate = (date: Date) => {
+  const now = new Date()
+  const diffTime = Math.abs(now.getTime() - date.getTime())
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  
+  if (diffDays === 1) {
+    return '今天'
+  } else if (diffDays === 2) {
+    return '昨天'
+  } else if (diffDays <= 7) {
+    return `${diffDays - 1}天前`
+  } else {
+    return new Date(date).toLocaleDateString('zh-CN', { 
+      month: 'short', 
+      day: 'numeric' 
+    })
+  }
+}
 
 // 初始化 markdown-it
 const md = new MarkdownIt({
@@ -339,6 +457,7 @@ const md = new MarkdownIt({
 })
 
 const chatStore = useChatStore()
+const router = useRouter()
 const userStore = useUserStore()
 const baziStore = useBaziStore()
 const analyses = computed(() => baziStore.sortedAnalyses)
@@ -349,8 +468,6 @@ const displayName = computed(() => userStore.user ? (userStore.user.username || 
 
 // 扩展消息类型，支持'report'
 type ChatMessage = StoreMessage & { role: 'user' | 'assistant' | 'report' }
-const route = useRoute()
-const router = useRouter()
 const input = ref('')
 const inputRef = ref<any>(null)
 const messageContainer = ref<HTMLElement | null>(null)
@@ -396,7 +513,7 @@ function insertReportMessage(name: string, content: string) {
 
 // 合并为如下：
 watch(
-  () => [route.query.conversationId, route.query.reportContext],
+  () => [router.currentRoute.value.query.conversationId, router.currentRoute.value.query.reportContext],
   async ([conversationId, reportContext]) => {
     if (conversationId) {
       // 切换到指定会话
@@ -410,14 +527,14 @@ watch(
       const hasReport = chatStore.currentMessages.some(msg => msg.role === 'report')
       if (!hasReport) {
         // 优先用query.name，否则查找
-        const name = route.query.name as string || '分析报告'
+        const name = router.currentRoute.value.query.name as string || '分析报告'
         reportName.value = name
         reportContent.value = reportContext as string
         insertReportMessage(reportName.value, reportContent.value)
         // 插入后清除 query 参数，避免刷新或跳转重复插入
         router.replace({
-          path: route.path,
-          query: { ...route.query, reportContext: undefined, name: undefined }
+          path: router.currentRoute.value.path,
+          query: { ...router.currentRoute.value.query, reportContext: undefined, name: undefined }
         })
       }
     } else {
@@ -449,10 +566,6 @@ const closePreview = () => {
 
 // 选择分析报告弹窗相关逻辑
 const showReportDialog = ref(false)
-const formatDate = (date: Date) => {
-  const d = new Date(date)
-  return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
-}
 // 格式化八字报告内容，优先用 analysis_results 字段
 function formatReportText(record: any): string {
   if (record.analysis_results && typeof record.analysis_results === 'object') {
@@ -495,7 +608,9 @@ const handleAddReportClick = () => {
 
 // 对话历史弹窗相关逻辑
 const showHistoryDialog = ref(false)
-const selectHistoryChat = async (id: string) => {
+
+// 选择历史对话
+const handleSelectHistoryChat = async (id: string) => {
   await chatStore.selectConversation(id)
   showHistoryDialog.value = false
   // 切换对话后自动滚动到最新消息

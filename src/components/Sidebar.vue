@@ -103,14 +103,7 @@
           </nav>
         </div>
         <!-- History Panel -->
-        <HistoryPanel 
-          :selected-chat-id="selectedChatId"
-          :selected-analysis-id="selectedAnalysisId"
-          @select-chat="handleSelectChat"
-          @delete-chat="handleDeleteChat"
-          @select-analysis="handleSelectAnalysis"
-          @delete-analysis="handleDeleteAnalysis"
-        />
+        <!-- History Panel -->
       </div>
 
       <!-- Bottom Section -->
@@ -153,13 +146,11 @@
 </template>
 
 <script setup lang="ts">
-import { MessageCircle, Home, User, Database, Plus, Star, Settings, Moon } from 'lucide-vue-next'
+import { MessageCircle, Home, User, Database, Plus, Star } from 'lucide-vue-next'
 import Button from './ui/Button.vue'
-import HistoryPanel from './HistoryPanel.vue'
 import { useChatStore } from '@/stores/chat'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { useBaziStore } from '@/stores/bazi'
 import { computed, onMounted, ref, nextTick } from 'vue'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
@@ -167,7 +158,6 @@ import girlAvatar from '@/assets/girl.png'
 interface SidebarProps {
   activeTab: string
   selectedChatId?: string | null
-  selectedAnalysisId?: string | null
 }
 
 defineProps<SidebarProps>()
@@ -175,14 +165,11 @@ defineProps<SidebarProps>()
 const chatStore = useChatStore()
 const router = useRouter()
 const userStore = useUserStore()
-const baziStore = useBaziStore()
 
 const emit = defineEmits<{
   'set-active-tab': [tab: string]
   'select-chat': [id: string]
   'delete-chat': [id: string]
-  'select-analysis': [id: string]
-  'delete-analysis': [id: string]
 }>()
 
 // 新建对话处理
@@ -202,17 +189,6 @@ const handleSelectChat = (id: string) => {
 const handleDeleteChat = (id: string) => {
   chatStore.removeConversation(id)
   emit('delete-chat', id)
-}
-
-const handleSelectAnalysis = (id: string) => {
-  // 跳转到分析页并带上analysisId参数，只做一次跳转，避免tab和路由竞态
-  router.push({ path: '/analysis', query: { analysisId: id } })
-  emit('select-analysis', id)
-}
-
-const handleDeleteAnalysis = async (id: string) => {
-  await baziStore.removeAnalysis(id)
-  emit('delete-analysis', id)
 }
 
 // 用户显示名，优先用户名，无则邮箱
@@ -292,7 +268,6 @@ onMounted(() => {
   }
   // 新增：无论在哪个tab，侧边栏挂载时都初始化对话和分析历史，保证两个区块都能显示
   chatStore.initializeStore()
-  baziStore.initializeStore()
 })
 
 const handleNewAnalysis = () => {
