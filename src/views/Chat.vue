@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="flex flex-col bg-gray-50 dark:bg-gray-900 min-h-[calc(100vh-3.5rem)]">
     <!-- SEO组件 -->
     <SEO 
       title="命理问答 - 北斗九号日历"
@@ -8,11 +8,11 @@
     />
     
     <!-- 主体布局：左侧历史 + 右侧聊天 -->
-    <div class="flex h-full">
+    <div class="flex flex-1 h-[calc(100vh-3.5rem)]">
       <!-- 左侧历史面板 -->
       <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
         <!-- 历史面板头部 -->
-        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="p-3 border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">对话历史</h2>
             <Button 
@@ -72,13 +72,12 @@
       <!-- 右侧聊天区域 -->
       <div class="flex-1 flex flex-col">
         <!-- Top Bar -->
-        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
               <img src="@/assets/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
               <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
             </div>
-            <!-- 移除重复的暗黑模式按钮 -->
           </div>
         </div>
 
@@ -89,17 +88,17 @@
           <!-- Welcome Screen -->
           <div v-if="chatStore.currentMessages.length === 0" class="flex-1 flex items-center justify-center">
             <div class="text-center">
-              <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-                <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
+              <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-3 border border-gray-100 dark:border-gray-700 shadow-sm">
+                <img src="@/assets/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
               </div>
               <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
-              <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
+              <p class="text-sm text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
             </div>
           </div>
 
           <!-- Messages -->
-          <div v-else ref="messageContainer" class="flex-1 overflow-y-auto p-6 scroll-smooth">
-            <div class="max-w-4xl mx-auto space-y-6">
+          <div v-else ref="messageContainer" class="flex-1 overflow-y-auto py-6 px-6 scroll-smooth">
+            <div class="max-w-3xl mx-auto space-y-6">
               <div 
                 v-for="message in chatStore.currentMessages as unknown as ChatMessage[]" 
                 :key="message.id" 
@@ -143,7 +142,7 @@
                   <!-- 消息气泡，根据 sender_type 区分左右样式 -->
                   <div
                     :class="[
-                      'max-w-[70%] px-4 py-2 rounded-lg overflow-hidden',
+                      'max-w-[70%] px-4 py-3 rounded-lg overflow-hidden',
                       message.sender_type === 'user'
                         ? 'border border-[#b67fda] text-[#b67fda] bg-white dark:bg-gray-800 dark:text-[#b67fda] rounded-tr-none'
                         : message.error
@@ -154,13 +153,13 @@
                     <!-- Markdown 内容 -->
                     <div 
                       v-if="!message.error" 
-                      class="prose prose-sm dark:prose-invert max-w-none"
+                      class="prose prose-sm dark:prose-invert max-w-none text-base leading-relaxed"
                       v-html="renderMarkdown(message.content)"
                       @click="handleContentClick"
                     ></div>
                     <!-- 错误消息 -->
-                    <p v-else class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
-                    <span class="text-xs opacity-50 mt-1 block text-gray-600 dark:text-gray-400">
+                    <p v-else class="text-base whitespace-pre-wrap leading-relaxed">{{ message.content }}</p>
+                    <span class="text-xs opacity-50 mt-2 block text-gray-600 dark:text-gray-400">
                       {{ new Date(message.timestamp).toLocaleTimeString() }}
                     </span>
                   </div>
@@ -197,16 +196,16 @@
             <img :src="previewImage" alt="Preview" class="max-w-[90%] max-h-[90vh] object-contain" />
           </div>
 
-          <!-- Input Area (Fixed at bottom) -->
-          <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
-            <div class="max-w-4xl mx-auto">
+          <!-- Input Area -->
+          <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 mb-8">
+            <div class="max-w-3xl mx-auto">
               <!-- 快速按钮区域 -->
-              <div class="mb-3 flex flex-wrap gap-2">
+              <div class="mb-2 flex flex-wrap gap-2">
                 <Button
                   type="button"
                   size="sm"
                   variant="outline"
-                  class="flex items-center space-x-1 text-xs"
+                  class="flex items-center space-x-1 text-xs h-7"
                   :disabled="chatStore.isLoading"
                   @click="handleQuickAction('bazi')"
                 >
@@ -217,7 +216,7 @@
                   type="button"
                   size="sm"
                   variant="outline"
-                  class="flex items-center space-x-1 text-xs"
+                  class="flex items-center space-x-1 text-xs h-7"
                   :disabled="chatStore.isLoading"
                   @click="handleQuickAction('exam')"
                 >
@@ -228,7 +227,7 @@
                   type="button"
                   size="sm"
                   variant="outline"
-                  class="flex items-center space-x-1 text-xs"
+                  class="flex items-center space-x-1 text-xs h-7"
                   :disabled="chatStore.isLoading"
                   @click="handleQuickAction('love')"
                 >
@@ -239,7 +238,7 @@
                   type="button"
                   size="sm"
                   variant="outline"
-                  class="flex items-center space-x-1 text-xs"
+                  class="flex items-center space-x-1 text-xs h-7"
                   :disabled="chatStore.isLoading"
                   @click="handleQuickAction('health')"
                 >
@@ -253,12 +252,13 @@
                   v-model="input"
                   ref="inputRef"
                   placeholder="输入您的问题..."
-                  class="flex-1"
+                  class="flex-1 h-[72px] py-3 text-base"
                 />
                 <Button
                   type="submit"
                   variant="default"
                   :disabled="chatStore.isLoading || !input.trim()"
+                  class="h-[72px] px-8"
                 >
                   发送
                 </Button>
