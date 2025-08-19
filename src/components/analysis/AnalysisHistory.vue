@@ -1,8 +1,8 @@
 <template>
   <!-- 左侧历史面板 -->
-  <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+  <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col h-full">
     <!-- 历史面板头部 -->
-    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex-none p-4 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">分析历史</h2>
         <Button 
@@ -19,7 +19,7 @@
     </div>
 
     <!-- 历史列表 -->
-    <div v-if="showAnalysisHistory" class="flex-1 overflow-y-auto p-4 space-y-2">
+    <div v-if="showAnalysisHistory" class="flex-1 overflow-y-auto p-4 space-y-2 min-h-0">
       <div 
         v-for="analysis in analyses" 
         :key="analysis.id"

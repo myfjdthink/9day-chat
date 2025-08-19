@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 bg-gray-50 dark:bg-gray-900 relative">
+  <div class="flex-1 bg-gray-50 dark:bg-gray-900 relative h-screen">
     <!-- SEO组件 -->
     <SEO 
       title="八字运势分析 - 北斗九号日历"
@@ -8,7 +8,7 @@
     />
     
     <!-- 主体布局：左侧历史 + 右侧分析 -->
-    <div class="flex h-full">
+    <div class="flex h-full overflow-hidden">
       <!-- 左侧历史面板 -->
       <AnalysisHistory
         :selected-analysis-id="selectedAnalysisId"
