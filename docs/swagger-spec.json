@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/": {
+            "get": {
+                "operationId": "AppController_getHello",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "App"
+                ]
+            }
+        },
+        "/bazi/analysis": {
+            "post": {
+                "operationId": "BaziController_createAnalysis",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAnalysisDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "分析请求已创建，开始异步处理"
+                    }
+                },
+                "summary": "创建八字分析",
+                "tags": [
+                    "八字分析"
+                ]
+            }
+        },
+        "/bazi/analysis/{id}": {
+            "get": {
+                "operationId": "BaziController_getAnalysis",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回分析结果，包括处理状态"
+                    }
+                },
+                "summary": "获取八字分析结果",
+                "tags": [
+                    "八字分析"
+                ]
+            }
+        },
+        "/bazi/user/{userId}/analyses": {
+            "get": {
+                "operationId": "BaziController_getUserAnalyses",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "页码",
+                        "schema": {
+                            "minimum": 1,
+                            "example": 1,
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "每页数量",
+                        "schema": {
+                            "minimum": 1,
+                            "maximum": 100,
+                            "example": 10,
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回用户的分析报告列表，支持分页"
+                    }
+                },
+                "summary": "查询指定用户的分析报告列表",
+                "tags": [
+                    "八字分析"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "9day API",
+        "description": "9day API description",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [
+        {
+            "name": "9day",
+            "description": ""
+        }
+    ],
+    "servers": [],
+    "components": {
+        "schemas": {
+            "CreateAnalysisDto": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "number",
+                        "description": "用户ID"
+                    },
+                    "birth_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "出生日期时间"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "description": "性别",
+                        "example": "男",
+                        "enum": [
+                            "男",
+                            "女"
+                        ]
+                    },
+                    "analysis_parts": {
+                        "description": "分析部分",
+                        "example": [
+                            "流年",
+                            "流月",
+                            "流日"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "user_id",
+                    "birth_datetime",
+                    "gender",
+                    "analysis_parts"
+                ]
+            }
+        }
+    }
+}

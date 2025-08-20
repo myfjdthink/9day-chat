@@ -137,8 +137,7 @@ const userHasBaziInfo = computed(() => {
 onMounted(async () => {
   // 初始化数据
   await Promise.all([
-    baziStore.initializeStore(),
-    baziStore.loadAnalysesFromBackend()
+    baziStore.loadAnalyses()
   ])
 
   // 自动填充用户八字信息

@@ -261,8 +261,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { analyzeZodiacFortune } from '@/api/bazi'
-import type { ZodiacFortuneResponse } from '@/api/bazi'
+import { analyzeZodiacFortune } from '@/api/fortune'
+import type { ZodiacFortuneResponse } from '@/api/fortune'
 import ZodiacIcon from '@/components/ZodiacIcon.vue'
 import SEO from '@/components/SEO.vue'
 import html2canvas from 'html2canvas'

@@ -38,9 +38,6 @@
             <span class="text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
               {{ analysis.analysis_type }}
             </span>
-            <span v-if="analysis.sync_status === 'pending'" class="text-[10px] text-yellow-500 dark:text-yellow-400 ml-1">待同步</span>
-            <span v-else-if="analysis.sync_status === 'failed'" class="text-[10px] text-red-500 dark:text-red-400 ml-1">同步失败</span>
-            <span v-else class="text-[10px] text-green-500 dark:text-green-400 ml-1">已同步</span>
             <Button 
               variant="ghost" 
               size="sm" 

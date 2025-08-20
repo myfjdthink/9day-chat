@@ -141,7 +141,7 @@ import Card from '@/components/ui/Card.vue'
 import Modal from '@/components/ui/Modal.vue'
 import { useUserStore } from '@/stores/user'
 import SEO from '@/components/SEO.vue'
-import { fetchFortuneAnalysis } from '@/api/bazi'
+import { fetchFortuneAnalysis } from '@/api/fortune'
 import { useRouter } from 'vue-router'
 
 // 事项类型

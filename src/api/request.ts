@@ -1,7 +1,11 @@
 import axios from 'axios'
 
-const request = axios.create({
-  baseURL: 'https://user.9day.tech/api/v1', // 线上用户和分析数据管理系统
+
+// 新增：主接口配置
+const APP_HOST = import.meta.env.VITE_APP_HOST
+
+const requestAPP = axios.create({
+  baseURL: APP_HOST, // 新后端
   timeout: 60000,
   headers: {
     'Content-Type': 'application/json'
@@ -9,7 +13,7 @@ const request = axios.create({
 })
 
 // 请求拦截器
-request.interceptors.request.use(
+requestAPP.interceptors.request.use(
   (config) => {
     // 自动携带 token
     const token = localStorage.getItem('access_token')
@@ -24,7 +28,7 @@ request.interceptors.request.use(
 )
 
 // 响应拦截器
-request.interceptors.response.use(
+requestAPP.interceptors.response.use(
   (response) => {
     return response
   },
@@ -33,4 +37,4 @@ request.interceptors.response.use(
   }
 )
 
-export default request
+export default requestAPP
