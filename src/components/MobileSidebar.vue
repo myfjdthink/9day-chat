@@ -1,73 +1,74 @@
 <template>
-  <!-- 顶部导航栏 -->
-  <div class="hidden md:block fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+  <!-- 底部导航栏 -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+    <div class="w-full px-4 py-2">
+      <div class="flex items-center justify-between">
+        <!-- 导航按钮 -->
+        <button
+          class="flex flex-col items-center justify-center w-1/5 py-2"
+          :class="activeTab === 'home' ? 'text-[#B57EDC]' : 'text-gray-500 dark:text-gray-400'"
+          @click="handleGoHome"
+        >
+          <Home class="w-6 h-6" />
+          <span class="text-xs mt-1">首页</span>
+        </button>
+
+        <button
+          class="flex flex-col items-center justify-center w-1/5 py-2"
+          :class="activeTab === 'Calendar' ? 'text-[#B57EDC]' : 'text-gray-500 dark:text-gray-400'"
+          @click="handleGoCalendar"
+        >
+          <Calendar class="w-6 h-6" />
+          <span class="text-xs mt-1">运历</span>
+        </button>
+
+        <button
+          class="flex flex-col items-center justify-center w-1/5 py-2"
+          :class="activeTab === 'chat' ? 'text-[#B57EDC]' : 'text-gray-500 dark:text-gray-400'"
+          @click="handleGoAIChat"
+        >
+          <MessageCircle class="w-6 h-6" />
+          <span class="text-xs mt-1">问答</span>
+        </button>
+
+        <button
+          class="flex flex-col items-center justify-center w-1/5 py-2"
+          :class="activeTab === 'analysis' ? 'text-[#B57EDC]' : 'text-gray-500 dark:text-gray-400'"
+          @click="handleGoAnalysis"
+        >
+          <Database class="w-6 h-6" />
+          <span class="text-xs mt-1">八字</span>
+        </button>
+
+        <button
+          class="flex flex-col items-center justify-center w-1/5 py-2"
+          :class="activeTab === 'ZodiacFortune' ? 'text-[#B57EDC]' : 'text-gray-500 dark:text-gray-400'"
+          @click="handleGoZodiacFortune"
+        >
+          <Star class="w-6 h-6" />
+          <span class="text-xs mt-1">生肖</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 顶部用户信息栏 -->
+  <div class="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
     <div class="w-full px-4">
-      <div class="flex h-16 items-center justify-between">
+      <div class="flex h-14 items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center">
-          <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain" />
-          <span class="ml-2 font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
+          <img src="@/assets/logo.png" alt="Logo" class="h-6 w-auto object-contain" />
+          <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
         </div>
-
-        <!-- 导航菜单 -->
-        <nav class="flex-1 flex items-center justify-center">
-          <div class="flex items-center gap-6">
-            <Button
-              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
-              :class="activeTab === 'home'
-                ? 'bg-[#B57EDC] text-white'
-                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
-              @click="handleGoHome"
-            >
-              首页
-            </Button>
-            <Button
-              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
-              :class="activeTab === 'Calendar'
-                ? 'bg-[#B57EDC] text-white'
-                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
-              @click="handleGoCalendar"
-            >
-              个人运历
-            </Button>
-            <Button
-              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
-              :class="activeTab === 'chat'
-                ? 'bg-[#B57EDC] text-white'
-                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
-              @click="handleGoAIChat"
-            >
-              命理问答
-            </Button>
-            <Button
-              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
-              :class="activeTab === 'analysis'
-                ? 'bg-[#B57EDC] text-white'
-                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
-              @click="handleGoAnalysis"
-            >
-              八字分析
-            </Button>
-            <Button
-              class="h-10 px-6 rounded-lg text-sm font-normal transition-colors"
-              :class="activeTab === 'ZodiacFortune'
-                ? 'bg-[#B57EDC] text-white'
-                : 'bg-[#B57EDC]/5 text-gray-900 hover:bg-[#B57EDC]/10'"
-              @click="handleGoZodiacFortune"
-            >
-              生肖运势
-            </Button>
-          </div>
-        </nav>
 
         <!-- 右侧用户信息和暗黑模式 -->
         <div class="flex items-center gap-2">
           <template v-if="userStore.user">
             <div class="relative flex items-center gap-2">
-              <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="avatar" @click="showDropdown = !showDropdown" />
-              <span class="text-base text-gray-900 dark:text-gray-100 font-medium truncate max-w-[120px]">{{ userStore.user.username || userStore.user.email }}</span>
+              <img :src="defaultAvatar" class="w-8 h-8 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="avatar" @click="showDropdown = !showDropdown" />
               <transition name="fade">
-                <div v-if="showDropdown" class="absolute right-0 top-12 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
+                <div v-if="showDropdown" class="absolute right-0 top-10 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
                   <button
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                     @click="handleGoProfile"
@@ -88,7 +89,7 @@
             </div>
           </template>
           <template v-else>
-            <Button variant="ghost" size="icon" class="w-9 h-9" @click="router.push('/login')">
+            <Button variant="ghost" size="icon" class="w-8 h-8" @click="router.push('/login')">
               <User class="w-5 h-5 text-gray-500 dark:text-gray-300" />
             </Button>
           </template>
@@ -96,7 +97,7 @@
           <Button
             variant="ghost"
             size="icon"
-            class="w-9 h-9"
+            class="w-8 h-8"
             @click="toggleDark"
             aria-label="切换暗黑模式"
           >
@@ -114,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { MessageCircle, Home, User, Database, Plus, Star } from 'lucide-vue-next'
+import { MessageCircle, Home, User, Database, Calendar, Star } from 'lucide-vue-next'
 import Button from './ui/Button.vue'
 import { useChatStore } from '@/stores/chat'
 import { useRouter } from 'vue-router'
@@ -231,4 +232,4 @@ onMounted(() => {
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
-</style>
+</style> 

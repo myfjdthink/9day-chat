@@ -3,8 +3,8 @@
     <!-- SEO组件 -->
     <SEO />
     
-    <Sidebar :active-tab="activeTab" @set-active-tab="setActiveTab" />
-    <main class="flex-1 pt-16">
+    <ResponsiveSidebar :active-tab="activeTab" @set-active-tab="setActiveTab" />
+    <main class="flex-1 pt-16 md:pt-16 pb-16 md:pb-0">
       <router-view />
     </main>
   </div>
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import Sidebar from './components/Sidebar.vue'
+import ResponsiveSidebar from './components/ResponsiveSidebar.vue'
 import SEO from './components/SEO.vue'
 
 const router = useRouter()

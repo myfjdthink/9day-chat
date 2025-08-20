@@ -10,64 +10,7 @@
     <!-- 主体布局：左侧历史 + 右侧聊天 -->
     <div class="flex flex-1 h-[calc(100vh-3.5rem)]">
       <!-- 左侧历史面板 -->
-      <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-        <!-- 历史面板头部 -->
-        <div class="p-3 border-b border-gray-200 dark:border-gray-700">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">对话历史</h2>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              @click="toggleChatHistory"
-              class="p-1 h-auto"
-            >
-              <ChevronDown 
-                :class="['w-4 h-4 transition-transform', showChatHistory ? 'rotate-180' : '']"
-              />
-            </Button>
-          </div>
-        </div>
-
-        <!-- 历史列表 -->
-        <div v-if="showChatHistory" class="flex-1 overflow-y-auto p-4 space-y-2">
-          <div 
-            v-for="chat in chatStore.chatHistory" 
-            :key="chat.id"
-            class="group cursor-pointer p-3 rounded-lg border transition-all"
-            :class="chat.id === chatStore.currentConversationId
-              ? 'bg-[#f6edfb] dark:bg-[#2d1b3d] border-[#b67fda] text-[#7a3fa4] dark:text-[#b67fda] font-semibold shadow-sm'
-              : 'bg-white dark:bg-gray-800 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
-            @click="selectHistoryChat(chat.id)"
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ chat.title }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDate(chat.date) }}</p>
-              </div>
-              <div class="flex items-center gap-1 ml-2">
-                <!-- 登录用户显示同步状态 -->
-                <template v-if="isLoggedIn">
-                  <span v-if="getSyncStatus(chat.id) === 'synced'" class="text-[10px] text-green-600 dark:text-green-400">已同步</span>
-                  <span v-else-if="getSyncStatus(chat.id) === 'pending'" class="text-[10px] text-yellow-600 dark:text-yellow-400">待同步</span>
-                  <span v-else-if="getSyncStatus(chat.id) === 'failed'" class="text-[10px] text-red-600 dark:text-red-400">同步失败</span>
-                </template>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  @click.stop="handleDeleteChat(chat.id)"
-                  class="opacity-0 group-hover:opacity-100 p-1 h-auto"
-                >
-                  <Trash2 class="w-3 h-3 text-red-500 dark:text-red-400" />
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          <div v-if="chatStore.chatHistory.length === 0" class="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
-            暂无对话历史
-          </div>
-        </div>
-      </div>
+      <ChatHistory @scroll-to-bottom="scrollToBottom" />
 
       <!-- 右侧聊天区域 -->
       <div class="flex-1 flex flex-col">
@@ -367,7 +310,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import type { Message as APIMessage } from '@/api/chat'
-import { Moon, Plus, ChevronDown, Trash2 } from 'lucide-vue-next'
+import { Moon, Plus } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import { chat, ChatAPIError } from '@/api/chat'
@@ -385,6 +328,7 @@ import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
 import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
+import ChatHistory from '@/components/ChatHistory.vue'
 
 // 定义系统角色常量
 const SYSTEM_ROLES = {
