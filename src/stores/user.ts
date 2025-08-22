@@ -53,6 +53,12 @@ function isTokenExpired() {
   return expireAt !== null && Date.now() > expireAt
 }
 
+async function loadConversations() {
+  const chatStore = useChatStore()
+  await chatStore.loadConversationsFromBackend()
+  await chatStore.loadAllMessagesForSyncedConversations()
+}
+
 export const useUserStore = defineStore('user', {
   state: (): State => ({
     token: localStorage.getItem('access_token'),
@@ -60,17 +66,17 @@ export const useUserStore = defineStore('user', {
   }),
   actions: {
     // 登录 action
-    async login(username: string, password: string) {
-      const res = await apiLogin({ username, password })
+    async login(email: string, password: string) {
+      const res = await apiLogin({ email, password })
       this.token = res.access_token
       localStorage.setItem('access_token', res.access_token)
       setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
       // 登录后获取用户信息
       await this.fetchUser()
       // 登录后自动拉取云端会话
-      const chatStore = useChatStore()
-      await chatStore.loadConversationsFromBackend()
-      await chatStore.loadAllMessagesForSyncedConversations()
+      loadConversations().catch(e => {
+        console.error('Failed to load conversations:', e)
+      })
     },
     // 获取当前用户信息
     async fetchUser() {

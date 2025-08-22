@@ -4,6 +4,8 @@ import axios from 'axios'
 // 新增：主接口配置
 const APP_HOST = import.meta.env.VITE_APP_HOST
 
+console.log('APP_HOST', APP_HOST)
+
 const requestAPP = axios.create({
   baseURL: APP_HOST, // 新后端
   timeout: 60000,

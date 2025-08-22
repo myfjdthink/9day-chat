@@ -4,11 +4,16 @@
       <div class="text-center mb-6">
         <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 mx-auto mb-4" />
         <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">用户登录</h2>
-        <p class="text-gray-500 dark:text-gray-300">欢迎回来，请输入您的账号信息</p>
+        <p class="text-gray-500 dark:text-gray-300">欢迎回来，请输入您的邮箱</p>
       </div>
       <form @submit.prevent="handleLogin">
         <div class="mb-4">
-          <Input v-model="form.username" placeholder="用户名或邮箱" autocomplete="username" />
+          <Input 
+            v-model="form.email" 
+            type="email" 
+            placeholder="请输入邮箱" 
+            autocomplete="email" 
+          />
         </div>
         <div class="mb-4">
           <Input v-model="form.password" type="password" placeholder="密码" autocomplete="current-password" />
@@ -34,7 +39,7 @@ import { useUserStore } from '@/stores/user'
 const router = useRouter()
 const userStore = useUserStore()
 const form = ref({
-  username: '',
+  email: '',
   password: ''
 })
 const errorMsg = ref('')
@@ -42,12 +47,20 @@ const errorMsg = ref('')
 // 登录处理函数
 const handleLogin = async () => {
   errorMsg.value = ''
-  if (!form.value.username || !form.value.password) {
-    errorMsg.value = '请输入用户名和密码'
+  if (!form.value.email || !form.value.password) {
+    errorMsg.value = '请输入邮箱和密码'
     return
   }
+  
+  // 简单的邮箱格式验证
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(form.value.email)) {
+    errorMsg.value = '请输入有效的邮箱地址'
+    return
+  }
+
   try {
-    await userStore.login(form.value.username, form.value.password)
+    await userStore.login(form.value.email, form.value.password)
     // 登录成功后跳转首页
     router.push('/')
   } catch (e: any) {

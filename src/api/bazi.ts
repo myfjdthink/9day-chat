@@ -81,13 +81,45 @@ export interface BaziAnalysis {
   updated_at: string
 }
 
+// 新服务返回的数据结构转换函数
+function convertNewToOldFormat(newData: any): BaziAnalysis {
+  // 从 birthDateTime 中提取年月日时间
+  const birthDate = new Date(newData.birthDateTime)
+  
+  return {
+    id: String(newData.id),
+    user_id: String(newData.userId),
+    birth_year: birthDate.getFullYear(),
+    birth_month: birthDate.getMonth() + 1,
+    birth_day: birthDate.getDate(),
+    birth_time: birthDate.toTimeString().split(' ')[0],
+    gender: newData.gender.toLowerCase(),
+    analysis_type: newData.analysisType,
+    analysis_results: newData.analysisContent,
+    created_at: newData.createdAt,
+    updated_at: newData.updatedAt,
+    // 保持其他可选字段为 undefined
+    notes: undefined,
+    display_name: undefined,
+    user_nickname: undefined,
+    summary: undefined,
+    settings: undefined,
+    extra_metadata: undefined
+  }
+}
+
 /**
  * 获取八字分析列表
  * @param params 分页参数
  */
 export async function getBaziAnalyses(params?: { skip?: number; limit?: number }): Promise<BaziAnalysis[]> {
-  const res = await requestUser.get('/bazi/analyses', { params })
-  return res.data as BaziAnalysis[]
+  const res = await requestAPP.get('/bazi/user/1/analyses', { 
+    params: {
+      page: params?.skip ? Math.floor(params.skip / (params.limit || 10)) + 1 : 1,
+      limit: params?.limit || 10
+    }
+  })
+  return (res.data?.data || []).map(convertNewToOldFormat)
 }
 
 /**
@@ -95,8 +127,8 @@ export async function getBaziAnalyses(params?: { skip?: number; limit?: number }
  * @param analysis_id 分析ID
  */
 export async function getBaziAnalysis(analysis_id: string): Promise<BaziAnalysis> {
-  const res = await requestUser.get(`/bazi/analyses/${analysis_id}`)
-  return res.data as BaziAnalysis
+  const res = await requestAPP.get(`/bazi/analysis/${analysis_id}`)
+  return convertNewToOldFormat(res.data)
 }
 
 /**
@@ -106,24 +138,37 @@ export async function getBaziAnalysis(analysis_id: string): Promise<BaziAnalysis
 export async function createBaziAnalysis(
   data: Omit<BaziAnalysis, 'id' | 'created_at' | 'updated_at'>
 ): Promise<BaziAnalysis> {
-  const res = await requestUser.post('/bazi/analyses', data)
-  return res.data as BaziAnalysis
+  const newFormatData = {
+    user_id: parseInt(data.user_id || '1'),
+    birth_datetime: new Date(
+      data.birth_year,
+      data.birth_month - 1,
+      data.birth_day,
+      ...data.birth_time.split(':').map(Number)
+    ).toISOString(),
+    gender: data.gender === 'male' ? '男' : '女',
+    analysis_parts: ['流年', '流月', '流日']
+  }
+  
+  const res = await requestAPP.post('/bazi/analysis', newFormatData)
+  return convertNewToOldFormat(res.data)
 }
 
 /**
- * 更新八字分析
+ * 更新八字分析 - 空实现
  * @param analysis_id 分析ID
  * @param data 更新字段
  */
 export async function updateBaziAnalysis(analysis_id: string, data: Partial<BaziAnalysis>): Promise<BaziAnalysis> {
-  const res = await requestUser.put(`/bazi/analyses/${analysis_id}`, data)
-  return res.data as BaziAnalysis
+  // 空实现
+  throw new Error('Method not implemented')
 }
 
 /**
- * 删除八字分析
+ * 删除八字分析 - 空实现
  * @param analysis_id 分析ID
  */
 export async function deleteBaziAnalysis(analysis_id: string): Promise<void> {
-  await requestUser.delete(`/bazi/analyses/${analysis_id}`)
+  // 空实现
+  throw new Error('Method not implemented')
 } 

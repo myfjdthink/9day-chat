@@ -1,18 +1,12 @@
-import request from './request-user'
+import { default as request } from './request'
 
 /**
  * 用户登录
  * @param data { username: string; password: string }
- * @returns Promise<{ access_token: string; refresh_token: string; token_type: string }>
+ * @returns Promise<{ access_token: string }>
  */
-export function login(data: { username: string; password: string }) {
-  // 登录接口要求 application/x-www-form-urlencoded
-  const params = new URLSearchParams()
-  params.append('username', data.username)
-  params.append('password', data.password)
-  return request.post('/auth/login', params, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }).then(res => res.data)
+export function login(data: { email: string; password: string }) {
+  return request.post('/auth/login', data).then(res => res.data)
 }
 
 /**
@@ -20,14 +14,14 @@ export function login(data: { username: string; password: string }) {
  * @returns Promise<UserInfo>
  */
 export function getCurrentUser() {
-  return request.get('/users/me').then(res => res.data)
+  return request.get('/auth/profile').then(res => res.data)
 }
 
 /**
  * 获取当前用户信息（Profile.vue 用）
  */
 export function fetchUserInfo() {
-  return request.get('/users/me').then(res => res.data)
+  return request.get('/auth/profile').then(res => res.data)
 }
 
 /**
@@ -48,18 +42,13 @@ export function updateUserInfo(data: {
 
 /**
  * 用户注册
- * @param data 注册信息
+ * @param data 注册信息 { username: string; password: string; email: string }
+ * @returns Promise<{ access_token: string }>
  */
 export function register(data: {
   username: string
   email: string
   password: string
-  phone?: string
-  birth_year?: number
-  birth_month?: number
-  birth_day?: number
-  birth_time?: string
-  gender?: string
 }) {
   return request.post('/auth/register', data).then(res => res.data)
 }
