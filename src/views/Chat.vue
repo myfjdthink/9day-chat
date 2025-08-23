@@ -531,16 +531,15 @@ function safeReportName(record: any): string {
   return `${type}（${year}-${month}-${day} ${time}）`
 }
 // 添加八字报告到对话上下文（role: 'report'，不进入20轮历史）
-const addReportToContext = (record: any) => {
+const addReportToContext = async (record: any) => {
   // 检查登录状态
-  if (!userStore.user) {
-    showLoginModal.value = true
+  if (!await userStore.checkLoginAndShow()) {
     return
   }
   // 格式化报告内容
   const reportText = formatReportText(record)
   const reportName = safeReportName(record)
-  // 插入“report”类型消息
+  // 插入"report"类型消息
   insertReportMessage(reportName, reportText)
   showReportDialog.value = false
 }
@@ -707,8 +706,7 @@ const handleLoginCancel = () => {
 
 // 快速动作逻辑
 const handleQuickAction = async (actionType: string) => {
-  if (!userStore.user) {
-    showLoginModal.value = true
+  if (!await userStore.checkLoginAndShow()) {
     return
   }
 

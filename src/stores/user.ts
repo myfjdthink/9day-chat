@@ -25,6 +25,7 @@ export interface UserInfo {
 interface State {
   token: string | null
   user: UserInfo | null
+  showLoginModal: boolean  // 新增登录弹窗状态
 }
 
 // ========== 新增：本地 token 过期管理 ==========
@@ -62,7 +63,8 @@ async function loadConversations() {
 export const useUserStore = defineStore('user', {
   state: (): State => ({
     token: localStorage.getItem('access_token'),
-    user: null
+    user: null,
+    showLoginModal: false  // 初始化为 false
   }),
   actions: {
     // 登录 action
@@ -88,6 +90,7 @@ export const useUserStore = defineStore('user', {
       try {
         const user = await getCurrentUser()
         this.user = user
+        // localStorage.setItem('user_id', user.id)
       } catch (e) {
         // token 失效或请求失败时自动登出
         this.logout()
@@ -113,6 +116,30 @@ export const useUserStore = defineStore('user', {
       if (!this.token || isTokenExpired()) {
         this.logout()
       }
+    },
+
+    // 检查登录并自动显示弹窗
+    async checkLoginAndShow(): Promise<boolean> {
+      if (!this.checkLogin()) {
+        this.showLogin()
+        return false
+      }
+      return true
+    },
+
+    // 显示登录弹窗
+    showLogin() {
+      this.showLoginModal = true
+    },
+
+    // 隐藏登录弹窗
+    hideLogin() {
+      this.showLoginModal = false
+    },
+
+    // 检查是否已登录
+    checkLogin(): boolean {
+      return !!this.user && !!this.token && !isTokenExpired()
     }
   }
 }) 

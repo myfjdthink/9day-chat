@@ -60,16 +60,6 @@
         <div class="text-lg text-white font-semibold">正在为您分析，请稍候...</div>
       </div>
     </div>
-
-    <Modal
-      :show="showLoginModal"
-      title="登录提示"
-      message="请先登录后再使用此功能"
-      confirmText="去登录"
-      cancelText="取消"
-      :onConfirm="handleLoginConfirm"
-      :onCancel="handleLoginCancel"
-    />
   </div>
 </template>
 
@@ -178,14 +168,21 @@ const handleStartAnalysis = async (): Promise<void> => {
     return
   }
 
+  if (!await userStore.checkLoginAndShow()) {
+    return
+  }
+
   try {
     isAnalyzing.value = true
-    const response = await analyzeBazi({
-      birth_datetime: formData.birthDateTime,
-      current_datetime: new Date().toISOString(),
-      gender: formData.gender,
-      analysis_parts: analysisParts
-    })
+    const response = await analyzeBazi(
+      userStore.user!.id,
+      {
+        birth_datetime: formData.birthDateTime,
+        current_datetime: new Date().toISOString(),
+        gender: formData.gender,
+        analysis_parts: analysisParts
+      }
+    )
 
     if (response.success) {
       analysisResult.value = response.data
@@ -259,8 +256,7 @@ const handleResetAnalysis = () => {
 // 对话报告
 const handleChatWithReport = async () => {
   if (!analysisResult.value) return
-  if (!userStore.user) {
-    showLoginModal.value = true
+  if (!await userStore.checkLoginAndShow()) {
     return
   }
 
@@ -303,16 +299,6 @@ function parseResultText(text: string) {
     if (key && value) result[key] = value
   }
   return result
-}
-
-// 登录相关
-const handleLoginConfirm = () => {
-  showLoginModal.value = false
-  router.push('/login')
-}
-
-const handleLoginCancel = () => {
-  showLoginModal.value = false
 }
 </script>
 

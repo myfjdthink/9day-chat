@@ -7,6 +7,7 @@
     <main class="flex-1 pt-16 md:pt-16 pb-16 md:pb-0">
       <router-view />
     </main>
+    <LoginModal />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import ResponsiveSidebar from './components/ResponsiveSidebar.vue'
 import SEO from './components/SEO.vue'
+import LoginModal from '@/components/LoginModal.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -45,3 +47,9 @@ const setActiveTab = (tab: string) => {
   }
 }
 </script>
+
+<style>
+#app {
+  height: 100vh;
+}
+</style>
