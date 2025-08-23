@@ -33,6 +33,7 @@ interface State {
 const TOKEN_EXPIRE_DAYS = 30
 // token 过期时间存储 key
 const TOKEN_EXPIRE_AT_KEY = 'access_token_expire_at'
+const USER_INFO_KEY = 'user_info' // 新增：用户信息存储 key
 
 // 获取本地 token 过期时间
 function getExpireAt() {
@@ -90,7 +91,8 @@ export const useUserStore = defineStore('user', {
       try {
         const user = await getCurrentUser()
         this.user = user
-        // localStorage.setItem('user_id', user.id)
+        // 保存用户信息到本地
+        localStorage.setItem(USER_INFO_KEY, JSON.stringify(user))
       } catch (e) {
         // token 失效或请求失败时自动登出
         this.logout()
@@ -101,6 +103,7 @@ export const useUserStore = defineStore('user', {
       this.token = null
       this.user = null
       localStorage.removeItem('access_token')
+      localStorage.removeItem(USER_INFO_KEY) // 清除本地用户信息
       clearExpireAt() // 清理本地过期时间
       // 清理云端对话
       const chatStore = useChatStore()
@@ -112,6 +115,16 @@ export const useUserStore = defineStore('user', {
     // 初始化校验登录状态
     init() {
       this.token = localStorage.getItem('access_token')
+      // 尝试从本地加载用户信息
+      const userInfo = localStorage.getItem(USER_INFO_KEY)
+      if (userInfo) {
+        try {
+          this.user = JSON.parse(userInfo)
+        } catch (e) {
+          console.error('Failed to parse user info:', e)
+          this.user = null
+        }
+      }
       // 检查本地 token 是否过期
       if (!this.token || isTokenExpired()) {
         this.logout()
