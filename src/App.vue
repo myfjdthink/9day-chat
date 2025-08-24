@@ -4,8 +4,10 @@
     <SEO />
     
     <ResponsiveSidebar />
-    <main class="flex-1 pt-16 md:pt-16 pb-16 md:pb-0">
-      <router-view />
+    <main class="flex-1 flex flex-col h-screen">
+      <div class="flex-1 overflow-y-auto pt-16 md:pt-16 pb-16 md:pb-0">
+        <router-view />
+      </div>
     </main>
     <LoginModal />
   </div>
