@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-12 space-y-8">
+  <div class="mt-2 space-y-8">
     <!-- 分析中状态 -->
     <div v-if="analysisResult.status === AnalysisStatus.PROCESSING" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <div class="flex flex-col items-center justify-center py-12">
@@ -26,98 +26,94 @@
           @click="$emit('reset')"
         >
           <RefreshCw class="w-4 h-4 mr-2" />
-          重新分析
+          新的分析
         </Button>
       </div>
     </div>
 
     <!-- 分析完成状态 - 原有的报告展示内容 -->
     <template v-else-if="analysisResult.status === AnalysisStatus.COMPLETED">
-      <!-- 报告内容区域，支持滚动 -->
-      <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-h-[80vh] overflow-y-auto">
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold mb-2 dark:text-gray-100">八字分析报告</h2>
-          <!-- 分析时间和类型 -->
-          <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
-            <div class="flex items-center space-x-1">
-              <CalendarIcon class="w-4 h-4" />
-              <span>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</span>
+      <!-- 报告内容区域 -->
+      <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <!-- 标题栏 -->
+        <div class="border-b border-gray-200 dark:border-gray-700 p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold dark:text-gray-100">八字分析报告</h2>
+              <!-- 分析时间和类型 -->
+              <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300 mt-2">
+                <div class="flex items-center space-x-1">
+                  <CalendarIcon class="w-4 h-4" />
+                  <span>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                  <Settings class="w-4 h-4" />
+                  <span>分析类型：{{ analysisResult.分析类型 }}</span>
+                </div>
+              </div>
             </div>
-            <div class="flex items-center space-x-1">
-              <Settings class="w-4 h-4" />
-              <span>分析类型：{{ analysisResult.分析类型 }}</span>
+            <!-- 操作按钮 -->
+            <div class="flex gap-4">
+              <Button
+                size="sm"
+                variant="outline"
+                @click="$emit('reset')"
+              >
+                <RefreshCw class="w-4 h-4 mr-2" />
+                新的分析
+              </Button>
+              <Button
+                size="sm"
+                variant="default"
+                @click="$emit('chat')"
+              >
+                <MessageSquare class="w-4 h-4 mr-2" />
+                对话报告
+              </Button>
             </div>
           </div>
         </div>
         
-        <!-- 分析内容 - 使用虚拟列表优化长列表渲染 -->
-        <div class="space-y-8">
-          <template v-for="[type, content] in Object.entries(analysisResult.分析结果)" :key="type">
-            <div 
-              class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
-              v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
-              :data-type="type"
-            >
-              <!-- 标题区域 -->
-              <div class="flex items-center space-x-3 mb-4">
-                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                  <span class="text-white font-bold text-sm">{{ getAnalysisTypeIcon(type) }}</span>
+        <!-- 分析内容 -->
+        <div class="p-6 pt-4 pb-24">
+          <div class="space-y-8">
+            <template v-for="[type, content] in Object.entries(analysisResult.分析结果)" :key="type">
+              <div 
+                class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
+                v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
+                :data-type="type"
+              >
+                <!-- 标题区域 -->
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">{{ getAnalysisTypeIcon(type) }}</span>
+                  </div>
+                  <h3 class="text-xl font-semibold dark:text-gray-100">{{ type }}分析</h3>
+                  <div class="flex-1"></div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded">
+                    {{ getAnalysisTypeDescription(type) }}
+                  </div>
                 </div>
-                <h3 class="text-xl font-semibold dark:text-gray-100">{{ type }}分析</h3>
-                <div class="flex-1"></div>
-                <div class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded">
-                  {{ getAnalysisTypeDescription(type) }}
+                
+                <!-- 分析内容 markdown 渲染区 -->
+                <div class="prose max-w-none dark:prose-invert prose-sm">
+                  <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
                 </div>
               </div>
-              
-              <!-- 分析内容 markdown 渲染区 -->
-              <div class="prose max-w-none dark:prose-invert prose-sm">
-                <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
-              </div>
-            </div>
-          </template>
-        </div>
-        
-        <!-- 分析总结 -->
-        <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
-          <div class="flex items-center space-x-2 mb-2">
-            <Star class="w-5 h-5 text-blue-600" />
-            <h4 class="font-medium text-blue-800 dark:text-blue-200">分析总结</h4>
+            </template>
           </div>
-          <p class="text-sm text-blue-700 dark:text-blue-300">
-            本次分析涵盖了 {{ Object.keys(analysisResult.分析结果).length }} 个维度，
-            为您提供了全面的八字分析报告。建议您根据分析结果，结合实际情况做出相应的调整和规划。
-          </p>
-        </div>
-      </div>
-      
-      <!-- 底部操作栏：sticky 定位在主内容区底部，不遮挡侧边栏 -->
-      <div class="sticky bottom-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg">
-        <div class="w-full max-w-4xl mx-auto flex justify-center gap-6 px-2">
-          <Button
-            size="lg"
-            variant="secondary"
-            @click="$emit('save')"
-          >
-            <Download class="w-4 h-4 mr-2" />
-            保存报告
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            @click="$emit('reset')"
-          >
-            <RefreshCw class="w-4 h-4 mr-2" />
-            重新分析
-          </Button>
-          <Button
-            size="lg"
-            variant="default"
-            @click="$emit('chat')"
-          >
-            <MessageSquare class="w-4 h-4 mr-2" />
-            对话报告
-          </Button>
+          
+          <!-- 分析总结 -->
+          <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
+            <div class="flex items-center space-x-2 mb-2">
+              <Star class="w-5 h-5 text-blue-600" />
+              <h4 class="font-medium text-blue-800 dark:text-blue-200">分析总结</h4>
+            </div>
+            <p class="text-sm text-blue-700 dark:text-blue-300">
+              本次分析涵盖了 {{ Object.keys(analysisResult.分析结果).length }} 个维度，
+              为您提供了全面的八字分析报告。建议您根据分析结果，结合实际情况做出相应的调整和规划。
+            </p>
+          </div>
         </div>
       </div>
     </template>

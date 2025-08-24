@@ -8,17 +8,19 @@
     />
     
     <!-- 主体布局：左侧历史 + 右侧分析 -->
-    <div class="flex h-full overflow-hidden">
-      <!-- 左侧历史面板 -->
-      <AnalysisHistory
-        :selected-analysis-id="selectedAnalysisId"
-        @select="handleSelectAnalysis"
-        @delete="handleDeleteAnalysis"
-      />
+    <div class="flex h-full">
+      <!-- 左侧历史面板 - 固定定位 -->
+      <div class="w-64 fixed top-16 bottom-0 left-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <AnalysisHistory
+          :selected-analysis-id="selectedAnalysisId"
+          @select="handleSelectAnalysis"
+          @delete="handleDeleteAnalysis"
+        />
+      </div>
 
       <!-- 右侧分析区域 -->
-      <div class="flex-1 p-8">
-        <div class="max-w-6xl mx-auto">
+      <div class="flex-1 ml-64">
+        <div class="max-w-6xl mx-auto p-8">
           <!-- 输入表单 -->
           <AnalysisForm
             v-if="!analysisResult"
