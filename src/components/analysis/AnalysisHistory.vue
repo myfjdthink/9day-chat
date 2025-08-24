@@ -3,40 +3,34 @@
   <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col h-full">
     <!-- 历史面板头部 -->
     <div class="flex-none p-4 border-b border-gray-200 dark:border-gray-700">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">分析历史</h2>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          @click="toggleAnalysisHistory"
-          class="p-1 h-auto"
-        >
-          <ChevronDown 
-            :class="['w-4 h-4 transition-transform', showAnalysisHistory ? 'rotate-180' : '']"
-          />
-        </Button>
-      </div>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">分析历史</h2>
     </div>
 
     <!-- 历史列表 -->
-    <div v-if="showAnalysisHistory" class="flex-1 overflow-y-auto p-4 space-y-2 min-h-0">
+    <div class="flex-1 overflow-y-auto p-4 space-y-2 min-h-0">
       <div 
         v-for="analysis in analyses" 
         :key="analysis.id"
-        class="group cursor-pointer p-3 rounded-lg border transition-all"
+        class="group cursor-pointer p-3 rounded-lg border transition-all mb-2"
         :class="analysis.id === selectedAnalysisId
           ? 'bg-[#f6edfb] dark:bg-[#2d1b3d] border-[#b67fda] text-[#7a3fa4] dark:text-[#b67fda] font-semibold shadow-sm'
-          : 'bg-white dark:bg-gray-800 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
+          : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-200 dark:hover:border-gray-600'"
         @click="handleSelectAnalysis(analysis.id)"
       >
         <div class="flex items-center justify-between">
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ analysis.analysis_type }}（{{ analysis.birth_year }}-{{ analysis.birth_month }}-{{ analysis.birth_day }} {{ analysis.birth_time }}）</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDate(new Date(analysis.created_at)) }}</p>
+            <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ analysis.birth_year }}-{{ analysis.birth_month }}-{{ analysis.birth_day }} {{ analysis.birth_time }}</p>
           </div>
           <div class="flex items-center gap-1 ml-2">
-            <span class="text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
-              {{ analysis.analysis_type }}
+            <span 
+              class="text-[10px] px-1.5 py-0.5 rounded"
+              :class="{
+                'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200': analysis.status === 'COMPLETED',
+                'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200': analysis.status === 'PROCESSING',
+                'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200': analysis.status === 'FAILED'
+              }"
+            >
+              {{ getStatusText(analysis.status) }}
             </span>
             <Button 
               variant="ghost" 
@@ -59,11 +53,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { ChevronDown, Trash2 } from 'lucide-vue-next'
+import { Trash2 } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import { useBaziStore } from '@/stores/bazi'
 import dayjs from 'dayjs'
 import type { BaziAnalysis } from '@/api/bazi'
+import { AnalysisStatus } from '@/api/bazi'
 import { useRouter } from 'vue-router'
 
 interface Props {
@@ -79,17 +74,18 @@ const emit = defineEmits<{
 const baziStore = useBaziStore()
 const analyses = computed(() => baziStore.sortedAnalyses)
 
-// 状态
-const showAnalysisHistory = ref(true)
-
-// 切换历史列表显示/隐藏
-const toggleAnalysisHistory = () => {
-  showAnalysisHistory.value = !showAnalysisHistory.value
-}
-
-// 格式化日期
-const formatDate = (date: Date): string => {
-  return dayjs(date).format('YYYY-MM-DD')
+// 获取状态文本
+const getStatusText = (status: AnalysisStatus): string => {
+  switch (status) {
+    case AnalysisStatus.COMPLETED:
+      return '已完成'
+    case AnalysisStatus.PROCESSING:
+      return '分析中'
+    case AnalysisStatus.FAILED:
+      return '失败'
+    default:
+      return '未知'
+  }
 }
 
 const router = useRouter()
