@@ -58,12 +58,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ChevronDown, Trash2 } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import { useBaziStore } from '@/stores/bazi'
 import dayjs from 'dayjs'
 import type { BaziAnalysis } from '@/api/bazi'
+import { useRouter } from 'vue-router'
 
 interface Props {
   selectedAnalysisId?: string | null
@@ -91,9 +92,11 @@ const formatDate = (date: Date): string => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
+const router = useRouter()
+
 // 选择分析记录
 const handleSelectAnalysis = (id: string) => {
-  emit('select', id)
+  router.push(`/analysis/${id}`)
 }
 
 // 删除分析记录
@@ -108,4 +111,29 @@ const handleDeleteAnalysis = async (id: string) => {
     }
   }
 }
+
+// 自动刷新定时器
+let refreshTimer: number | null = null
+
+// 刷新历史列表
+const refreshAnalyses = async () => {
+  await baziStore.loadAnalyses()
+}
+
+// 设置自动刷新
+onMounted(() => {
+  // 初始加载
+  refreshAnalyses()
+  
+  // 每30秒刷新一次
+  refreshTimer = window.setInterval(refreshAnalyses, 30000)
+})
+
+// 清理定时器
+onUnmounted(() => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+    refreshTimer = null
+  }
+})
 </script> 

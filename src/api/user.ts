@@ -6,7 +6,7 @@ import { default as request } from './request'
  * @returns Promise<{ access_token: string }>
  */
 export function login(data: { email: string; password: string }) {
-  return request.post('/auth/login', data).then(res => res.data)
+  return request.post('/auth/login', data)
 }
 
 /**
@@ -14,14 +14,14 @@ export function login(data: { email: string; password: string }) {
  * @returns Promise<UserInfo>
  */
 export function getCurrentUser() {
-  return request.get('/auth/profile').then(res => res.data)
+  return request.get('/auth/profile') 
 }
 
 /**
  * 获取当前用户信息（Profile.vue 用）
  */
 export function fetchUserInfo() {
-  return request.get('/auth/profile').then(res => res.data)
+  return request.get('/auth/profile')
 }
 
 /**
@@ -37,7 +37,7 @@ export function updateUserInfo(data: {
   birth_time: string
   gender: string
 }) {
-  return request.put('/users/me', data).then(res => res.data)
+  return request.put('/users/me', data)
 }
 
 /**
@@ -50,7 +50,7 @@ export function register(data: {
   email: string
   password: string
 }) {
-  return request.post('/auth/register', data).then(res => res.data)
+  return request.post('/auth/register', data)
 }
 
 /**
@@ -58,7 +58,7 @@ export function register(data: {
  * @param email 邮箱
  */
 export function passwordResetRequest(email: string) {
-  return request.post('/auth/password-reset-request', { email }).then(res => res.data)
+  return request.post('/auth/password-reset-request', { email })
 }
 
 /**
@@ -67,7 +67,7 @@ export function passwordResetRequest(email: string) {
  * @param newPassword 新密码
  */
 export function passwordResetVerify(token: string, newPassword: string) {
-  return request.post('/auth/password-reset-verify', { token, new_password: newPassword }).then(res => res.data)
+  return request.post('/auth/password-reset-verify', { token, new_password: newPassword })
 }
 
 /**

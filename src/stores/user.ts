@@ -71,6 +71,7 @@ export const useUserStore = defineStore('user', {
     // 登录 action
     async login(email: string, password: string) {
       const res = await apiLogin({ email, password })
+      console.log('login res:', res)
       this.token = res.access_token
       localStorage.setItem('access_token', res.access_token)
       setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
@@ -92,7 +93,11 @@ export const useUserStore = defineStore('user', {
         const user = await getCurrentUser()
         this.user = user
         // 保存用户信息到本地
-        localStorage.setItem(USER_INFO_KEY, JSON.stringify(user))
+        if (user) {
+          localStorage.setItem(USER_INFO_KEY, JSON.stringify(user))
+        } else {
+          localStorage.removeItem(USER_INFO_KEY)
+        } 
       } catch (e) {
         // token 失效或请求失败时自动登出
         this.logout()
@@ -121,7 +126,7 @@ export const useUserStore = defineStore('user', {
         try {
           this.user = JSON.parse(userInfo)
         } catch (e) {
-          console.error('Failed to parse user info:', e)
+          console.log('Failed to parse user info:', e)
           this.user = null
         }
       }

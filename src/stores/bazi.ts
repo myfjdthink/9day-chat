@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useUserStore } from './user'  // 添加 user store 导入
+import { useUserStore } from './user'
 import type { BaziAnalysis } from '@/api/bazi'
+import { AnalysisStatus } from '@/api/bazi'
 import {
   getBaziAnalyses,
   getBaziAnalysis,
@@ -11,33 +12,37 @@ import {
 } from '@/api/bazi'
 
 export const useBaziStore = defineStore('bazi', () => {
-  const userStore = useUserStore()  // 获取 user store
+  const userStore = useUserStore()
 
   // ========== 状态 ==========
-  const analyses = ref<BaziAnalysis[]>([])
   const isLoading = ref(false)
   const error = ref<string | null>(null)
+  const analyses = ref<BaziAnalysis[]>([])
 
   // ========== 计算属性 ==========
   const sortedAnalyses = computed(() => {
-    return [...analyses.value].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    return [...analyses.value].sort((a, b) => {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    })
   })
 
   // ========== 远程数据操作 ==========
   const loadAnalyses = async () => {
     if (!userStore.checkLogin()) {
       userStore.showLogin()
-      return
+      return []
     }
 
     isLoading.value = true
     try {
       const userId = userStore.user!.id
-      const remoteList = await getBaziAnalyses(userId)
-      analyses.value = remoteList
+      const data = await getBaziAnalyses(userId)
+      analyses.value = data
+      return data
     } catch (err: any) {
       console.error('获取八字分析列表失败:', err)
-      error.value = err.response?.data?.message || '获取分析历史失败，请稍后重试'
+      error.value = err.message || '获取分析历史失败，请稍后重试'
+      return []
     } finally {
       isLoading.value = false
     }
@@ -51,9 +56,9 @@ export const useBaziStore = defineStore('bazi', () => {
 
     try {
       const userId = userStore.user!.id
-      const res = await createBaziAnalysis(userId, data)
-      analyses.value.unshift(res)
-      return res
+      const newAnalysis = await createBaziAnalysis(userId, data)
+      analyses.value = [...analyses.value, newAnalysis]
+      return newAnalysis
     } catch (e) {
       throw e
     }
@@ -65,12 +70,9 @@ export const useBaziStore = defineStore('bazi', () => {
       throw new Error('请先登录')
     }
 
-    const idx = analyses.value.findIndex(a => a.id === analysisId)
-    if (idx === -1) return
-
     try {
       await deleteBaziAnalysis(analysisId)
-      analyses.value.splice(idx, 1)
+      analyses.value = analyses.value.filter(a => a.id !== analysisId)
     } catch (e) {
       throw e
     }
@@ -82,31 +84,53 @@ export const useBaziStore = defineStore('bazi', () => {
       throw new Error('请先登录')
     }
 
-    const analysis = analyses.value.find(a => a.id === analysisId)
-    if (!analysis) return
+    try {
+      const updatedAnalysis = await updateBaziAnalysis(analysisId, data)
+      const index = analyses.value.findIndex(a => a.id === analysisId)
+      if (index !== -1) {
+        analyses.value[index] = updatedAnalysis
+      }
+      return updatedAnalysis
+    } catch (e) {
+      throw e
+    }
+  }
+
+  const getAnalysis = async (analysisId: string) => {
+    if (!userStore.checkLogin()) {
+      userStore.showLogin()
+      throw new Error('请先登录')
+    }
 
     try {
-      const res = await updateBaziAnalysis(analysisId, data)
-      Object.assign(analysis, res)
+      const analysis = await getBaziAnalysis(analysisId)
+      const index = analyses.value.findIndex(a => a.id === analysisId)
+      if (index !== -1) {
+        analyses.value[index] = analysis
+      } else {
+        analyses.value.push(analysis)
+      }
+      return analysis
     } catch (e) {
       throw e
     }
   }
 
   const $reset = () => {
-    analyses.value = []
     error.value = null
+    analyses.value = []
   }
 
   return {
-    analyses,
-    sortedAnalyses,
     isLoading,
     error,
+    analyses,
+    sortedAnalyses,
     loadAnalyses,
     addAnalysis,
     removeAnalysis,
     updateAnalysis,
+    getAnalysis,
     $reset,
     clearError: () => { error.value = null }
   }

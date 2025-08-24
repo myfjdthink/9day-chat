@@ -32,10 +32,25 @@ requestAPP.interceptors.request.use(
 // 响应拦截器
 requestAPP.interceptors.response.use(
   (response) => {
-    return response
+    const { data, code, message } = response.data
+    
+    // 如果返回的不是标准格式，直接返回原始响应
+    if (typeof code === 'undefined') {
+      return response
+    }
+    
+    // 处理业务错误
+    if (code !== 0) {
+      return Promise.reject(new Error(message || '请求失败'))
+    }
+    
+    // 成功则直接返回 data
+    return data
   },
   (error) => {
-    return Promise.reject(error)
+    // 处理网络错误等
+    const message = error.response?.data?.message || error.message || '网络请求失败'
+    return Promise.reject(new Error(message))
   }
 )
 

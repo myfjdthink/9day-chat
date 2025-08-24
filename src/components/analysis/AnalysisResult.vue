@@ -1,101 +1,136 @@
 <template>
   <div class="mt-12 space-y-8">
-    <!-- 报告内容区域，支持滚动 -->
-    <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-h-[80vh] overflow-y-auto">
-      <div class="mb-6">
-        <h2 class="text-2xl font-bold mb-2 dark:text-gray-100">八字分析报告</h2>
-        <!-- 分析时间和类型 -->
-        <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
-          <div class="flex items-center space-x-1">
-            <CalendarIcon class="w-4 h-4" />
-            <span>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</span>
-          </div>
-          <div class="flex items-center space-x-1">
-            <Settings class="w-4 h-4" />
-            <span>分析类型：{{ analysisResult.分析类型 }}</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 分析内容 - 使用虚拟列表优化长列表渲染 -->
-      <div class="space-y-8">
-        <template v-for="[type, content] in Object.entries(analysisResult.分析结果)" :key="type">
-          <div 
-            class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
-            v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
-            :data-type="type"
-          >
-            <!-- 标题区域 -->
-            <div class="flex items-center space-x-3 mb-4">
-              <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                <span class="text-white font-bold text-sm">{{ getAnalysisTypeIcon(type) }}</span>
-              </div>
-              <h3 class="text-xl font-semibold dark:text-gray-100">{{ type }}分析</h3>
-              <div class="flex-1"></div>
-              <div class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded">
-                {{ getAnalysisTypeDescription(type) }}
-              </div>
-            </div>
-            
-            <!-- 分析内容 markdown 渲染区 -->
-            <div class="prose max-w-none dark:prose-invert prose-sm">
-              <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
-            </div>
-          </div>
-        </template>
-      </div>
-      
-      <!-- 分析总结 -->
-      <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
-        <div class="flex items-center space-x-2 mb-2">
-          <Star class="w-5 h-5 text-blue-600" />
-          <h4 class="font-medium text-blue-800 dark:text-blue-200">分析总结</h4>
-        </div>
-        <p class="text-sm text-blue-700 dark:text-blue-300">
-          本次分析涵盖了 {{ Object.keys(analysisResult.分析结果).length }} 个维度，
-          为您提供了全面的八字分析报告。建议您根据分析结果，结合实际情况做出相应的调整和规划。
+    <!-- 分析中状态 -->
+    <div v-if="analysisResult.status === AnalysisStatus.PROCESSING" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <div class="flex flex-col items-center justify-center py-12">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">正在为您分析八字...</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-center max-w-md">
+          分析过程需要几分钟时间，我们正在努力为您生成全面的八字分析报告。
+          <br>请耐心等待，期间您可以先浏览其他内容。
         </p>
       </div>
     </div>
-    
-    <!-- 底部操作栏：sticky 定位在主内容区底部，不遮挡侧边栏 -->
-    <div class="sticky bottom-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg">
-      <div class="w-full max-w-4xl mx-auto flex justify-center gap-6 px-2">
+
+    <!-- 分析失败状态 -->
+    <div v-else-if="analysisResult.status === AnalysisStatus.FAILED" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <div class="flex flex-col items-center justify-center py-12">
+        <XCircle class="w-16 h-16 text-red-500 mb-4" />
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">分析生成失败</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">
+          很抱歉，在生成分析报告时遇到了问题。请稍后重试，或联系客服获取帮助。
+        </p>
         <Button
+          variant="default"
           size="lg"
-          variant="secondary"
-          @click="$emit('save')"
-        >
-          <Download class="w-4 h-4 mr-2" />
-          保存报告
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
           @click="$emit('reset')"
         >
           <RefreshCw class="w-4 h-4 mr-2" />
           重新分析
         </Button>
-        <Button
-          size="lg"
-          variant="default"
-          @click="$emit('chat')"
-        >
-          <MessageSquare class="w-4 h-4 mr-2" />
-          对话报告
-        </Button>
       </div>
     </div>
+
+    <!-- 分析完成状态 - 原有的报告展示内容 -->
+    <template v-else-if="analysisResult.status === AnalysisStatus.COMPLETED">
+      <!-- 报告内容区域，支持滚动 -->
+      <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-h-[80vh] overflow-y-auto">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold mb-2 dark:text-gray-100">八字分析报告</h2>
+          <!-- 分析时间和类型 -->
+          <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
+            <div class="flex items-center space-x-1">
+              <CalendarIcon class="w-4 h-4" />
+              <span>分析时间：{{ formatDateTime(analysisResult.分析时间) }}</span>
+            </div>
+            <div class="flex items-center space-x-1">
+              <Settings class="w-4 h-4" />
+              <span>分析类型：{{ analysisResult.分析类型 }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分析内容 - 使用虚拟列表优化长列表渲染 -->
+        <div class="space-y-8">
+          <template v-for="[type, content] in Object.entries(analysisResult.分析结果)" :key="type">
+            <div 
+              class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
+              v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
+              :data-type="type"
+            >
+              <!-- 标题区域 -->
+              <div class="flex items-center space-x-3 mb-4">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">{{ getAnalysisTypeIcon(type) }}</span>
+                </div>
+                <h3 class="text-xl font-semibold dark:text-gray-100">{{ type }}分析</h3>
+                <div class="flex-1"></div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-600 px-2 py-1 rounded">
+                  {{ getAnalysisTypeDescription(type) }}
+                </div>
+              </div>
+              
+              <!-- 分析内容 markdown 渲染区 -->
+              <div class="prose max-w-none dark:prose-invert prose-sm">
+                <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+        
+        <!-- 分析总结 -->
+        <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
+          <div class="flex items-center space-x-2 mb-2">
+            <Star class="w-5 h-5 text-blue-600" />
+            <h4 class="font-medium text-blue-800 dark:text-blue-200">分析总结</h4>
+          </div>
+          <p class="text-sm text-blue-700 dark:text-blue-300">
+            本次分析涵盖了 {{ Object.keys(analysisResult.分析结果).length }} 个维度，
+            为您提供了全面的八字分析报告。建议您根据分析结果，结合实际情况做出相应的调整和规划。
+          </p>
+        </div>
+      </div>
+      
+      <!-- 底部操作栏：sticky 定位在主内容区底部，不遮挡侧边栏 -->
+      <div class="sticky bottom-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg">
+        <div class="w-full max-w-4xl mx-auto flex justify-center gap-6 px-2">
+          <Button
+            size="lg"
+            variant="secondary"
+            @click="$emit('save')"
+          >
+            <Download class="w-4 h-4 mr-2" />
+            保存报告
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            @click="$emit('reset')"
+          >
+            <RefreshCw class="w-4 h-4 mr-2" />
+            重新分析
+          </Button>
+          <Button
+            size="lg"
+            variant="default"
+            @click="$emit('chat')"
+          >
+            <MessageSquare class="w-4 h-4 mr-2" />
+            对话报告
+          </Button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onUnmounted } from 'vue'
-import { Star, Settings, Calendar as CalendarIcon, Download, RefreshCw, MessageSquare } from 'lucide-vue-next'
+import { Star, Settings, Calendar as CalendarIcon, Download, RefreshCw, MessageSquare, XCircle } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import { marked } from 'marked'
 import type { ObjectDirective, DirectiveBinding } from 'vue'
+import { AnalysisStatus } from '@/api/bazi'
 
 interface ExtendedHTMLElement extends HTMLElement {
   _observe_visibility_callback?: (isVisible: boolean) => void
@@ -143,6 +178,7 @@ interface Props {
     分析类型: string
     分析时间: string
     分析结果: Record<string, string>
+    status: AnalysisStatus
   }
 }
 

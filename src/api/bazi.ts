@@ -12,18 +12,15 @@ interface BaziAnalysisParams {
   model_name?: string // 可选，模型名称
 }
 
+// 简化后的分析结果类型
 interface BaziAnalysisResult {
-  success: boolean
-  message: string
-  data: {
-    分析结果: {
-      流年: string
-      流月: string
-      流日: string
-    }
-    分析类型: string
-    分析时间: string
+  分析结果: {
+    流年?: string
+    流月?: string
+    流日?: string
   }
+  分析类型: string
+  分析时间: string
 }
 
 // 新API返回的数据结构
@@ -47,13 +44,18 @@ export const analyzeBazi = async (
   userId: string,
   params: BaziAnalysisParams
 ): Promise<BaziAnalysisResult> => {
-  const response: AxiosResponse<BaziAnalysisResult> = await requestAPP.post('/bazi/analysis', {
+  const data = await requestAPP.post('/bazi/analysis', {
     user_id: parseInt(userId),
     birth_datetime: params.birth_datetime,
     gender: params.gender,
     analysis_parts: params.analysis_parts || ['流年', '流月', '流日']
   })
-  return response.data
+  
+  return {
+    分析结果: data.分析结果,
+    分析类型: data.分析类型,
+    分析时间: data.分析时间
+  }
 }
 
 // 预设的分析部分
@@ -82,6 +84,13 @@ export const MODELS = {
 
 // ========== 八字分析历史相关类型和接口 ========== //
 
+// 八字分析状态枚举
+export enum AnalysisStatus {
+  PROCESSING = 'PROCESSING', // 分析中
+  COMPLETED = 'COMPLETED',   // 分析完成
+  FAILED = 'FAILED'         // 分析失败
+}
+
 /**
  * 八字分析记录类型，对应后端结构
  */
@@ -94,7 +103,7 @@ export interface BaziAnalysis {
   birth_time: string
   gender: 'male' | 'female'
   analysis_type: string
-  status: string
+  status: AnalysisStatus
   notes?: string
   display_name?: string
   user_nickname?: string
@@ -123,7 +132,7 @@ function convertNewToOldFormat(newData: NewBaziAnalysisResponse): BaziAnalysis {
     analysis_results: newData.analysisContent,
     created_at: newData.createdAt,
     updated_at: newData.updatedAt,
-    status: newData.status,
+    status: newData.status as AnalysisStatus, // 确保状态是枚举类型
     // 保持其他可选字段为 undefined
     notes: undefined,
     display_name: undefined,
@@ -142,15 +151,14 @@ export async function getBaziAnalyses(
   userId: string,
   params?: { skip?: number; limit?: number }
 ): Promise<BaziAnalysis[]> {
-  // 使用新的API路径，默认用户ID为1
-  const res = await requestAPP.get(`/bazi/user/${userId}/analyses`, { 
+  const data = await requestAPP.get(`/bazi/user/${userId}/analyses`, { 
     params: {
       page: params?.skip ? Math.floor(params.skip / (params.limit || 10)) + 1 : 1,
       limit: params?.limit || 10
     }
   })
   // 确保返回的数据是数组
-  const analysisArray = Array.isArray(res.data) ? res.data : (res.data?.data || [])
+  const analysisArray = Array.isArray(data) ? data : []
   return analysisArray.map(convertNewToOldFormat)
 }
 
@@ -159,9 +167,8 @@ export async function getBaziAnalyses(
  * @param analysis_id 分析ID
  */
 export async function getBaziAnalysis(analysis_id: string): Promise<BaziAnalysis> {
-  // 使用新的API路径
-  const res = await requestAPP.get(`/bazi/analysis/${analysis_id}`)
-  return convertNewToOldFormat(res.data)
+  const data = await requestAPP.get(`/bazi/analysis/${analysis_id}`)
+  return convertNewToOldFormat(data)
 }
 
 /**
@@ -172,7 +179,6 @@ export async function createBaziAnalysis(
   userId: string,
   data: Omit<BaziAnalysis, 'id' | 'created_at' | 'updated_at'>
 ): Promise<BaziAnalysis> {
-  // 使用新的API路径和参数格式
   const newFormatData = {
     user_id: parseInt(userId),
     birth_datetime: new Date(
@@ -185,8 +191,8 @@ export async function createBaziAnalysis(
     analysis_parts: ['流年', '流月', '流日']
   }
   
-  const res = await requestAPP.post('/bazi/analysis', newFormatData)
-  return convertNewToOldFormat(res.data)
+  const responseData = await requestAPP.post('/bazi/analysis', newFormatData)
+  return convertNewToOldFormat(responseData)
 }
 
 /**

@@ -24,6 +24,12 @@ const router = createRouter({
       component: Analysis
     },
     {
+      path: '/analysis/:id',
+      name: 'analysis-detail',
+      component: Analysis,
+      props: true
+    },
+    {
       path: '/calendar',
       name: 'Calendar',
       component: Calendar

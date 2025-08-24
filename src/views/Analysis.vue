@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { Star } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Modal from '@/components/ui/Modal.vue'
@@ -74,7 +74,7 @@ import AnalysisForm from '@/components/analysis/AnalysisForm.vue'
 import AnalysisResult from '@/components/analysis/AnalysisResult.vue'
 
 // API
-import { analyzeBazi, ANALYSIS_PARTS } from '@/api/bazi'
+import { analyzeBazi, ANALYSIS_PARTS, AnalysisStatus } from '@/api/bazi'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
@@ -98,8 +98,16 @@ const formData = reactive({
   }
 })
 
+// 分析结果类型
+interface AnalysisResult {
+  分析类型: string
+  分析时间: string
+  分析结果: Record<string, string>
+  status: AnalysisStatus
+}
+
 const isAnalyzing = ref<boolean>(false)
-const analysisResult = ref<{ 分析类型: string; 分析时间: string; 分析结果: Record<string, string> } | null>(null)
+const analysisResult = ref<AnalysisResult | null>(null)
 const showLoginModal = ref(false)
 
 const chatStore = useChatStore()
@@ -123,15 +131,52 @@ const userHasBaziInfo = computed(() => {
   )
 })
 
+// 监听路由参数变化
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (newId) {
+      selectedAnalysisId.value = newId as string
+      try {
+        const record = await baziStore.getAnalysis(newId as string)
+        const analysisResultField = (record as any).analysis_results || (record as any).analysis_result
+        analysisResult.value = {
+          分析类型: record.analysis_type,
+          分析时间: record.created_at,
+          分析结果: analysisResultField || (record.notes ? parseResultText(record.notes) : {}),
+          status: record.status as AnalysisStatus
+        }
+      } catch (error) {
+        console.error('获取分析记录失败:', error)
+        analysisResult.value = null
+      }
+    }
+  },
+  { immediate: true }
+)
+
 // 页面加载时自动填充
 onMounted(async () => {
-  // 初始化数据
-  await Promise.all([
-    baziStore.loadAnalyses()
-  ])
-
+  // 如果有路由参数，加载对应的分析
+  if (route.params.id) {
+    const analysisId = route.params.id as string
+    try {
+      const record = await baziStore.getAnalysis(analysisId)
+      selectedAnalysisId.value = analysisId
+      const analysisResultField = (record as any).analysis_results || (record as any).analysis_result
+      analysisResult.value = {
+        分析类型: record.analysis_type,
+        分析时间: record.created_at,
+        分析结果: analysisResultField || (record.notes ? parseResultText(record.notes) : {}),
+        status: record.status as AnalysisStatus
+      }
+    } catch (error) {
+      console.error('获取分析记录失败:', error)
+      analysisResult.value = null
+    }
+  }
   // 自动填充用户八字信息
-  if (userStore.user && userHasBaziInfo.value) {
+  else if (userStore.user && userHasBaziInfo.value) {
     // 组装 yyyy-MM-ddTHH:mm 作为 v-model
     const y = userStore.user.birth_year!.toString().padStart(4, '0')
     const m = userStore.user.birth_month!.toString().padStart(2, '0')
@@ -184,36 +229,43 @@ const handleStartAnalysis = async (): Promise<void> => {
       }
     )
 
-    if (response.success) {
-      analysisResult.value = response.data
-      // 生成 markdown 报告
-      const dt = new Date(formData.birthDateTime)
-      const markdownReport = Object.entries(response.data.分析结果)
+    const dt = new Date(formData.birthDateTime)
+    const params = {
+      client_analysis_id: `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+      birth_year: dt.getFullYear(),
+      birth_month: dt.getMonth() + 1,
+      birth_day: dt.getDate(),
+      birth_time: dt.toTimeString().slice(0, 5),
+      gender: (formData.gender === '男' ? 'male' : 'female') as 'male' | 'female',
+      analysis_type: 'basic',
+      notes: Object.entries(response.分析结果)
         .map(([type, content]) => `### ${type}\n${content}\n`)
-        .join('\n')
-
-      const params = {
-        client_analysis_id: `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-        birth_year: dt.getFullYear(),
-        birth_month: dt.getMonth() + 1,
-        birth_day: dt.getDate(),
-        birth_time: dt.toTimeString().slice(0, 5),
-        gender: (formData.gender === '男' ? 'male' : 'female') as 'male' | 'female',
-        analysis_type: 'basic',
-        notes: markdownReport,
-        display_name: '',
-        user_nickname: userStore.user?.username || '',
-        analysis_results: response.data.分析结果,
-        summary: {},
-        settings: {},
-        extra_metadata: {}
-      }
-
-      await baziStore.addAnalysis(params)
-      await trySaveUserBaziInfo()
-    } else {
-      throw new Error(response.message || '分析失败')
+        .join('\n'),
+      display_name: '',
+      user_nickname: userStore.user?.username || '',
+      analysis_results: response.分析结果,
+      summary: {},
+      settings: {},
+      extra_metadata: {},
+      status: AnalysisStatus.PROCESSING
     }
+
+    // 添加到历史记录并获取新记录
+    const newAnalysis = await baziStore.addAnalysis(params)
+
+    // 设置当前分析结果
+    analysisResult.value = {
+      分析类型: response.分析类型,
+      分析时间: response.分析时间,
+      分析结果: response.分析结果,
+      status: AnalysisStatus.PROCESSING
+    }
+
+    // 保存用户八字信息
+    await trySaveUserBaziInfo()
+
+    // 跳转到新的分析页面
+    router.push(`/analysis/${newAnalysis.id}`)
   } catch (error: any) {
     alert(error.message || '分析过程中出现错误')
   } finally {
@@ -268,16 +320,20 @@ const handleChatWithReport = async () => {
 }
 
 // 选择历史分析
-const handleSelectAnalysis = (id: string) => {
+const handleSelectAnalysis = async (id: string) => {
   selectedAnalysisId.value = id
-  const record = baziStore.sortedAnalyses.find(r => r.id === id)
-  if (record) {
+  try {
+    const record = await baziStore.getAnalysis(id)
     const analysisResultField = (record as any).analysis_results || (record as any).analysis_result
     analysisResult.value = {
       分析类型: record.analysis_type,
       分析时间: record.created_at,
-      分析结果: analysisResultField || (record.notes ? parseResultText(record.notes) : {})
+      分析结果: analysisResultField || (record.notes ? parseResultText(record.notes) : {}),
+      status: record.status as AnalysisStatus
     }
+  } catch (error) {
+    console.error('获取分析记录失败:', error)
+    analysisResult.value = null
   }
 }
 
