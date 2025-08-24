@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { login as apiLogin, getCurrentUser } from '@/api/user'
 import { useChatStore } from '@/stores/chat'
 import { useBaziStore } from '@/stores/bazi'
+import router from '@/router'
 
 // 用户信息类型
 export interface UserInfo {
@@ -26,6 +27,7 @@ interface State {
   token: string | null
   user: UserInfo | null
   showLoginModal: boolean  // 新增登录弹窗状态
+  redirectPath: string | null  // 新增：登录后重定向路径
 }
 
 // ========== 新增：本地 token 过期管理 ==========
@@ -65,7 +67,8 @@ export const useUserStore = defineStore('user', {
   state: (): State => ({
     token: localStorage.getItem('access_token'),
     user: null,
-    showLoginModal: false  // 初始化为 false
+    showLoginModal: false,  // 初始化为 false
+    redirectPath: null  // 初始化重定向路径
   }),
   actions: {
     // 登录 action
@@ -75,12 +78,21 @@ export const useUserStore = defineStore('user', {
       this.token = res.access_token
       localStorage.setItem('access_token', res.access_token)
       setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
+      
       // 登录后获取用户信息
       await this.fetchUser()
+      
+      // 处理重定向
+      const path = this.redirectPath || '/'
+      this.redirectPath = null // 清除重定向路径
+      
       // 登录后自动拉取云端会话
       loadConversations().catch(e => {
         console.error('Failed to load conversations:', e)
       })
+
+      // 执行重定向
+      router.push(path)
     },
     // 获取当前用户信息
     async fetchUser() {

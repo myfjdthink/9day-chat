@@ -35,7 +35,10 @@ export const useBaziStore = defineStore('bazi', () => {
 
     isLoading.value = true
     try {
-      const userId = userStore.user!.id
+      if(!userStore.user) {
+        return []
+      }
+      const userId = userStore.user.id
       const data = await getBaziAnalyses(userId)
       analyses.value = data
       return data

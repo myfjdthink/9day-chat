@@ -31,12 +31,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
 import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const form = ref({
   email: '',
@@ -61,8 +62,7 @@ const handleLogin = async () => {
 
   try {
     await userStore.login(form.value.email, form.value.password)
-    // 登录成功后跳转首页
-    router.push('/')
+    // 登录成功后的跳转由 userStore 处理
   } catch (e: any) {
     errorMsg.value = e?.response?.data?.detail || e?.message || '登录失败，请重试'
   }

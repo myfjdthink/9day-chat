@@ -20,7 +20,10 @@ const userStore = useUserStore()
 
 const handleLoginConfirm = () => {
   userStore.hideLogin()
+  // 保存当前路径
+  userStore.redirectPath = router.currentRoute.value.path
   router.push('/login')
+  
 }
 
 const handleLoginCancel = () => {

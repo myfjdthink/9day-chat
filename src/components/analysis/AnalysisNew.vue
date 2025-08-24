@@ -236,6 +236,7 @@ const handleStartAnalysis = async (): Promise<void> => {
     return
   }
 
+  // 检查登录状态
   if (!await userStore.checkLoginAndShow()) {
     return
   }
