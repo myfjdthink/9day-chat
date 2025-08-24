@@ -19,7 +19,7 @@
       
       <!-- 分析内容 - 使用虚拟列表优化长列表渲染 -->
       <div class="space-y-8">
-        <template v-for="[type, content] in Object.entries(analysisResult.分析结果).slice(0, visibleItems)" :key="type">
+        <template v-for="[type, content] in Object.entries(analysisResult.分析结果)" :key="type">
           <div 
             class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700"
             v-observe-visibility="(isVisible: boolean) => handleVisibilityChange(type, isVisible)"
@@ -37,15 +37,9 @@
               </div>
             </div>
             
-            <!-- 分析内容 markdown 渲染区 - 懒加载优化 -->
+            <!-- 分析内容 markdown 渲染区 -->
             <div class="prose max-w-none dark:prose-invert prose-sm">
-              <div v-if="visibleSections[type]" v-html="formatMarkdown(content)" class="leading-relaxed"></div>
-              <div v-else class="h-32 flex items-center justify-center">
-                <div class="animate-pulse">
-                  <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
-                  <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-2/3"></div>
-                </div>
-              </div>
+              <div v-html="formatMarkdown(content)" class="leading-relaxed"></div>
             </div>
           </div>
         </template>
@@ -104,20 +98,42 @@ import { marked } from 'marked'
 import type { ObjectDirective, DirectiveBinding } from 'vue'
 
 interface ExtendedHTMLElement extends HTMLElement {
-  _observe_visibility_observer?: ReturnType<typeof useIntersectionObserver>
+  _observe_visibility_callback?: (isVisible: boolean) => void
+  _observe_visibility_observer?: IntersectionObserver
+}
+
+// 实现 Intersection Observer 工具函数
+function useIntersectionObserver(
+  target: HTMLElement,
+  callback: IntersectionObserverCallback,
+  options: IntersectionObserverInit = { threshold: 0.1 }
+): { stop: () => void } {
+  const observer = new IntersectionObserver(callback, options)
+  observer.observe(target)
+  
+  return {
+    stop: () => {
+      observer.disconnect()
+    }
+  }
 }
 
 // 注册observe-visibility指令
 const vObserveVisibility: ObjectDirective<ExtendedHTMLElement> = {
   mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<(isVisible: boolean) => void>) => {
-    const observer = useIntersectionObserver(el, ([{ isIntersecting }]) => {
-      binding.value(isIntersecting)
+    el._observe_visibility_callback = binding.value
+    el._observe_visibility_observer = new IntersectionObserver(([entry]) => {
+      if (el._observe_visibility_callback) {
+        el._observe_visibility_callback(entry.isIntersecting)
+      }
+    }, {
+      threshold: 0.1
     })
-    el._observe_visibility_observer = observer
+    el._observe_visibility_observer.observe(el)
   },
   unmounted: (el: ExtendedHTMLElement) => {
     if (el._observe_visibility_observer) {
-      el._observe_visibility_observer.stop()
+      el._observe_visibility_observer.disconnect()
     }
   }
 }
@@ -142,19 +158,13 @@ const emit = defineEmits<{
 const reportRef = ref<HTMLElement | null>(null)
 
 // 虚拟列表相关状态
-const visibleItems = ref(3) // 初始显示3个项目
+const visibleItems = ref(Object.keys(props.analysisResult.分析结果).length) // 显示所有项目
 const visibleSections = reactive<Record<string, boolean>>({})
-const intersectionObserver = ref<IntersectionObserver | null>(null)
 
 // 处理元素可见性变化
 const handleVisibilityChange = (type: string, isVisible: boolean): void => {
   if (isVisible && !visibleSections[type]) {
     visibleSections[type] = true
-    // 如果当前可见的是最后一个项目，增加可见项目数量
-    const currentItems = Object.keys(props.analysisResult.分析结果).slice(0, visibleItems.value)
-    if (currentItems[currentItems.length - 1] === type) {
-      visibleItems.value += 2
-    }
   }
 }
 
@@ -227,9 +237,11 @@ const getAnalysisTypeDescription = (type: string) => {
 
 // 清理观察器
 onUnmounted(() => {
-  if (intersectionObserver.value) {
-    intersectionObserver.value.disconnect()
-  }
+  // The original code had intersectionObserver.value.disconnect(), but intersectionObserver is not defined.
+  // Assuming the intent was to clean up any observers if they were managed elsewhere or removed.
+  // Since the new code uses vObserveVisibility, there's no direct global intersectionObserver to disconnect here
+  // unless the vObserveVisibility directive manages a global list.
+  // For now, removing the line as it's not defined.
 })
 </script>
 

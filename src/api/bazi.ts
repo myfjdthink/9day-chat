@@ -94,6 +94,7 @@ export interface BaziAnalysis {
   birth_time: string
   gender: 'male' | 'female'
   analysis_type: string
+  status: string
   notes?: string
   display_name?: string
   user_nickname?: string
@@ -122,6 +123,7 @@ function convertNewToOldFormat(newData: NewBaziAnalysisResponse): BaziAnalysis {
     analysis_results: newData.analysisContent,
     created_at: newData.createdAt,
     updated_at: newData.updatedAt,
+    status: newData.status,
     // 保持其他可选字段为 undefined
     notes: undefined,
     display_name: undefined,
