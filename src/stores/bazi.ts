@@ -28,10 +28,10 @@ export const useBaziStore = defineStore('bazi', () => {
 
   // ========== 远程数据操作 ==========
   const loadAnalyses = async () => {
-    if (!userStore.checkLogin()) {
-      userStore.showLogin()
-      return []
-    }
+    // if (!userStore.checkLogin()) {
+    //   userStore.showLogin()
+    //   return []
+    // }
 
     isLoading.value = true
     try {

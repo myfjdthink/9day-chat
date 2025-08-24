@@ -1,13 +1,22 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 // 路由映射表
 const routeMap: Record<string, string> = {
   'home': '/',
-  'ai-chat': '/chat',
+  'chat': '/chat',
   'analysis': '/analysis',
-  'calendar': '/calendar',
-  'zodiac-fortune': '/zodiac-fortune'
+  'Calendar': '/calendar',
+  'ZodiacFortune': '/zodiac-fortune'
+}
+
+// 反向路由映射表
+const reverseRouteMap: Record<string, string> = {
+  '/': 'home',
+  '/chat': 'chat',
+  '/analysis': 'analysis',
+  '/calendar': 'Calendar',
+  '/zodiac-fortune': 'ZodiacFortune'
 }
 
 export function useNavigation() {
@@ -15,11 +24,11 @@ export function useNavigation() {
   const route = useRoute()
   const activeTab = ref('home')
 
-  // 根据当前路由更新 activeTab
-  const updateActiveTabFromRoute = (routeName: string | null | undefined) => {
-    if (routeName) {
-      activeTab.value = routeName as string
-    }
+  // 根据路由路径更新 activeTab
+  const updateActiveTabFromPath = (path: string) => {
+    // 处理带参数的路径，如 /analysis/123
+    const basePath = '/' + path.split('/')[1]
+    activeTab.value = reverseRouteMap[basePath] || 'home'
   }
 
   // 设置活动标签并导航
@@ -31,12 +40,17 @@ export function useNavigation() {
     }
   }
 
-  // 初始化时根据路由设置 activeTab
-  updateActiveTabFromRoute(route.name)
+  // 监听路由变化
+  watch(
+    () => route.path,
+    (newPath) => {
+      updateActiveTabFromPath(newPath)
+    },
+    { immediate: true }
+  )
 
   return {
     activeTab,
-    setActiveTab,
-    updateActiveTabFromRoute
+    setActiveTab
   }
 } 
