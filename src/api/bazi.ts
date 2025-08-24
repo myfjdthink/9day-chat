@@ -158,7 +158,7 @@ export async function getBaziAnalyses(
     }
   })
   // 确保返回的数据是数组
-  const analysisArray = Array.isArray(data) ? data : []
+  const analysisArray = Array.isArray(data.data) ? data.data : []
   return analysisArray.map(convertNewToOldFormat)
 }
 

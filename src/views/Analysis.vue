@@ -229,43 +229,16 @@ const handleStartAnalysis = async (): Promise<void> => {
       }
     )
 
-    const dt = new Date(formData.birthDateTime)
-    const params = {
-      client_analysis_id: `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
-      birth_year: dt.getFullYear(),
-      birth_month: dt.getMonth() + 1,
-      birth_day: dt.getDate(),
-      birth_time: dt.toTimeString().slice(0, 5),
-      gender: (formData.gender === '男' ? 'male' : 'female') as 'male' | 'female',
-      analysis_type: 'basic',
-      notes: Object.entries(response.分析结果)
-        .map(([type, content]) => `### ${type}\n${content}\n`)
-        .join('\n'),
-      display_name: '',
-      user_nickname: userStore.user?.username || '',
-      analysis_results: response.分析结果,
-      summary: {},
-      settings: {},
-      extra_metadata: {},
-      status: AnalysisStatus.PROCESSING
-    }
-
-    // 添加到历史记录并获取新记录
-    const newAnalysis = await baziStore.addAnalysis(params)
-
-    // 设置当前分析结果
-    analysisResult.value = {
-      分析类型: response.分析类型,
-      分析时间: response.分析时间,
-      分析结果: response.分析结果,
-      status: AnalysisStatus.PROCESSING
-    }
-
-    // 保存用户八字信息
-    await trySaveUserBaziInfo()
+    // 触发更新分析历史
+    await baziStore.loadAnalyses()
 
     // 跳转到新的分析页面
-    router.push(`/analysis/${newAnalysis.id}`)
+    if ((response as any).id) {
+      router.push(`/analysis/${(response as any).id}`)
+    } else {
+      console.error('分析结果中缺少ID')
+      alert('分析创建成功，但无法跳转到详情页')
+    }
   } catch (error: any) {
     alert(error.message || '分析过程中出现错误')
   } finally {
