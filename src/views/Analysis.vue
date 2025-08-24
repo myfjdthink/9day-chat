@@ -21,11 +21,8 @@
       <!-- 右侧分析区域 -->
       <div class="flex-1 ml-64">
         <div class="max-w-6xl mx-auto p-8">
-          <!-- 输入表单 -->
-          <AnalysisForm
-            v-if="!analysisResult"
-            v-model="formData"
-          />
+          <!-- 新增分析表单 -->
+          <AnalysisNew v-if="!analysisResult" />
 
           <!-- 分析结果 -->
           <AnalysisResult
@@ -35,70 +32,26 @@
             @reset="handleResetAnalysis"
             @chat="handleChatWithReport"
           />
-
-          <!-- Start Analysis Button -->
-          <div v-if="!analysisResult" class="mt-8 flex justify-center">
-            <Button
-              size="lg"
-              variant="default"
-              :disabled="isAnalyzing"
-              @click="handleStartAnalysis"
-            >
-              <Star class="w-5 h-5 mr-2" />
-              {{ isAnalyzing ? '分析中...' : '开始分析' }}
-            </Button>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- 全局分析中遮罩 -->
-    <div v-if="isAnalyzing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div class="flex flex-col items-center">
-        <svg class="animate-spin h-10 w-10 text-green-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-        </svg>
-        <div class="text-lg text-white font-semibold">正在为您分析，请稍候...</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
-import { Star } from 'lucide-vue-next'
-import Button from '@/components/ui/Button.vue'
-import Modal from '@/components/ui/Modal.vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import SEO from '@/components/SEO.vue'
 import AnalysisHistory from '@/components/analysis/AnalysisHistory.vue'
-import AnalysisForm from '@/components/analysis/AnalysisForm.vue'
+import AnalysisNew from '@/components/analysis/AnalysisNew.vue'
 import AnalysisResult from '@/components/analysis/AnalysisResult.vue'
 
 // API
-import { analyzeBazi, ANALYSIS_PARTS, AnalysisStatus } from '@/api/bazi'
+import { AnalysisStatus } from '@/api/bazi'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
-import { updateUserInfo } from '@/api/user'
 import { useRoute, useRouter } from 'vue-router'
-
-// 表单数据
-const formData = reactive({
-  gender: '男' as '男' | '女',
-  birthDateTime: '1983-12-11T08:00',
-  analysisTypes: {
-    basic: true,
-    deity: true,
-    ai: true
-  },
-  analysisScope: {
-    year: true,
-    month: false,
-    day: false
-  }
-})
 
 // 分析结果类型
 interface AnalysisResult {
@@ -108,10 +61,7 @@ interface AnalysisResult {
   status: AnalysisStatus
 }
 
-const isAnalyzing = ref<boolean>(false)
 const analysisResult = ref<AnalysisResult | null>(null)
-const showLoginModal = ref(false)
-
 const chatStore = useChatStore()
 const userStore = useUserStore()
 const baziStore = useBaziStore()
@@ -120,18 +70,6 @@ const router = useRouter()
 
 // 当前选中的分析历史ID
 const selectedAnalysisId = ref<string | null>(null)
-
-// 自动导入用户八字信息
-const userHasBaziInfo = computed(() => {
-  return !!(
-    userStore.user &&
-    userStore.user.birth_year &&
-    userStore.user.birth_month &&
-    userStore.user.birth_day &&
-    userStore.user.birth_time &&
-    userStore.user.gender
-  )
-})
 
 // 监听路由参数变化
 watch(
@@ -177,101 +115,7 @@ onMounted(async () => {
       analysisResult.value = null
     }
   }
-  // 自动填充用户八字信息
-  else if (userStore.user && userHasBaziInfo.value) {
-    // 组装 yyyy-MM-ddTHH:mm 作为 v-model
-    const y = userStore.user.birth_year!.toString().padStart(4, '0')
-    const m = userStore.user.birth_month!.toString().padStart(2, '0')
-    const d = userStore.user.birth_day!.toString().padStart(2, '0')
-    const t = userStore.user.birth_time!.padStart(5, '0')
-    formData.birthDateTime = `${y}-${m}-${d}T${t}`
-    formData.gender = userStore.user.gender === 'male' || userStore.user.gender === '男' ? '男' : '女'
-  } else if (!userStore.user) {
-    // 未登录，填充默认八字信息
-    formData.birthDateTime = '1999-09-09T09:09'
-    formData.gender = '男'
-  }
 })
-
-// 获取分析范围数组
-const getAnalysisParts = (): string[] => {
-  const parts: string[] = []
-  if (formData.analysisScope.year) parts.push(ANALYSIS_PARTS.FLOW_YEAR)
-  if (formData.analysisScope.month) parts.push(ANALYSIS_PARTS.FLOW_MONTH)
-  if (formData.analysisScope.day) parts.push(ANALYSIS_PARTS.FLOW_DAY)
-  return parts
-}
-
-// 开始分析
-const handleStartAnalysis = async (): Promise<void> => {
-  if (!formData.birthDateTime) {
-    alert('请选择出生日期时间')
-    return
-  }
-
-  const analysisParts = getAnalysisParts()
-  if (analysisParts.length === 0) {
-    alert('请至少选择一个分析范围')
-    return
-  }
-
-  if (!await userStore.checkLoginAndShow()) {
-    return
-  }
-
-  try {
-    isAnalyzing.value = true
-    const response = await analyzeBazi(
-      userStore.user!.id,
-      {
-        birth_datetime: formData.birthDateTime,
-        current_datetime: new Date().toISOString(),
-        gender: formData.gender,
-        analysis_parts: analysisParts
-      }
-    )
-
-    console.log('analyzeBazi response:', response)
-
-    // 触发更新分析历史
-    await baziStore.loadAnalyses()
-
-    // 跳转到新的分析页面
-    if ((response as any).id) {
-      router.push(`/analysis/${(response as any).id}`)
-    } else {
-      console.error('分析结果中缺少ID')
-      alert('分析创建成功，但无法跳转到详情页')
-    }
-  } catch (error: any) {
-    console.error('分析过程中出现错误:', error)
-    alert(error.message || '分析过程中出现错误')
-  } finally {
-    isAnalyzing.value = false
-  }
-}
-
-// 保存用户八字信息
-let hasSavedUserBazi = false
-async function trySaveUserBaziInfo() {
-  if (!userStore.user || userHasBaziInfo.value || hasSavedUserBazi) return
-  const dt = new Date(formData.birthDateTime)
-  try {
-    await updateUserInfo({
-      username: userStore.user.username || '',
-      phone: userStore.user.phone || '',
-      birth_year: dt.getFullYear(),
-      birth_month: dt.getMonth() + 1,
-      birth_day: dt.getDate(),
-      birth_time: dt.toTimeString().slice(0, 5),
-      gender: formData.gender === '男' ? 'male' : 'female'
-    })
-    await userStore.fetchUser()
-    hasSavedUserBazi = true
-  } catch (e) {
-    console.warn('自动保存用户八字信息失败', e)
-  }
-}
 
 // 保存报告
 const handleSaveReport = async () => {
