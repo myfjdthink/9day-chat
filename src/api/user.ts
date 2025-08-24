@@ -6,7 +6,7 @@ import { default as request } from './request'
  * @returns Promise<{ access_token: string }>
  */
 export function login(data: { email: string; password: string }) {
-  return request.post('/auth/login', data)
+  return request.post('/auth/login', data).then(res => res.data)
 }
 
 /**
@@ -14,14 +14,14 @@ export function login(data: { email: string; password: string }) {
  * @returns Promise<UserInfo>
  */
 export function getCurrentUser() {
-  return request.get('/auth/profile') 
+  return request.get('/auth/profile').then(res => res.data)
 }
 
 /**
  * 获取当前用户信息（Profile.vue 用）
  */
 export function fetchUserInfo() {
-  return request.get('/auth/profile')
+  return getCurrentUser
 }
 
 /**
@@ -50,7 +50,7 @@ export function register(data: {
   email: string
   password: string
 }) {
-  return request.post('/auth/register', data)
+  return request.post('/auth/register', data).then(res => res.data)
 }
 
 /**

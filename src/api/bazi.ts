@@ -27,35 +27,37 @@ interface BaziAnalysisResult {
 interface NewBaziAnalysisResponse {
   id: number
   userId: number
-  birthDateTime: string
-  gender: '男' | '女'
-  analysisType: string
-  analysisContent: {
-    流年?: string
-    流月?: string
-    流日?: string
-  }
   createdAt: string
   updatedAt: string
+  analysisType: string
   status: string
+  birthDateTime: string
+  birthLocation: string | null
+  gender: 'MALE' | 'FEMALE'
+  analysisParts: string[]
+  targetYear: number | null
+  analysisContent: Record<string, any> | null
+  errorMessage: string | null
+}
+
+interface APIResponse<T> {
+  data: T
+  code: number
+  message: string
 }
 
 export const analyzeBazi = async (
   userId: string,
   params: BaziAnalysisParams
-): Promise<BaziAnalysisResult> => {
-  const data = await requestAPP.post('/bazi/analysis', {
+): Promise<BaziAnalysis> => {
+  const response = await requestAPP.post<NewBaziAnalysisResponse>('/bazi/analysis', {
     user_id: parseInt(userId),
     birth_datetime: params.birth_datetime,
     gender: params.gender,
     analysis_parts: params.analysis_parts || ['流年', '流月', '流日']
   })
-  
-  return {
-    分析结果: data.分析结果,
-    分析类型: data.分析类型,
-    分析时间: data.分析时间
-  }
+
+  return convertNewToOldFormat(response.data)
 }
 
 // 预设的分析部分
@@ -117,7 +119,6 @@ export interface BaziAnalysis {
 
 // 新服务返回的数据结构转换函数
 function convertNewToOldFormat(newData: NewBaziAnalysisResponse): BaziAnalysis {
-  // 从 birthDateTime 中提取年月日时间
   const birthDate = new Date(newData.birthDateTime)
   
   return {
@@ -126,15 +127,14 @@ function convertNewToOldFormat(newData: NewBaziAnalysisResponse): BaziAnalysis {
     birth_year: birthDate.getFullYear(),
     birth_month: birthDate.getMonth() + 1,
     birth_day: birthDate.getDate(),
-    birth_time: birthDate.toTimeString().split(' ')[0],
-    gender: newData.gender === '男' ? 'male' : 'female',
+    birth_time: birthDate.toTimeString().slice(0, 5),
+    gender: newData.gender === 'MALE' ? 'male' : 'female',
     analysis_type: newData.analysisType,
-    analysis_results: newData.analysisContent,
+    analysis_results: newData.analysisContent || undefined,
     created_at: newData.createdAt,
     updated_at: newData.updatedAt,
-    status: newData.status as AnalysisStatus, // 确保状态是枚举类型
-    // 保持其他可选字段为 undefined
-    notes: undefined,
+    status: newData.status as AnalysisStatus,
+    notes: newData.errorMessage || undefined,
     display_name: undefined,
     user_nickname: undefined,
     summary: undefined,
@@ -151,15 +151,16 @@ export async function getBaziAnalyses(
   userId: string,
   params?: { skip?: number; limit?: number }
 ): Promise<BaziAnalysis[]> {
-  const data = await requestAPP.get(`/bazi/user/${userId}/analyses`, { 
+  const response = await requestAPP.get<APIResponse<{data: NewBaziAnalysisResponse[]}>>(`/bazi/user/${userId}/analyses`, { 
     params: {
       page: params?.skip ? Math.floor(params.skip / (params.limit || 10)) + 1 : 1,
       limit: params?.limit || 10
     }
   })
+  console.log('getBaziAnalyses response:', response)
   // 确保返回的数据是数组
-  const analysisArray = Array.isArray(data.data) ? data.data : []
-  return analysisArray.map(convertNewToOldFormat)
+  const analysisArray = Array.isArray(response.data.data) ? response.data.data : []
+  return analysisArray.map(item => convertNewToOldFormat(item))
 }
 
 /**
@@ -167,8 +168,9 @@ export async function getBaziAnalyses(
  * @param analysis_id 分析ID
  */
 export async function getBaziAnalysis(analysis_id: string): Promise<BaziAnalysis> {
-  const data = await requestAPP.get(`/bazi/analysis/${analysis_id}`)
-  return convertNewToOldFormat(data)
+  const response = await requestAPP.get<NewBaziAnalysisResponse>(`/bazi/analysis/${analysis_id}`)
+  console.log('getBaziAnalysis response:', response)
+  return convertNewToOldFormat(response.data)
 }
 
 /**
@@ -187,12 +189,12 @@ export async function createBaziAnalysis(
       data.birth_day,
       ...data.birth_time.split(':').map(Number)
     ).toISOString(),
-    gender: data.gender === 'male' ? '男' : '女',
+    gender: data.gender === 'male' ? 'MALE' : 'FEMALE',
     analysis_parts: ['流年', '流月', '流日']
   }
   
-  const responseData = await requestAPP.post('/bazi/analysis', newFormatData)
-  return convertNewToOldFormat(responseData)
+  const response = await requestAPP.post<APIResponse<NewBaziAnalysisResponse>>('/bazi/analysis', newFormatData)
+  return convertNewToOldFormat(response.data)
 }
 
 /**

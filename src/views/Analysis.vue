@@ -229,6 +229,8 @@ const handleStartAnalysis = async (): Promise<void> => {
       }
     )
 
+    console.log('analyzeBazi response:', response)
+
     // 触发更新分析历史
     await baziStore.loadAnalyses()
 
@@ -240,6 +242,7 @@ const handleStartAnalysis = async (): Promise<void> => {
       alert('分析创建成功，但无法跳转到详情页')
     }
   } catch (error: any) {
+    console.error('分析过程中出现错误:', error)
     alert(error.message || '分析过程中出现错误')
   } finally {
     isAnalyzing.value = false

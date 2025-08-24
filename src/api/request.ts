@@ -45,7 +45,7 @@ requestAPP.interceptors.response.use(
     }
     
     // 成功则直接返回 data
-    return data
+    return response.data
   },
   (error) => {
     // 处理网络错误等
