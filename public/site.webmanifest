@@ -1,0 +1,38 @@
+{
+  "name": "北斗九号日历",
+  "short_name": "北斗九号",
+  "description": "AI智能八字运势分析平台，提供专业的命理预测服务",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b67fda",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI对话",
+      "url": "/chat",
+      "description": "开始智能对话"
+    },
+    {
+      "name": "八字分析",
+      "url": "/bazi",
+      "description": "进行八字分析"
+    },
+    {
+      "name": "择日",
+      "url": "/calendar",
+      "description": "查看黄道吉日"
+    }
+  ],
+  "categories": ["lifestyle", "utilities"],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

@@ -3,7 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- 安全相关头 -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     
     <!-- 基础SEO Meta标签 -->
     <title>北斗九号日历 - AI智能八字运势分析平台 | 专业命理预测服务</title>
@@ -15,17 +24,17 @@
     <meta name="revisit-after" content="7 days" />
     
     <!-- Google Search Console验证 -->
-    <meta name="google-site-verification" content="Tc1MiyXkFpDHibT3_6VWyFLuxnClUXnqZboDl6enUw4" />
+    <meta name="google-site-verification" content="google29bfed81c87b089d" />
     
     <!-- 百度站长验证 -->
-    <meta name="baidu-site-verification" content="codeva-uDP5qfg1iF" />
+    <meta name="baidu-site-verification" content="codeva-mtFXXebusV" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.9day.tech/" />
     <meta property="og:title" content="北斗九号日历 - AI智能八字运势分析平台" />
     <meta property="og:description" content="专业的AI智能八字运势分析、择日推荐、生肖运势服务。基于传统命理学，结合AI技术，为您提供精准的运势预测和人生指导。" />
-    <meta property="og:image" content="https://www.9day.tech/logo.png" />
+    <meta property="og:image" content="https://www.9day.tech/src/assets/logo.png" />
     <meta property="og:site_name" content="北斗九号日历" />
     <meta property="og:locale" content="zh_CN" />
     
@@ -34,47 +43,75 @@
     <meta property="twitter:url" content="https://www.9day.tech/" />
     <meta property="twitter:title" content="北斗九号日历 - AI智能八字运势分析平台" />
     <meta property="twitter:description" content="专业的AI智能八字运势分析、择日推荐、生肖运势服务。基于传统命理学，结合AI技术，为您提供精准的运势预测和人生指导。" />
-    <meta property="twitter:image" content="https://www.9day.tech/logo.png" />
+    <meta property="twitter:image" content="https://www.9day.tech/src/assets/logo.png" />
     
     <!-- 百度统计 -->
     <script>
       var _hmt = _hmt || [];
       (function() {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?xxxxx";
+        hm.src = "https://hm.baidu.com/hm.js?c38af5236969388eeeb0e1ce385014dc";
         var s = document.getElementsByTagName("script")[0]; 
         s.parentNode.insertBefore(hm, s);
       })();
     </script>
     
+    <!-- 百度自动推送 -->
+    <script>
+      (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+      })();
+    </script>
+    
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-google29bfed81c87b089d"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
+      gtag('config', 'G-google29bfed81c87b089d', {
+        'page_path': location.pathname + location.search,
+        'send_page_view': true
+      });
     </script>
     
-    <!-- 结构化数据 -->
+    <!-- 结构化数据 - 网站信息 -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "北斗九号日历",
+      "alternateName": "9day.tech",
       "url": "https://www.9day.tech/",
       "description": "AI智能八字运势分析平台，提供专业的命理预测服务",
+      "inLanguage": "zh-CN",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.9day.tech/search?q={search_term_string}",
+        "target": "https://www.9day.tech/chat?q={search_term_string}",
         "query-input": "required name=search_term_string"
       },
       "publisher": {
         "@type": "Organization",
         "name": "北斗九号日历",
+        "url": "https://www.9day.tech/",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.9day.tech/logo.png"
+          "url": "https://www.9day.tech/src/assets/logo.png",
+          "width": 512,
+          "height": 512
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": "Chinese"
         }
       },
       "sameAs": [
@@ -84,64 +121,127 @@
     }
     </script>
     
-    <!-- 服务结构化数据 -->
+    <!-- 结构化数据 - 本地商业 -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "AI智能八字运势分析",
-      "description": "基于传统命理学的专业八字分析，结合AI技术提供精准的运势预测",
-      "provider": {
-        "@type": "Organization",
-        "name": "北斗九号日历"
+      "@type": "LocalBusiness",
+      "@id": "https://www.9day.tech/#business",
+      "name": "北斗九号日历",
+      "description": "专业的AI智能八字运势分析平台，提供命理预测、择日推荐、生肖运势等服务",
+      "url": "https://www.9day.tech/",
+      "telephone": "+86-400-000-0000",
+      "priceRange": "免费-付费",
+      "currenciesAccepted": "CNY",
+      "paymentAccepted": "微信支付, 支付宝",
+      "areaServed": {
+        "@type": "Country",
+        "name": "中国"
       },
-      "serviceType": "命理预测服务",
-      "areaServed": "中国",
+      "serviceArea": {
+        "@type": "Country",
+        "name": "中国"
+      },
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": "命理服务套餐",
+        "name": "命理服务目录",
         "itemListElement": [
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "八字运势分析"
-            }
+              "name": "八字运势分析",
+              "description": "基于传统命理学的专业八字分析服务"
+            },
+            "price": "0",
+            "priceCurrency": "CNY"
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "AI智能对话"
-            }
+              "name": "AI智能对话",
+              "description": "与AI大师进行命理问答和咨询"
+            },
+            "price": "0",
+            "priceCurrency": "CNY"
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "择日推荐"
-            }
+              "name": "择日推荐",
+              "description": "智能择日推荐，为重要事件选择吉日良辰"
+            },
+            "price": "0",
+            "priceCurrency": "CNY"
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "生肖运势"
-            }
+              "name": "生肖运势",
+              "description": "十二生肖每日运势预测和分析"
+            },
+            "price": "0",
+            "priceCurrency": "CNY"
           }
         ]
       }
     }
     </script>
     
-    <!-- 预加载关键资源 -->
-    <link rel="preload" href="/src/main.ts" as="script" />
-    <link rel="preload" href="/src/assets/logo.png" as="image" />
+    <!-- 结构化数据 - 面包屑导航 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://www.9day.tech/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI智能对话",
+          "item": "https://www.9day.tech/chat"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "八字分析",
+          "item": "https://www.9day.tech/analysis"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "个人运历",
+          "item": "https://www.9day.tech/calendar"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "生肖运势",
+          "item": "https://www.9day.tech/zodiac-fortune"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- 开发环境不需要预加载 -->
     
     <!-- DNS预解析 -->
     <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//stats.g.doubleclick.net" />
     <link rel="dns-prefetch" href="//hm.baidu.com" />
     <link rel="dns-prefetch" href="//api.9day.tech" />
+    <link rel="preconnect" href="//api.9day.tech" crossorigin="anonymous" />
+    <link rel="preconnect" href="//www.google-analytics.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="//www.googletagmanager.com" crossorigin="anonymous" />
     
     <!-- 移动端优化 -->
     <meta name="format-detection" content="telephone=no" />
@@ -156,7 +256,7 @@
     <meta name="color-scheme" content="only light">
     
     <!-- 内容安全策略 -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://user.9day.tech https://api.9day.tech;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://user.9day.tech https://api.9day.tech https://n8n.9day.tech https://hm.baidu.com https://www.google-analytics.com;">
   </head>
   <body>
     <div id="app"></div>

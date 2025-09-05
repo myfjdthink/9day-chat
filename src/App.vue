@@ -30,13 +30,22 @@
     >
       <template #logo>
         <div class="flex items-center justify-center p-4">
-          <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain" />
+          <img src="@/assets/logo.png" alt="北斗九号日历 - AI智能八字运势分析平台Logo" class="h-8 w-auto object-contain" />
         </div>
       </template>
     </Sidebar>
-    <main class="flex-1">
+    <main 
+      class="flex-1 transition-all duration-300"
+      :class="{
+        'ml-64': sidebarOpen,
+        'ml-16': !sidebarOpen
+      }"
+    >
       <router-view />
     </main>
+    
+    <!-- 许愿池组件 -->
+    <WishPool />
   </div>
 </template>
 
@@ -44,17 +53,22 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
+import Button from './components/ui/Button.vue'
 import Chat from '@/views/Chat.vue'
 import Analysis from '@/views/Analysis.vue'
 import { useChatStore } from '@/stores/chat'
 import { useBaziStore } from '@/stores/bazi'
+import { useSidebar } from '@/composables/useSidebar'
 import SEO from './components/SEO.vue'
+import WishPool from './components/WishPool.vue'
+import { pushCurrentPageToBaidu, pushSitemapUrlsToBaidu } from '@/lib/baidu-push'
 
 const router = useRouter()
 const route = useRoute()
 const activeTab = ref('home')
 const chatStore = useChatStore()
 const baziStore = useBaziStore()
+const { sidebarOpen, initSidebar } = useSidebar()
 
 // 全局唯一聚焦状态
 const selectedChatId = ref<string | null>(null)
@@ -76,6 +90,9 @@ const toggleDark = () => {
 }
 
 onMounted(() => {
+  // 初始化侧边栏状态
+  initSidebar()
+  
   // 初始化暗黑模式
   const theme = localStorage.getItem('theme')
   if (theme === 'dark') {
@@ -85,13 +102,41 @@ onMounted(() => {
     isDark.value = false
     document.documentElement.classList.remove('dark')
   }
+
+  // 推送当前页面到百度
+  pushCurrentPageToBaidu().then(response => {
+    console.log('百度推送结果:', response)
+  }).catch(error => {
+    console.error('百度推送失败:', error)
+  })
+
+  // 每天推送一次站点地图
+  const lastPushDate = localStorage.getItem('lastSitemapPushDate')
+  const today = new Date().toDateString()
+  
+  if (lastPushDate !== today) {
+    pushSitemapUrlsToBaidu().then(response => {
+      console.log('站点地图推送结果:', response)
+      localStorage.setItem('lastSitemapPushDate', today)
+    }).catch(error => {
+      console.error('站点地图推送失败:', error)
+    })
+  }
 })
 
-// 根据路由更新activeTab
-watch(() => route.name, (newRoute) => {
-  if (newRoute) {
-    activeTab.value = newRoute as string
+// 根据路由更新activeTab和推送新页面
+watch(() => route.path, (newPath) => {
+  // 更新activeTab
+  if (route.name) {
+    activeTab.value = route.name as string
   }
+  
+  // 推送新页面到百度
+  pushCurrentPageToBaidu().then(response => {
+    console.log('新页面推送结果:', response)
+  }).catch(error => {
+    console.error('新页面推送失败:', error)
+  })
 }, { immediate: true })
 
 const setActiveTab = (tab: string) => {

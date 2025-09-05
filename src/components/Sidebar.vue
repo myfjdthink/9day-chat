@@ -1,28 +1,113 @@
 <template>
-  <!-- 折叠按钮，仅在移动端显示 -->
-  <button
-    class="sidebar-toggle-btn fixed top-4 left-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-    @click="toggleSidebar"
-    v-if="!sidebarOpen"
-    aria-label="展开侧边栏"
-  >
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-  </button>
-  <transition name="sidebar-slide">
-    <div v-show="sidebarOpen" class="sidebar-wrapper w-64 max-w-xs min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
-      <!-- 折叠收起按钮，仅移动端显示 -->
+  <!-- 收起状态的缩小菜单 -->
+  <div v-if="!sidebarOpen" class="collapsed-sidebar fixed left-0 top-0 z-40 w-16 min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 gap-3">
+    <!-- 展开按钮 -->
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+      @click="toggleSidebar"
+      aria-label="展开侧边栏"
+    >
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    
+    <!-- Logo -->
+    <div class="w-10 h-10 flex items-center justify-center">
+      <img src="@/assets/logo.png" alt="北斗九号日历Logo" class="w-8 h-8 object-contain" />
+    </div>
+    
+    <!-- 新建对话和分析按钮 -->
+    <div class="flex flex-col gap-2 mt-2">
       <button
-        class="sidebar-toggle-btn absolute top-4 right-4 z-50 sm:hidden bg-[#f4f2fa] dark:bg-[#181a22] border border-gray-200 dark:border-gray-700 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
-        @click="toggleSidebar"
-        aria-label="收起侧边栏"
+        class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#b67fda] text-white hover:bg-[#a06cc7] transition-colors"
+        @click="handleNewChat"
+        title="新建对话"
       >
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+        <Plus class="w-5 h-5" />
       </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] transition-colors"
+        @click="handleNewAnalysis"
+        title="新建分析"
+      >
+        <Star class="w-5 h-5" />
+      </button>
+    </div>
+    
+    <!-- 缩小的功能按钮 -->
+    <div class="flex flex-col gap-2 mt-2">
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'home' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoHome"
+        title="首页"
+      >
+        <img :src="homeIcon" alt="首页" class="w-5 h-5" />
+      </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'calendar' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoCalendar"
+        title="个人运历"
+      >
+        <img :src="calendarIcon" alt="个人运历" class="w-5 h-5" />
+      </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'ai-chat' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoAIChat"
+        title="命理问答"
+      >
+        <img :src="chatIcon" alt="命理问答" class="w-5 h-5" />
+      </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'analysis' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoAnalysis"
+        title="八字分析"
+      >
+        <img :src="analysisIcon" alt="八字分析" class="w-5 h-5" />
+      </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'zodiac-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoZodiacFortune"
+        title="生肖运势"
+      >
+        <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5" />
+      </button>
+    </div>
+    
+    <!-- 用户头像 -->
+    <div class="mt-auto">
+      <template v-if="userStore.user">
+        <img :src="defaultAvatar" class="w-8 h-8 rounded-full border object-cover bg-gray-200 dark:bg-gray-700" alt="用户头像" />
+      </template>
+      <template v-else>
+        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700" @click="router.push('/login')">
+          <User class="w-4 h-4 text-gray-500 dark:text-gray-300" />
+        </button>
+      </template>
+    </div>
+  </div>
+  
+  <!-- 展开状态的完整侧边栏 -->
+  <transition name="sidebar-slide">
+    <div v-show="sidebarOpen" class="sidebar-wrapper fixed left-0 top-0 z-40 w-64 max-w-xs min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
       <!-- Header -->
       <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div class="flex items-center space-x-3">
-          <img src="@/assets/logo.png" alt="Logo" class="w-8 h-8 object-contain" />
-          <span class="font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <img src="@/assets/logo.png" alt="北斗九号日历Logo - 专业AI智能命理预测服务" class="w-8 h-8 object-contain" />
+            <span class="font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
+          </div>
+          <!-- 折叠按钮 -->
+          <button
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
+            @click="toggleSidebar"
+            aria-label="收起侧边栏"
+          >
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
         </div>
       </div>
 
@@ -57,7 +142,7 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoHome"
             >
-              <Home :class="['w-5 h-5 opacity-80', activeTab === 'home' ? 'text-white' : 'text-[#0b3289]']" />
+              <img :src="homeIcon" alt="首页" class="w-5 h-5 opacity-80" />
               首页
             </Button>
             <Button
@@ -67,7 +152,7 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoCalendar"
             >
-              <Database :class="['w-5 h-5 opacity-80', activeTab === 'calendar' ? 'text-white' : 'text-[#0b3289]']" />
+              <img :src="calendarIcon" alt="个人运历" class="w-5 h-5 opacity-80" />
               个人运历
             </Button>
             <Button
@@ -77,7 +162,7 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAIChat"
             >
-              <MessageCircle :class="['w-5 h-5 opacity-80', activeTab === 'ai-chat' ? 'text-white' : 'text-[#0b3289]']" />
+              <img :src="chatIcon" alt="命理问答" class="w-5 h-5 opacity-80" />
               命理问答
             </Button>
             <Button
@@ -87,7 +172,7 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAnalysis"
             >
-              <Star :class="['w-5 h-5 opacity-80', activeTab === 'analysis' ? 'text-white' : 'text-[#0b3289]']" />
+              <img :src="analysisIcon" alt="八字分析" class="w-5 h-5 opacity-80" />
               八字分析
             </Button>
             <Button
@@ -97,7 +182,7 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoZodiacFortune"
             >
-              <Star :class="['w-5 h-5 opacity-80', activeTab === 'zodiac-fortune' ? 'text-white' : 'text-[#0b3289]']" />
+              <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5 opacity-80" />
               生肖运势
             </Button>
           </nav>
@@ -118,7 +203,7 @@
         <div class="flex items-center justify-start gap-3">
           <template v-if="userStore.user">
             <div class="relative flex items-center gap-2">
-              <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="avatar" @click="showDropdown = !showDropdown" />
+              <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="用户头像 - 个人账户设置与资料管理" @click="showDropdown = !showDropdown" />
               <span class="ml-2 text-base text-gray-900 dark:text-gray-100 font-medium truncate max-w-[120px]">{{ userStore.user.username || userStore.user.email }}</span>
               <transition name="fade">
                 <div v-if="showDropdown" class="absolute left-0 bottom-12 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
@@ -153,16 +238,22 @@
 </template>
 
 <script setup lang="ts">
-import { MessageCircle, Home, User, Database, Plus, Star, Settings, Moon } from 'lucide-vue-next'
+import { User, Plus, Star, Settings, Moon } from 'lucide-vue-next'
 import Button from './ui/Button.vue'
 import HistoryPanel from './HistoryPanel.vue'
 import { useChatStore } from '@/stores/chat'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
+import { useSidebar } from '@/composables/useSidebar'
 import { computed, onMounted, ref, nextTick } from 'vue'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
+import homeIcon from '@/assets/home.png'
+import calendarIcon from '@/assets/calendar.png'
+import chatIcon from '@/assets/chat.png'
+import analysisIcon from '@/assets/analysis.png'
+import dragonIcon from '@/assets/dragon.png'
 
 interface SidebarProps {
   activeTab: string
@@ -176,6 +267,7 @@ const chatStore = useChatStore()
 const router = useRouter()
 const userStore = useUserStore()
 const baziStore = useBaziStore()
+const { sidebarOpen, toggleSidebar, initSidebar } = useSidebar()
 
 const emit = defineEmits<{
   'set-active-tab': [tab: string]
@@ -261,22 +353,11 @@ const handleGoAdmin = async () => {
   }
 }
 
-// 侧边栏折叠状态，默认移动端关闭，PC端始终打开
-const sidebarOpen = ref(window.innerWidth > 640)
-
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
-// 监听窗口变化，移动端自动关闭侧边栏
+// 监听窗口变化和初始化
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    if (window.innerWidth <= 640) {
-      sidebarOpen.value = false
-    } else {
-      sidebarOpen.value = true
-    }
-  })
+  // 初始化侧边栏状态
+  initSidebar()
+  
   userStore.init()
   if (userStore.token) {
     userStore.fetchUser()
@@ -330,9 +411,10 @@ const handleGoZodiacFortune = () => {
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
+
 /* 侧边栏滑入动画 */
 .sidebar-slide-enter-active, .sidebar-slide-leave-active {
-  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s;
 }
 .sidebar-slide-enter-from, .sidebar-slide-leave-to {
   transform: translateX(-100%);
@@ -342,20 +424,36 @@ const handleGoZodiacFortune = () => {
   transform: translateX(0);
   opacity: 1;
 }
-/* 折叠按钮样式 */
-.sidebar-toggle-btn {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #333;
-  transition: background 0.2s;
+
+/* 收起状态的侧边栏动画 */
+.collapsed-sidebar {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.sidebar-toggle-btn:active {
-  background: #f3f4f6;
+
+/* 按钮悬停效果 */
+.collapsed-sidebar button {
+  transition: all 0.2s ease-in-out;
 }
-@media (min-width: 641px) {
-  .sidebar-toggle-btn {
-    display: none;
-  }
+
+.collapsed-sidebar button:hover {
+  transform: scale(1.05);
+}
+
+/* 工具提示样式 */
+.collapsed-sidebar button[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
 }
 </style>

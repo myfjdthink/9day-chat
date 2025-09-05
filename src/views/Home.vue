@@ -2,16 +2,23 @@
   <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="北斗九号日历 - 专业八字运势分析平台"
-      description="专业的八字运势分析、择日推荐、生肖运势服务。基于传统命理学，结合现代技术，为您提供精准的运势预测和人生指导。"
-      keywords="八字分析,命理问答,择日推荐,生肖运势,命理预测,运势咨询,黄道吉日,运势分析,命理指导,命理服务"
+      title="北斗九号日历 - 专业AI八字运势分析平台 | 智能命理预测服务首页"
+      description="北斗九号日历是专业的AI八字运势分析平台，提供智能命理预测、八字排盘、择日推荐、生肖运势查询等服务。基于传统命理学理论与现代AI技术，为用户提供精准的运势分析、人生指导和决策建议。立即体验免费八字分析服务。"
+      keywords="北斗九号日历,AI八字分析,智能命理预测,八字排盘,择日推荐,生肖运势,命理咨询,在线算命,免费八字,运势分析"
     />
     
     <div class="max-w-6xl mx-auto">
+      <!-- 面包屑导航 -->
+      <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4" aria-label="面包屑导航">
+        <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">首页</a>
+        <span class="text-gray-400">/</span>
+        <span class="text-gray-900 dark:text-gray-100 font-medium">AI智能八字运势分析平台</span>
+      </nav>
+      
       <!-- Welcome Section -->
       <div class="text-center mb-6 md:mb-8">
         <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-          <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
+          <img src="@/assets/logo.png" alt="北斗九号日历Logo - AI智能八字运势分析与择日推荐平台" class="w-16 h-16 object-contain" />
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">专业八字运势分析平台</h1>
         <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业八字分析、命理问答、择日推荐、生肖运势，一站式命理服务平台</p>
@@ -155,21 +162,21 @@
                 <span class="text-white font-bold text-lg">1</span>
               </div>
               <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">注册登录</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">简单注册，开启您的专属命理分析服务</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">简单<a href="/register" class="text-blue-600 dark:text-blue-400 hover:underline">注册</a>，开启您的专属命理分析服务</p>
             </div>
             <div class="text-center">
               <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span class="text-white font-bold text-lg">2</span>
               </div>
               <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">完成八字分析</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">输入您的出生信息，获得专业八字分析报告</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">输入您的出生信息，获得专业<a href="/analysis" class="text-blue-600 dark:text-blue-400 hover:underline">八字分析报告</a></p>
             </div>
             <div class="text-center">
               <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span class="text-white font-bold text-lg">3</span>
               </div>
               <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">享受智能服务</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">与AI对话、查看运势、择日推荐，全方位服务</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">与<a href="/chat" class="text-blue-600 dark:text-blue-400 hover:underline">AI对话</a>、<a href="/zodiac-fortune" class="text-blue-600 dark:text-blue-400 hover:underline">查看运势</a>、<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">择日推荐</a>，全方位服务</p>
             </div>
           </div>
         </div>

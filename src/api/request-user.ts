@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { API_CONFIG, REQUEST_CONFIG } from './config'
 
 const requestUser = axios.create({
-  baseURL: 'https://user.9day.tech/api/v1',
-  timeout: 60000,
+  baseURL: API_CONFIG.USER_BASE_URL,
+  timeout: REQUEST_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json'
   }

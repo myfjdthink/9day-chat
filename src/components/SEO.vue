@@ -15,13 +15,21 @@ interface SEOProps {
   type?: string
 }
 
+// 默认值 - 优化后的SEO内容
+const defaultTitle = '北斗九号日历 - 专业AI八字运势分析平台 | 智能命理预测服务'
+const defaultDescription = '北斗九号日历提供专业的AI八字运势分析、智能择日推荐、生肖运势查询等服务。基于传统命理学理论，结合现代AI技术，为用户提供精准的运势预测、人生指导和决策建议。支持在线八字排盘、用神分析、流年运势等功能。'
+const defaultKeywords = '八字分析,AI智能命理,择日推荐,生肖运势,命理预测,八字排盘,用神分析,流年运势,黄道吉日,运势分析,命理咨询,在线算命'
+const defaultImage = 'https://www.9day.tech/logo.png'
+const defaultUrl = 'https://www.9day.tech/'
+const defaultType = 'website'
+
 const props = withDefaults(defineProps<SEOProps>(), {
-  title: '北斗九号日历 - AI智能八字运势分析平台',
-  description: '北斗九号日历提供专业的AI智能八字运势分析、择日推荐、生肖运势等服务。基于传统命理学，结合AI技术，为您提供精准的运势预测和人生指导。',
-  keywords: '八字分析,AI智能对话,择日推荐,生肖运势,命理预测,风水大师,黄道吉日,运势分析,AI助手,命理服务',
-  image: 'https://www.9day.tech/logo.png',
-  url: 'https://www.9day.tech',
-  type: 'website'
+  title: defaultTitle,
+  description: defaultDescription,
+  keywords: defaultKeywords,
+  image: defaultImage,
+  url: defaultUrl,
+  type: defaultType
 })
 
 const route = useRoute()
@@ -112,6 +120,9 @@ const updateStructuredData = () => {
     }
   })
   
+  // 获取面包屑导航数据
+  const breadcrumbs = getBreadcrumbs()
+  
   // 添加新的结构化数据
   const structuredData = {
     "@context": "https://schema.org",
@@ -122,14 +133,87 @@ const updateStructuredData = () => {
     "mainEntity": {
       "@type": "Service",
       "name": "AI智能八字运势分析",
-      "description": props.description
-    }
+      "description": props.description,
+      "provider": {
+        "@type": "Organization",
+        "name": "北斗九号日历",
+        "url": props.url,
+        "logo": {
+          "@type": "ImageObject",
+          "url": props.url + "/logo.png"
+        }
+      },
+      "areaServed": "中国",
+      "availableLanguage": "zh-CN"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs
+    },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", "h2", ".description"]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "北斗九号日历",
+      "logo": {
+        "@type": "ImageObject",
+        "url": props.url + "/logo.png"
+      }
+    },
+    "datePublished": new Date().toISOString(),
+    "dateModified": new Date().toISOString()
   }
   
   const script = document.createElement('script')
   script.type = 'application/ld+json'
   script.textContent = JSON.stringify(structuredData)
   document.head.appendChild(script)
+}
+
+// 获取面包屑导航数据
+const getBreadcrumbs = () => {
+  const paths = route.path.split('/').filter(Boolean)
+  const breadcrumbs = []
+  let currentPath = ''
+  
+  // 添加首页
+  breadcrumbs.push({
+    "@type": "ListItem",
+    "position": 1,
+    "name": "首页",
+    "item": props.url
+  })
+  
+  // 添加其他路径
+  paths.forEach((path, index) => {
+    currentPath += `/${path}`
+    breadcrumbs.push({
+      "@type": "ListItem",
+      "position": index + 2,
+      "name": getPageTitle(path),
+      "item": props.url + currentPath
+    })
+  })
+  
+  return breadcrumbs
+}
+
+// 获取页面标题
+const getPageTitle = (path: string) => {
+  const titleMap: Record<string, string> = {
+    'chat': 'AI智能对话',
+    'analysis': '八字分析',
+    'calendar': '择日推荐',
+    'zodiac-fortune': '生肖运势',
+    'login': '用户登录',
+    'register': '用户注册',
+    'profile': '个人中心',
+    'password-reset': '重置密码',
+    'forgot-password': '找回密码'
+  }
+  return titleMap[path] || path
 }
 
 // 监听路由变化
@@ -141,4 +225,4 @@ watch(() => route.path, () => {
 onMounted(() => {
   updateSEO()
 })
-</script> 
+</script>

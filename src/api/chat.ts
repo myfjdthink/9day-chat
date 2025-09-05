@@ -6,17 +6,20 @@
 import request from './request-main'
 import requestUser from './request-user'
 import axios from 'axios'
-
-// API 配置
-const API_BASE_URL = 'https://api.9day.tech'
-const API_ENDPOINTS = {
-  CHAT: '/bazi/model/invoke'
-}
-
-// 新增：主接口配置
-const N8N_AI_URL = 'https://n8n.9day.tech/webhook/ai-service'
-const N8N_AI_USER = import.meta.env.VITE_N8N_AI_USER || process.env.VITE_N8N_AI_USER
-const N8N_AI_PASS = import.meta.env.VITE_N8N_AI_PASS || process.env.VITE_N8N_AI_PASS
+import { 
+  API_CONFIG, 
+  API_ENDPOINTS, 
+  PROVIDERS, 
+  MODELS, 
+  SYSTEM_ROLES, 
+  DEFAULT_MODEL_CONFIG,
+  ENV_CONFIG,
+  REQUEST_CONFIG,
+  getDefaultModelConfig,
+  type ProviderType,
+  type ModelType,
+  type SystemRoleType
+} from './config'
 
 // 请求和响应类型定义
 export interface Message {
@@ -63,16 +66,16 @@ export class ChatAPIError extends Error {
 export async function sendChatMessage(chatRequest: ChatRequest): Promise<ChatResponse> {
   // 1. 主接口（n8n webhook，POST，x-www-form-urlencoded）
   try {
-    if (N8N_AI_USER && N8N_AI_PASS) {
-      const basicAuth = btoa(`${N8N_AI_USER}:${N8N_AI_PASS}`)
+    if (ENV_CONFIG.N8N_AI_USER && ENV_CONFIG.N8N_AI_PASS) {
+      const basicAuth = btoa(`${ENV_CONFIG.N8N_AI_USER}:${ENV_CONFIG.N8N_AI_PASS}`)
       const params = new URLSearchParams()
       params.append('message', chatRequest.prompt)
-      const mainResp = await axios.post(N8N_AI_URL, params, {
+      const mainResp = await axios.post(API_CONFIG.N8N_AI_URL, params, {
         headers: {
           'Authorization': `Basic ${basicAuth}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        timeout: 20000
+        timeout: REQUEST_CONFIG.N8N_TIMEOUT
       })
       if (mainResp.data && typeof mainResp.data.output === 'string' && mainResp.data.output.trim()) {
         // 主接口成功，返回兼容 ChatResponse 格式
@@ -94,7 +97,7 @@ export async function sendChatMessage(chatRequest: ChatRequest): Promise<ChatRes
   // 2. 后备接口（原有）
   try {
     const response = await request({
-      url: `${API_BASE_URL}${API_ENDPOINTS.CHAT}`,
+      url: API_ENDPOINTS.CHAT,
       method: 'POST',
       data: chatRequest
     })
@@ -140,7 +143,7 @@ function formatHistoryToText(history: Message[]): string {
 /**
  * 创建预设的对话请求
  * @param prompt 用户输入的问题
- * @param system 系统角色设定，默认为专业命理分析师
+ * @param system 系统角色设定，可选
  * @param provider 模型提供商，可选值：ollama、zhipuai、deepseek、gemini、openrouter
  * @param modelName 模型名称，如果为None则使用当前配置的模型
  * @param history 历史消息记录
@@ -149,7 +152,7 @@ function formatHistoryToText(history: Message[]): string {
  */
 export function createChatRequest(
   prompt: string,
-  system: string = '你是一个专业的命理分析师',
+  system?: string,
   provider?: string,
   modelName?: string,
   history: Message[] = [],
@@ -163,10 +166,13 @@ export function createChatRequest(
     prompt: fullPrompt.trim()
   }
   
-  // 只添加非空的可选参数
-  if (provider) request.provider = provider
-  if (modelName) request.model_name = modelName
-  if (system) request.system = system
+  // 使用默认配置，除非明确指定了其他配置
+  const { provider: defaultProvider, model: defaultModel } = getDefaultModelConfig()
+  request.provider = provider || defaultProvider
+  request.model_name = modelName || defaultModel
+  
+  // 只有当system不为空时才添加
+  if (system && system.trim()) request.system = system.trim()
   if (imagePaths && imagePaths.length > 0) request.image_paths = imagePaths
   
   return request
@@ -175,11 +181,11 @@ export function createChatRequest(
 /**
  * 便捷的对话函数
  * @param prompt 用户问题
- * @param system 系统角色设定
- * @param provider 模型提供商
- * @param modelName 模型名称
- * @param history 历史消息记录
- * @param imagePaths 图片路径列表
+ * @param system 系统角色设定（可选）
+ * @param provider 模型提供商（可选）
+ * @param modelName 模型名称（可选）
+ * @param history 历史消息记录（可选）
+ * @param imagePaths 图片路径列表（可选）
  * @returns Promise<string> 返回 AI 回复内容
  */
 export async function chat(
@@ -195,30 +201,7 @@ export async function chat(
   return response.data.content
 }
 
-// 预设的系统角色
-export const SYSTEM_ROLES = {
-  FORTUNE_TELLER: '你是一个专业的命理分析师',
-  ASSISTANT: '你是一个智能助手',
-  BAZI_EXPERT: '你是一个八字分析专家，精通传统命理学',
-  LIFE_ADVISOR: '你是一个人生导师，善于给出建设性的建议'
-} as const
-
-// 预设的模型提供商
-export const PROVIDERS = {
-  OLLAMA: 'ollama',
-  ZHIPUAI: 'zhipuai',
-  DEEPSEEK: 'deepseek',
-  GEMINI: 'gemini',
-  OPENROUTER: 'openrouter'
-} as const
-
-// 预设的模型
-export const MODELS = {
-  GLM_4_FLASH: 'glm-4.5-flash',
-  GLM_4V: 'glm-4v',
-  DEEPSEEK_CHAT: 'deepseek/deepseek-chat-v3-0324:free',
-  DEEPSEEK_CODER: 'deepseek/deepseek-coder-v2:free'
-} as const
+// 从配置文件导入的常量已在文件顶部导入，这里不再重复定义
 
 // ===================== 新增：会话与消息持久化 API 封装 =====================
 

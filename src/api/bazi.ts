@@ -1,6 +1,13 @@
 import type { AxiosResponse } from 'axios'
 import request from './request-main'
 import requestUser from './request-user'
+import { 
+  PROVIDERS, 
+  MODELS, 
+  getDefaultModelConfig,
+  type ProviderType,
+  type ModelType
+} from './config'
 
 // 根据API文档更新八字分析参数类型
 interface BaziAnalysisParams {
@@ -26,9 +33,136 @@ interface BaziAnalysisResult {
   }
 }
 
-export const analyzeBazi = async (params: BaziAnalysisParams): Promise<BaziAnalysisResult> => {
-  const response: AxiosResponse<BaziAnalysisResult> = await request.post('/bazi/ai', params)
+// 重试函数
+const retryRequest = async (fn: () => Promise<any>, retries = 3, delay = 2000): Promise<any> => {
+  try {
+    return await fn()
+  } catch (error: any) {
+    if (retries === 0 || (error.response && error.response.status !== 504)) {
+      throw error
+    }
+    console.log(`请求失败，${delay/1000}秒后重试，剩余重试次数：${retries}`)
+    await new Promise(resolve => setTimeout(resolve, delay))
+    return retryRequest(fn, retries - 1, delay)
+  }
+}
+
+// 创建分析任务
+export const createAnalysisTask = async (params: BaziAnalysisParams): Promise<{ taskId: string }> => {
+  const { provider: defaultProvider, model: defaultModel } = getDefaultModelConfig()
+  const requestParams = {
+    ...params,
+    provider: params.provider || defaultProvider,
+    model_name: params.model_name || defaultModel
+  }
+  
+  const response = await request.post('/bazi/ai/create-task', requestParams)
   return response.data
+}
+
+// 获取任务状态
+export const getAnalysisStatus = async (taskId: string): Promise<{
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  result?: BaziAnalysisResult
+  error?: string
+}> => {
+  const response = await request.get(`/bazi/ai/task-status/${taskId}`)
+  return response.data
+}
+
+// 轮询任务结果
+export const pollAnalysisResult = async (
+  taskId: string, 
+  { maxAttempts = 30, interval = 2000 } = {}
+): Promise<BaziAnalysisResult> => {
+  let attempts = 0
+  
+  while (attempts < maxAttempts) {
+    const { status, result, error } = await getAnalysisStatus(taskId)
+    
+    if (status === 'completed' && result) {
+      return result
+    }
+    
+    if (status === 'failed') {
+      throw new Error(error || '分析失败')
+    }
+    
+    if (status === 'pending' || status === 'processing') {
+      await new Promise(resolve => setTimeout(resolve, interval))
+      attempts++
+      continue
+    }
+  }
+  
+  throw new Error('分析超时，请稍后重试')
+}
+
+// 兜底模型配置
+const FALLBACK_CONFIG = {
+  PROVIDER: PROVIDERS.ZHIPUAI,
+  MODEL: MODELS.GLM_4_FLASH_250414
+} as const
+
+// 主分析函数
+export const analyzeBazi = async (params: BaziAnalysisParams): Promise<BaziAnalysisResult> => {
+  const tryWithModel = async (provider: string, model: string) => {
+    const requestParams = {
+      ...params,
+      provider,
+      model_name: model
+    }
+    
+    try {
+      // 1. 创建任务
+      const { taskId } = await createAnalysisTask(requestParams)
+      
+      // 2. 轮询结果（最多等待 60 秒）
+      return await pollAnalysisResult(taskId, {
+        maxAttempts: 30,  // 30次尝试
+        interval: 2000    // 每2秒一次
+      })
+    } catch (error: any) {
+      // 如果后端未实现异步接口，降级到同步调用
+      if (error.response?.status === 404) {
+        console.warn('后端未实现异步接口，使用同步调用')
+        return retryRequest(async () => {
+          const response = await request.post('/bazi/ai', requestParams)
+          return response.data
+        })
+      }
+      throw error
+    }
+  }
+
+  try {
+    // 首先尝试使用指定的模型
+    return await tryWithModel(
+      params.provider || getDefaultModelConfig().provider,
+      params.model_name || getDefaultModelConfig().model
+    )
+  } catch (error: any) {
+    console.warn('主模型分析失败，尝试使用兜底模型:', error)
+    
+    // 特定错误才使用兜底模型（超时、模型不可用等）
+    if (
+      error.name === 'AbortError' || // 超时
+      error.response?.status === 503 || // 服务不可用
+      error.message.includes('model not available') || // 模型不可用
+      error.message.includes('timeout') // 超时相关错误
+    ) {
+      try {
+        console.log('使用兜底模型重试:', FALLBACK_CONFIG)
+        return await tryWithModel(FALLBACK_CONFIG.PROVIDER, FALLBACK_CONFIG.MODEL)
+      } catch (fallbackError) {
+        console.error('兜底模型也失败了:', fallbackError)
+        throw fallbackError // 如果兜底模型也失败，则抛出错误
+      }
+    }
+    
+    // 其他错误直接抛出
+    throw error
+  }
 }
 
 // 预设的分析部分
@@ -38,22 +172,7 @@ export const ANALYSIS_PARTS = {
   FLOW_DAY: '流日'
 } as const
 
-// 预设的模型提供商（与 chat.ts 保持一致）
-export const PROVIDERS = {
-  OLLAMA: 'ollama',
-  ZHIPUAI: 'zhipuai',
-  DEEPSEEK: 'deepseek',
-  GEMINI: 'gemini',
-  OPENROUTER: 'openrouter'
-} as const
-
-// 预设的模型（与 chat.ts 保持一致）
-export const MODELS = {
-  GLM_4_FLASH: 'glm-4.5-flash',
-  GLM_4V: 'glm-4v',
-  DEEPSEEK_CHAT: 'deepseek/deepseek-chat-v3-0324:free',
-  DEEPSEEK_CODER: 'deepseek/deepseek-coder-v2:free'
-} as const
+// 从配置文件导入的常量已在文件顶部导入，这里不再重复定义
 
 // ========== 八字分析历史相关类型和接口 ========== //
 
@@ -159,8 +278,10 @@ export async function fetchFortuneAnalysis(params: {
   current_datetime: string
   gender: '男' | '女'
 }): Promise<any> {
-  const res = await request.post('/bazi/fortune', params)
-  return res.data
+  return retryRequest(async () => {
+    const res = await request.post('/bazi/fortune', params)
+    return res.data
+  })
 } 
 
 /**
@@ -360,9 +481,17 @@ export function clearZodiacFortuneCache(params?: ZodiacFortuneParams): void {
  * @returns Promise<ZodiacFortuneResponse>
  */
 export async function analyzeZodiacFortune(params: ZodiacFortuneParams = {}, forceRefresh = false): Promise<ZodiacFortuneResponse> {
+  // 使用默认配置，除非明确指定了其他配置
+  const { provider: defaultProvider, model: defaultModel } = getDefaultModelConfig()
+  const requestParams = {
+    ...params,
+    provider: params.provider || defaultProvider,
+    model_name: params.model_name || defaultModel
+  }
+  
   // 如果不是强制刷新，先检查缓存
   if (!forceRefresh) {
-    const cachedData = getZodiacFortuneCache(params)
+    const cachedData = getZodiacFortuneCache(requestParams)
     if (cachedData) {
       return {
         success: true,
@@ -373,12 +502,164 @@ export async function analyzeZodiacFortune(params: ZodiacFortuneParams = {}, for
   }
   
   // 请求新数据
-  const response: AxiosResponse<ZodiacFortuneResponse> = await request.post('/zodiac-fortune/analyze', params)
+  const response: AxiosResponse<ZodiacFortuneResponse> = await request.post('/zodiac-fortune/analyze', requestParams)
   
   // 缓存成功的数据
   if (response.data.success) {
-    setZodiacFortuneCache(params, response.data.data)
+    setZodiacFortuneCache(requestParams, response.data.data)
   }
   
   return response.data
-} 
+}
+
+// ========== 基础分析和用神分析接口 ========== //
+
+/**
+ * 基础分析参数
+ */
+interface BaseAnalysisParams {
+  birth_datetime: string
+  current_datetime: string
+  gender: '男' | '女'
+}
+
+/**
+ * 基础分析响应数据结构
+ */
+interface BaseAnalysisData {
+  基础分析: {
+    性别: string
+    八字信息: {
+      年柱: {
+        干支组合: { 天干: string; 地支: string }
+        五行属性: { 天干五行: string; 地支五行: string }
+      }
+      月柱: {
+        干支组合: { 天干: string; 地支: string }
+        五行属性: { 天干五行: string; 地支五行: string }
+      }
+      日柱: {
+        干支组合: { 天干: string; 地支: string }
+        五行属性: { 天干五行: string; 地支五行: string }
+      }
+      时柱: {
+        干支组合: { 天干: string; 地支: string }
+        五行属性: { 天干五行: string; 地支五行: string }
+      }
+    }
+    五行统计: {
+      五行分布: Record<string, number>
+      最强五行: string
+      最弱五行: string
+    }
+    当前大运信息: {
+      天干: string
+      地支: string
+      五行: { 天干五行: string; 地支五行: string }
+    }
+    流年流月流日信息: {
+      流年: {
+        天干: string
+        地支: string
+        五行: { 天干五行: string; 地支五行: string }
+      }
+      流月: {
+        天干: string
+        地支: string
+        五行: { 天干五行: string; 地支五行: string }
+      }
+      流日: {
+        天干: string
+        地支: string
+        五行: { 天干五行: string; 地支五行: string }
+      }
+    }
+  }
+}
+
+/**
+ * 基础分析响应
+ */
+export interface BaseAnalysisResponse {
+  success: boolean
+  message: string
+  data: BaseAnalysisData
+}
+
+/**
+ * 用神分析响应数据结构
+ */
+interface YongshenAnalysisData {
+  格局: string
+  用神: string[]
+  忌神: string[]
+  取用: string
+  大运分析: Record<string, any>
+  分析: string
+}
+
+/**
+ * 用神分析响应
+ */
+export interface YongshenAnalysisResponse {
+  success: boolean
+  message: string
+  data: YongshenAnalysisData
+}
+
+/**
+ * 基础分析API
+ * @param params 分析参数
+ * @returns Promise<BaseAnalysisResponse>
+ */
+export async function analyzeBase(params: BaseAnalysisParams): Promise<BaseAnalysisResponse> {
+  return retryRequest(async () => {
+    const response = await request.post('/bazi/base', params)
+    return response.data
+  })
+}
+
+/**
+ * 用神分析API
+ * @param params 分析参数
+ * @returns Promise<YongshenAnalysisResponse>
+ */
+export async function analyzeYongshen(params: BaseAnalysisParams): Promise<YongshenAnalysisResponse> {
+  return retryRequest(async () => {
+    const response = await request.post('/bazi/yongshen', params)
+    return response.data
+  })
+}
+
+// ========== 运势范围分析接口 ========== //
+
+/**
+ * 运势范围分析参数
+ */
+interface FortuneRangeParams {
+  birth_datetime: string
+  start_date: string
+  end_date: string
+  gender: '男' | '女'
+}
+
+/**
+ * 运势范围分析响应
+ */
+export interface FortuneRangeResponse {
+  success: boolean
+  message: string
+  data: any[]
+}
+
+/**
+ * 运势范围分析API
+ * @param params 分析参数
+ * @returns Promise<FortuneRangeResponse>
+ */
+export async function analyzeFortuneRange(params: FortuneRangeParams): Promise<any[]> {
+  return retryRequest(async () => {
+    const response = await request.post('/bazi/fortune_range', params)
+    return response.data
+  })
+}

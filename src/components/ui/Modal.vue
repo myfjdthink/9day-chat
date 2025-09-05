@@ -29,7 +29,7 @@ const props = defineProps<{
   message?: string
   confirmText?: string
   cancelText?: string
-  onConfirm: () => void
-  onCancel: () => void
+  onConfirm?: () => void
+  onCancel?: () => void
 }>()
 </script> 

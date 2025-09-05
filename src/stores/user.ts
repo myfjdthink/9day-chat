@@ -58,6 +58,10 @@ export const useUserStore = defineStore('user', {
     token: localStorage.getItem('access_token'),
     user: null
   }),
+  getters: {
+    isLoggedIn: (state): boolean => !!state.token && !isTokenExpired(),
+    userInfo: (state): UserInfo | null => state.user
+  },
   actions: {
     // 登录 action
     async login(username: string, password: string) {

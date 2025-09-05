@@ -2,16 +2,16 @@
   <div class="flex-1 flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="命理问答 - 北斗九号日历"
-      description="温和专业的命理咨询，为您解答八字运势、人生方向、事业发展等困惑。知心交谈，专业解答。"
-      keywords="命理问答,八字解答,运势咨询,人生指导,命理咨询,在线算命,八字解读"
+      title="AI智能命理对话 - 专业八字运势咨询 | 北斗九号日历"
+      description="与专业AI命理助手在线对话，获取个性化八字分析、运势预测、择日建议等服务。基于深度学习的智能命理系统，24小时为您提供专业的命理咨询和人生指导建议。支持语音对话和文字交流。"
+      keywords="AI命理对话,智能八字咨询,在线运势预测,AI命理助手,智能择日建议,命理问答,运势咨询,人工智能算命,在线命理师"
     />
     
     <!-- Top Bar -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <img src="@/assets/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
+          <img src="@/assets/logo.png" alt="北斗九号日历Logo - AI智能八字运势分析平台" class="w-5 h-5 object-contain" />
           <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
         </div>
         <!-- 移除重复的暗黑模式按钮 -->
@@ -26,7 +26,7 @@
       <div v-if="chatStore.currentMessages.length === 0" class="flex-1 flex items-center justify-center">
         <div class="text-center">
           <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-            <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 object-contain" />
+            <img src="@/assets/logo.png" alt="北斗九号日历 - 专业AI智能命理预测服务平台标志" class="w-16 h-16 object-contain" />
           </div>
           <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
           <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
@@ -51,7 +51,7 @@
             <!-- 分析报告消息 -->
             <template v-if="message.role === 'report'">
               <div class="flex-shrink-0">
-                <img :src="aiAvatar" alt="AI Avatar" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
+                <img :src="aiAvatar" alt="AI智能命理大师头像 - 专业八字运势分析助手" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
               </div>
               <div
                 class="max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"

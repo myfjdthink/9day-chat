@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-1 overflow-y-auto">
+  <div v-if="shouldShowHistoryPanel" class="flex-1 overflow-y-auto">
     <!-- Chat History Section -->
-    <div class="px-4 py-2">
+    <div v-if="shouldShowChatHistory" class="px-4 py-2">
       <div class="text-xs text-gray-500 mb-2 flex items-center justify-between">
         <span>对话历史</span>
         <Button 
@@ -16,7 +16,7 @@
         </Button>
       </div>
       
-      <div v-if="showChatHistory" class="space-y-1 max-h-60 overflow-y-auto">
+      <div v-if="showChatHistory" class="space-y-1 max-h-80 overflow-y-auto">
         <div 
           v-for="chat in chatStore.chatHistory" 
           :key="chat.id"
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Analysis History Section -->
-    <div class="px-4 py-2">
+    <div v-if="shouldShowAnalysisHistory" class="px-4 py-2">
       <div class="text-xs text-gray-500 mb-2 flex items-center justify-between">
         <span>分析历史</span>
         <Button 
@@ -72,7 +72,7 @@
         </Button>
       </div>
       
-      <div v-if="showAnalysisHistory" class="space-y-1 max-h-60 overflow-y-auto">
+      <div v-if="showAnalysisHistory" class="space-y-1 max-h-80 overflow-y-auto">
         <div 
           v-for="analysis in analyses" 
           :key="analysis.id"
@@ -120,12 +120,27 @@ import Button from './ui/Button.vue'
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
+import { useRoute } from 'vue-router'
 
 const chatStore = useChatStore()
 const userStore = useUserStore()
 const isLoggedIn = computed(() => !!userStore.user)
 const baziStore = useBaziStore()
 const analyses = computed(() => baziStore.sortedAnalyses)
+const route = useRoute()
+
+// 根据当前路由决定显示哪些历史记录
+const shouldShowHistoryPanel = computed(() => {
+  return route.name === 'chat' || route.name === 'analysis'
+})
+
+const shouldShowChatHistory = computed(() => {
+  return route.name === 'chat'
+})
+
+const shouldShowAnalysisHistory = computed(() => {
+  return route.name === 'analysis'
+})
 
 // 新增：选中项高亮
 const props = defineProps<{

@@ -1,13 +1,98 @@
+# 全局规则
 User-agent: *
 Allow: /
-
-# 允许所有搜索引擎爬取
 Disallow: /admin/
 Disallow: /api/
 Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# 百度爬虫
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# 360爬虫
+User-agent: 360Spider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# 搜狗爬虫
+User-agent: Sogou spider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# 神马爬虫
+User-agent: YisouSpider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# Google爬虫
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# Bing爬虫
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
+
+# OpenAI GPT爬虫
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /login
+Disallow: /register
+Disallow: /password-reset
+Disallow: /forgot-password
+Crawl-delay: 1
 
 # 站点地图
 Sitemap: https://www.9day.tech/sitemap.xml
-
-# 爬取延迟（秒）
-Crawl-delay: 1 

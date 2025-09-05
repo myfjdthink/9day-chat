@@ -1,10 +1,17 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4">
+    <!-- 面包屑导航 -->
+    <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4 max-w-6xl mx-auto" aria-label="面包屑导航">
+      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">首页</a>
+      <span class="text-gray-400">/</span>
+      <span class="text-gray-900 dark:text-gray-100 font-medium">生肖运势查询</span>
+    </nav>
+    
     <!-- SEO组件 -->
     <SEO 
-      title="生肖运势 - 北斗九号日历"
-      description="每日生肖运势分析，了解今日吉凶，把握良机，趋利避害。提供今日运势评分、事业财运分析、健康感情运势、吉凶建议。"
-      keywords="生肖运势,今日运势,运势分析,生肖分析,吉凶预测,运势评分,事业财运,健康感情"
+      title="十二生肖运势查询 - 每日生肖运势分析 | 北斗九号日历"
+      description="提供专业的十二生肖每日运势分析，包括鼠牛虎兔龙蛇马羊猴鸡狗猪全年运势预测。基于传统命理学理论，分析生肖与地支关系，提供今日运势评分、事业财运建议、健康感情指导。助您了解生肖吉凶，把握运势良机。"
+      keywords="十二生肖运势,生肖运势查询,每日生肖运势,生肖运势分析,鼠牛虎兔龙蛇马羊猴鸡狗猪运势,生肖地支关系,生肖吉凶预测,生肖运势评分"
     />
     
     <div class="max-w-7xl mx-auto">
@@ -13,7 +20,7 @@
         <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
           {{ fortuneData?.分析时间 ? `${new Date(fortuneData.分析时间).getMonth() + 1}月${new Date(fortuneData.分析时间).getDate()}日生肖运势` : '生肖运势' }}
         </h1>
-        <p class="text-gray-600 dark:text-gray-300">今日生肖运势分析，助您把握良机</p>
+        <p class="text-gray-600 dark:text-gray-300">今日生肖运势分析，助您把握良机。配合<a href="/analysis" class="text-blue-600 dark:text-blue-400 hover:underline">八字分析</a>和<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">择日推荐</a>，获得更全面的运势预测</p>
       </div>
 
       <!-- 加载状态 -->
@@ -684,4 +691,4 @@ onMounted(() => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style> 
+</style>
