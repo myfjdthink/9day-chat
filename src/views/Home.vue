@@ -2,9 +2,9 @@
   <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="北斗九号日历 - 专业AI八字运势分析平台 | 智能命理预测服务首页"
-      description="北斗九号日历是专业的AI八字运势分析平台，提供智能命理预测、八字排盘、择日推荐、生肖运势查询等服务。基于传统命理学理论与现代AI技术，为用户提供精准的运势分析、人生指导和决策建议。立即体验免费八字分析服务。"
-      keywords="北斗九号日历,AI八字分析,智能命理预测,八字排盘,择日推荐,生肖运势,命理咨询,在线算命,免费八字,运势分析"
+      title="北斗九号日历 - 免费八字排盘|在线算命|AI智能命理分析平台"
+      description="北斗九号日历是专业的免费八字排盘和在线算命平台，提供AI智能命理预测、生辰八字分析、择日推荐、生肖运势查询等服务。基于传统命理学理论与现代AI技术，为用户提供精准的运势分析、人生指导和决策建议。支持四柱预测、用神分析、五行相生相克等专业功能，立即体验免费八字分析服务。"
+      keywords="免费八字排盘,在线算命,AI命理分析,生辰八字,四柱预测,用神分析,五行相生相克,择日推荐,生肖运势,命理咨询,智能预测,运势分析,北斗九号日历,八字分析,命理问答,黄历择日,AI智能算命"
     />
     
     <div class="max-w-6xl mx-auto">
@@ -20,8 +20,8 @@
         <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
           <img src="@/assets/logo.png" alt="北斗九号日历Logo - AI智能八字运势分析与择日推荐平台" class="w-16 h-16 object-contain" />
         </div>
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">专业八字运势分析平台</h1>
-        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业八字分析、命理问答、择日推荐、生肖运势，一站式命理服务平台</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">免费八字排盘 · AI智能算命平台</h1>
+        <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业生辰八字分析、在线算命问答、黄历择日推荐、生肖运势预测，传统命理与AI技术完美结合</p>
 
         <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-2 md:space-y-0">
           <Button
@@ -153,36 +153,107 @@
           </Card>
         </div>
 
+        <!-- 今日黄历动态展示 -->
+        <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl shadow-lg p-6 md:p-8 mb-8">
+          <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">📅 今日黄历 · 每日一卦</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                <span class="text-yellow-500 mr-2">🌅</span>
+                今日宜忌
+              </h4>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <span class="text-green-600 dark:text-green-400 font-medium mr-2">宜：</span>
+                  <span class="text-sm text-gray-600 dark:text-gray-300">祈福、开市、签约、出行</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="text-red-600 dark:text-red-400 font-medium mr-2">忌：</span>
+                  <span class="text-sm text-gray-600 dark:text-gray-300">动土、破土、安葬</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                <span class="text-purple-500 mr-2">🔮</span>
+                每日一卦
+              </h4>
+              <div class="text-center">
+                <div class="text-2xl mb-2">☰☷</div>
+                <div class="font-medium text-gray-900 dark:text-gray-100">天地否卦</div>
+                <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">天地不交，万物不通。宜守不宜进，静待时机。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 命理知识科普 -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 mb-8">
+          <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">📚 命理知识科普</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                <span class="text-blue-500 mr-2">🎯</span>
+                什么是八字？
+              </h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">八字又称四柱，是根据出生年、月、日、时的天干地支组合，形成八个字，用于分析人的命运轨迹。</p>
+              <div class="text-xs text-blue-600 dark:text-blue-400">
+                <span class="font-medium">关键词：</span>免费八字排盘、生辰八字、四柱预测
+              </div>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                <span class="text-green-500 mr-2">⚡</span>
+                五行相生相克
+              </h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">金、木、水、火、土五行之间存在相生相克关系，是AI命理分析的核心理论基础。</p>
+              <div class="text-xs text-green-600 dark:text-green-400">
+                <span class="font-medium">关键词：</span>五行分析、相生相克、命理基础
+              </div>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                <span class="text-purple-500 mr-2">🌟</span>
+                用神与忌神
+              </h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">用神是八字中最需要的五行，忌神是最不利的五行。准确判断用神忌神是在线算命的关键。</p>
+              <div class="text-xs text-purple-600 dark:text-purple-400">
+                <span class="font-medium">关键词：</span>用神分析、忌神判断、AI智能预测
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 使用流程说明 -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 mb-8">
-          <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">🚀 三步开启您的命理之旅</h3>
+          <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">🚀 三步解锁您的命运密码</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="text-center">
-              <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span class="text-white font-bold text-lg">1</span>
               </div>
-              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">注册登录</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">简单<a href="/register" class="text-blue-600 dark:text-blue-400 hover:underline">注册</a>，开启您的专属命理分析服务</p>
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">快速注册体验</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300">30秒<a href="/register" class="text-blue-600 dark:text-blue-400 hover:underline">免费注册</a>，立即开启专属AI命理分析服务</p>
             </div>
             <div class="text-center">
-              <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span class="text-white font-bold text-lg">2</span>
               </div>
-              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">完成八字分析</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">输入您的出生信息，获得专业<a href="/analysis" class="text-blue-600 dark:text-blue-400 hover:underline">八字分析报告</a></p>
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">智能八字排盘</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300">输入生辰信息，获得专业<a href="/analysis" class="text-blue-600 dark:text-blue-400 hover:underline">免费八字排盘</a>和AI智能分析</p>
             </div>
             <div class="text-center">
-              <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span class="text-white font-bold text-lg">3</span>
               </div>
-              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">享受智能服务</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">与<a href="/chat" class="text-blue-600 dark:text-blue-400 hover:underline">AI对话</a>、<a href="/zodiac-fortune" class="text-blue-600 dark:text-blue-400 hover:underline">查看运势</a>、<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">择日推荐</a>，全方位服务</p>
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">全方位命理服务</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300"><a href="/chat" class="text-blue-600 dark:text-blue-400 hover:underline">在线算命</a>问答、<a href="/zodiac-fortune" class="text-blue-600 dark:text-blue-400 hover:underline">生肖运势</a>、<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">择日推荐</a>一站搞定</p>
             </div>
           </div>
         </div>
 
         <!-- 效果预览区域 -->
-        <div class="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 md:p-8">
+        <div class="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 md:p-8 mb-8">
           <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">✨ 用户真实体验</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
@@ -220,6 +291,72 @@
                 </div>
               </div>
               <p class="text-sm text-gray-600 dark:text-gray-300">"每日生肖运势很准确，帮我避开了很多麻烦，现在每天都会查看！"</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ常见问题 -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 mb-8">
+          <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">❓ 常见问题解答 (FAQ)</h3>
+          <div class="space-y-6">
+            <!-- 八字分析相关 -->
+            <div class="border-l-4 border-blue-500 pl-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">🎯 关于八字分析</h4>
+              <div class="space-y-3">
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 免费八字排盘准确吗？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 我们的AI智能八字排盘系统基于传统命理学理论，结合现代算法，确保排盘的准确性。所有计算都经过严格验证。</p>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 八字分析需要提供哪些信息？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 只需提供准确的出生年月日时和出生地点，我们的系统就能为您生成详细的八字分析报告。</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 择日推荐相关 -->
+            <div class="border-l-4 border-green-500 pl-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">📅 关于择日推荐</h4>
+              <div class="space-y-3">
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 择日推荐的依据是什么？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 我们综合考虑黄历宜忌、个人八字、五行相配等多个因素，为您推荐最适合的吉日良辰。</p>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 可以为哪些事情择日？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 支持开业、结婚、搬家、出行、签约等各类重要事项的择日推荐，帮您趋吉避凶。</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 生肖运势相关 -->
+            <div class="border-l-4 border-purple-500 pl-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">🐲 关于生肖运势</h4>
+              <div class="space-y-3">
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 生肖运势多久更新一次？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 我们每日更新生肖运势，包括事业、财运、感情、健康等各方面的运势分析和建议。</p>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 生肖运势的准确性如何？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 基于传统生肖理论和现代统计学方法，结合AI算法分析，为您提供参考性的运势指导。</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 在线算命相关 -->
+            <div class="border-l-4 border-orange-500 pl-4">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">🤖 关于AI命理问答</h4>
+              <div class="space-y-3">
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: AI命理分析可靠吗？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 我们的AI系统学习了大量传统命理典籍和实践案例，能够提供专业的命理分析和人生指导建议。</p>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 可以问哪些类型的问题？</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">A: 支持事业发展、感情婚姻、财运分析、健康状况、学业考试等各个方面的命理咨询。</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

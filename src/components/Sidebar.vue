@@ -75,6 +75,13 @@
       >
         <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5" />
       </button>
+      <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-[#0b3289] hover:bg-[#e6eaf6]"
+        @click="handleGoBlog"
+        title="命理知识"
+      >
+        <img :src="blogIcon" alt="命理知识" class="w-5 h-5" />
+      </button>
     </div>
     
     <!-- 用户头像 -->
@@ -185,6 +192,14 @@
               <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5 opacity-80" />
               生肖运势
             </Button>
+            <Button
+              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
+              :class="'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              @click="handleGoBlog"
+            >
+              <img :src="blogIcon" alt="命理知识" class="w-5 h-5 opacity-80" />
+              命理知识
+            </Button>
           </nav>
         </div>
         <!-- History Panel -->
@@ -254,6 +269,7 @@ import calendarIcon from '@/assets/calendar.png'
 import chatIcon from '@/assets/chat.png'
 import analysisIcon from '@/assets/analysis.png'
 import dragonIcon from '@/assets/dragon.png'
+import blogIcon from '@/assets/blog.png'
 
 interface SidebarProps {
   activeTab: string
@@ -401,6 +417,10 @@ const handleGoCalendar = () => {
 const handleGoZodiacFortune = () => {
   emit('set-active-tab', 'zodiac-fortune')
   router.push('/zodiac-fortune')
+}
+
+const handleGoBlog = () => {
+  window.open('https://blog.9day.tech/', '_blank')
 }
 </script>
 
