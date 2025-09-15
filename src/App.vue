@@ -61,7 +61,8 @@ import { useBaziStore } from '@/stores/bazi'
 import { useSidebar } from '@/composables/useSidebar'
 import SEO from './components/SEO.vue'
 import WishPool from './components/WishPool.vue'
-import { pushCurrentPageToBaidu, pushSitemapUrlsToBaidu } from '@/lib/baidu-push'
+// 已移除百度推送功能
+// import { pushCurrentPageToBaidu, pushSitemapUrlsToBaidu } from '@/lib/baidu-push'
 
 const router = useRouter()
 const route = useRoute()
@@ -103,25 +104,25 @@ onMounted(() => {
     document.documentElement.classList.remove('dark')
   }
 
-  // 推送当前页面到百度
-  pushCurrentPageToBaidu().then(response => {
-    console.log('百度推送结果:', response)
-  }).catch(error => {
-    console.error('百度推送失败:', error)
-  })
+  // 已移除百度推送功能
+  // pushCurrentPageToBaidu().then(response => {
+  //   console.log('百度推送结果:', response)
+  // }).catch(error => {
+  //   console.error('百度推送失败:', error)
+  // })
 
-  // 每天推送一次站点地图
-  const lastPushDate = localStorage.getItem('lastSitemapPushDate')
-  const today = new Date().toDateString()
-  
-  if (lastPushDate !== today) {
-    pushSitemapUrlsToBaidu().then(response => {
-      console.log('站点地图推送结果:', response)
-      localStorage.setItem('lastSitemapPushDate', today)
-    }).catch(error => {
-      console.error('站点地图推送失败:', error)
-    })
-  }
+  // 已移除站点地图推送功能
+  // const lastPushDate = localStorage.getItem('lastSitemapPushDate')
+  // const today = new Date().toDateString()
+  // 
+  // if (lastPushDate !== today) {
+  //   pushSitemapUrlsToBaidu().then(response => {
+  //     console.log('站点地图推送结果:', response)
+  //     localStorage.setItem('lastSitemapPushDate', today)
+  //   }).catch(error => {
+  //     console.error('站点地图推送失败:', error)
+  //   })
+  // }
 })
 
 // 根据路由更新activeTab和推送新页面
@@ -131,12 +132,12 @@ watch(() => route.path, (newPath) => {
     activeTab.value = route.name as string
   }
   
-  // 推送新页面到百度
-  pushCurrentPageToBaidu().then(response => {
-    console.log('新页面推送结果:', response)
-  }).catch(error => {
-    console.error('新页面推送失败:', error)
-  })
+  // 已移除新页面推送功能
+  // pushCurrentPageToBaidu().then(response => {
+  //   console.log('新页面推送结果:', response)
+  // }).catch(error => {
+  //   console.error('新页面推送失败:', error)
+  // })
 }, { immediate: true })
 
 const setActiveTab = (tab: string) => {

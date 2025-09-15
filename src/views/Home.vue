@@ -179,9 +179,9 @@
                 每日一卦
               </h4>
               <div class="text-center">
-                <div class="text-2xl mb-2">☰☷</div>
-                <div class="font-medium text-gray-900 dark:text-gray-100">天地否卦</div>
-                <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">天地不交，万物不通。宜守不宜进，静待时机。</div>
+                <div class="text-2xl mb-2">☰☲</div>
+                <div class="font-medium text-gray-900 dark:text-gray-100">天火同人卦</div>
+                <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">天火同人，志同道合。事业顺利，贵人相助。</div>
               </div>
             </div>
           </div>
@@ -316,7 +316,7 @@
 
             <!-- 择日推荐相关 -->
             <div class="border-l-4 border-green-500 pl-4">
-              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">📅 关于择日推荐</h4>
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">📅 关于个人运历择日推荐</h4>
               <div class="space-y-3">
                 <div>
                   <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Q: 择日推荐的依据是什么？</p>

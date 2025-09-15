@@ -8,6 +8,33 @@
     />
     
     <div class="max-w-6xl mx-auto">
+      <!-- 功能介绍卡片 -->
+      <div v-if="!analysisResult" class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center">
+            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <User class="w-6 h-6 text-white" />
+            </div>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">八字排盘</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300">精确计算您的八字命盘，分析五行属性和格局</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <BarChart3 class="w-6 h-6 text-white" />
+            </div>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">全面分析</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300">提供性格、事业、财运、感情等多维度深度分析</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Lightbulb class="w-6 h-6 text-white" />
+            </div>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">专业建议</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300">基于命理分析提供人生指导和发展建议</p>
+          </div>
+        </div>
+      </div>
+
       <!-- 输入部分 -->
       <div v-if="!analysisResult" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Basic Information -->
@@ -310,6 +337,81 @@
         </div>
       </div>
     </div>
+    <!-- 使用说明和FAQ部分 -->
+    <div v-if="!analysisResult" class="mt-12 space-y-8">
+      <!-- 使用说明 -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
+          <Settings class="w-6 h-6 mr-2 text-blue-500" />
+          使用说明
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1">1</div>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">填写基本信息</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">准确填写性别、出生日期和时间，确保分析结果的准确性</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1">2</div>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">选择分析类型</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">根据需要选择基础分析、用神分析或运势预测</p>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1">3</div>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">设置分析范围</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">选择运势预测时，可选择流年、流月、流日分析</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold mt-1">4</div>
+              <div>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">开始分析</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">点击开始分析，获得详细的八字命理分析报告</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ部分 -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
+          <Star class="w-6 h-6 mr-2 text-orange-500" />
+          常见问题
+        </h2>
+        <div class="space-y-6">
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Q: 八字分析的准确性如何？</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">A: 基于传统八字命理学理论，结合现代算法分析。分析结果仅供参考，不能完全决定人生命运，需要结合个人努力和实际情况。</p>
+          </div>
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Q: 出生时间不准确会影响结果吗？</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">A: 是的，出生时间的准确性直接影响八字排盘和分析结果。建议提供尽可能准确的出生时间，误差最好控制在1小时内。</p>
+          </div>
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Q: 基础分析和用神分析有什么区别？</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">A: 基础分析提供八字基本信息和五行分布；用神分析深入分析命局格局，找出用神忌神；运势预测则分析特定时期的运势变化。</p>
+          </div>
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Q: 如何理解分析结果中的专业术语？</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">A: 分析结果会用通俗易懂的语言解释专业术语。如有疑问，可以使用"对话报告"功能进行详细咨询。</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Q: 可以保存分析报告吗？</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">A: 可以，分析完成后可以点击"保存报告"按钮，将报告保存为图片格式，方便收藏和分享。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <Modal
       :show="showLoginModal"
       title="登录提示"
@@ -363,7 +465,7 @@ import YongshenDisplay from '@/components/YongshenDisplay.vue'
 import DayunDisplay from '@/components/DayunDisplay.vue'
 
 // 按需导入图标
-import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare } from 'lucide-vue-next'
+import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare, BarChart3, Lightbulb } from 'lucide-vue-next'
 
 // Third-party libraries
 import dayjs from 'dayjs'

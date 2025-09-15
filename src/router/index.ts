@@ -34,6 +34,11 @@ const router = createRouter({
       component: ZodiacFortune
     },
     {
+      path: '/exam-fortune',
+      name: 'ExamFortune',
+      component: () => import('../views/ExamFortune.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('@/views/admin/Login.vue')
