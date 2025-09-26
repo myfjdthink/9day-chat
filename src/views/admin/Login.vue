@@ -3,7 +3,7 @@
     <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
       <div class="text-center mb-6">
         <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 mx-auto mb-4" />
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">用户登录</h2>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">用户登录 - 北斗九号日历</h1>
         <p class="text-gray-500 dark:text-gray-300">欢迎回来，请输入您的账号信息</p>
       </div>
       <form @submit.prevent="handleLogin">
@@ -58,4 +58,4 @@ const handleLogin = async () => {
 
 <style scoped>
 /* 可根据实际需要调整样式 */
-</style> 
+</style>

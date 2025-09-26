@@ -23,7 +23,7 @@
           <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
             <img src="@/assets/graduation.png" alt="考运测算" class="w-6 h-6" />
           </div>
-          <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">考运测算</h1>
+          <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">考运测算预测 - 学业运势分析</h1>
         </div>
         <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
           基于八字命理分析您的考试运势，为您提供专业的考试时机建议和备考指导
