@@ -135,8 +135,8 @@ export type SystemRoleType = typeof SYSTEM_ROLES[keyof typeof SYSTEM_ROLES]
  * 环境变量配置
  */
 export const ENV_CONFIG = {
-  N8N_AI_USER: import.meta.env.VITE_N8N_AI_USER || process.env.VITE_N8N_AI_USER,
-  N8N_AI_PASS: import.meta.env.VITE_N8N_AI_PASS || process.env.VITE_N8N_AI_PASS
+  N8N_AI_USER: import.meta.env.VITE_N8N_AI_USER || '',
+  N8N_AI_PASS: import.meta.env.VITE_N8N_AI_PASS || ''
 } as const
 
 // ========== 请求配置 ========== //
@@ -212,4 +212,4 @@ export function getAvailableModelConfigs() {
   )
   
   return configs
-} 
+}

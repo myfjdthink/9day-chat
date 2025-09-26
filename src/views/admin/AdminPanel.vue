@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-5xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-xl shadow">
-    <h2 class="text-2xl font-bold mb-8 text-gray-900 dark:text-gray-100 flex items-center">
-      <span class="i-heroicons-users-2 mr-2"></span>用户信息管理
-    </h2>
+    <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100 flex items-center">
+      <span class="i-heroicons-users-2 mr-2"></span>管理员控制台 - 用户信息管理
+    </h1>
     <!-- 统计卡片区 -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <div class="flex items-center p-5 rounded-xl shadow bg-gradient-to-tr from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800">
@@ -400,4 +400,4 @@ function formatBaziInfo(user: any) {
 onMounted(() => {
   if (isAdmin.value) fetchAllUsers()
 })
-</script> 
+</script>

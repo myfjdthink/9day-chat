@@ -190,7 +190,7 @@
           <div class="p-4 h-full flex flex-col">
             <!-- 分享标题 -->
             <div class="text-center mb-4">
-              <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-1">生肖运势</h1>
+              <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">十二生肖运势查询 - 每日运势预测</h1>
               <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">今日生肖运势分析，助您把握良机</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDateTime(fortuneData?.分析时间 || '') }}</p>
             </div>

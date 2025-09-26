@@ -15,7 +15,7 @@
 
     <!-- 详细信息卡片 -->
     <div class="bg-white dark:bg-gray-900 rounded-xl shadow p-6 mb-6">
-      <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">个人信息管理</h2>
+      <h1 class="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">个人信息管理 - 用户中心</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
         <!-- 用户名分组 -->
         <div class="md:col-span-2">

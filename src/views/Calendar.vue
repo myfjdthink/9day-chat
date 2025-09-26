@@ -1,5 +1,8 @@
 <template>
   <div class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- 页面主标题 -->
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center pt-6">智能择日日历 - 专属运势指导</h1>
+    
     <!-- 未登录提示 -->
     <div v-if="!userStore.isLoggedIn" class="flex flex-col items-center justify-center min-h-[60vh] p-4">
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-4xl w-full text-center">

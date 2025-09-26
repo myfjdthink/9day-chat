@@ -3,7 +3,7 @@
     <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
       <div class="text-center mb-6">
         <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 mx-auto mb-4" />
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">忘记密码</h2>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">忘记密码 - 北斗九号日历</h1>
         <p class="text-gray-500 dark:text-gray-300">请输入注册邮箱，接收重置链接</p>
       </div>
       <form @submit.prevent="handleRequest">
@@ -49,4 +49,4 @@ const handleRequest = async () => {
 </script>
 
 <style scoped>
-</style> 
+</style>

@@ -8,6 +8,9 @@
     />
     
     <div class="max-w-6xl mx-auto">
+      <!-- 页面主标题 -->
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">专业八字分析排盘 - AI智能命理解读</h1>
+      
       <!-- 功能介绍卡片 -->
       <div v-if="!analysisResult" class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 mb-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

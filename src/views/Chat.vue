@@ -12,7 +12,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <img src="@/assets/logo.png" alt="北斗九号日历Logo - AI智能八字运势分析平台" class="w-5 h-5 object-contain" />
-          <h1 class="text-lg font-medium text-gray-900 dark:text-gray-100">命理问答</h1>
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">AI命理问答 - 智能算命咨询</h1>
         </div>
         <!-- 移除重复的暗黑模式按钮 -->
       </div>

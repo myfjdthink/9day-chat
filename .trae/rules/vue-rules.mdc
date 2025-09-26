@@ -1,0 +1,395 @@
+---
+description: Vue3 + TypeScript + Tailwind 开发规范和最佳实践
+globs: **/*.vue, **/*.ts, components/**/*
+alwaysApply: true
+---
+
+# Vue3 + TypeScript + Tailwind 开发规范
+
+> 本规则文件专门针对 Vue3 + TypeScript + Tailwind CSS 技术栈，涵盖组件开发、状态管理、样式规范等最佳实践。
+
+## 一、组件开发规范
+
+### 组件结构
+- 使用 Composition API，避免 Options API
+- 保持组件小巧、职责单一（< 200 行代码）
+- 使用 `<script setup>` 语法进行简洁的组件定义
+- 组件 props、emit、类型推断要完整
+- 复用逻辑请封装为 composable
+- 组件内逻辑、样式、模板分区清晰，注释充分
+
+### 组件命名和组织
+- 组件名称使用 PascalCase（如：UserProfile.vue）
+- 组件文件放置在 `src/components/` 目录下
+- 复杂组件按功能模块分组
+- 全局UI组件统一使用 `src/components/ui/` 目录
+- 页面组件放置在 `src/views/` 或 `src/pages/` 目录
+
+### Props 和 Emits
+```vue
+<script setup lang="ts">
+// 正确的 props 定义
+interface Props {
+  title: string
+  count?: number
+  isVisible?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  count: 0,
+  isVisible: true
+})
+
+// 正确的 emits 定义
+interface Emits {
+  update: [value: string]
+  close: []
+}
+
+const emit = defineEmits<Emits>()
+</script>
+```
+
+---
+
+## 二、TypeScript 类型安全
+
+### 类型定义
+- 严格区分消息类型（如 user/assistant/report）
+- 涉及联合类型时，优先用类型保护函数（type guard）过滤
+- 避免类型推断错误，过滤数组后如需类型收窄，推荐写 type guard 函数
+- 优先使用 type 而非 interface
+- 避免使用 any，优先使用 unknown 或具体类型
+
+### 类型保护函数示例
+```typescript
+// 类型定义
+type MessageType = 'user' | 'assistant' | 'system'
+
+interface Message {
+  id: string
+  type: MessageType
+  content: string
+}
+
+// 类型保护函数
+const isUserMessage = (message: Message): message is Message & { type: 'user' } => {
+  return message.type === 'user'
+}
+
+// 使用类型保护
+const userMessages = messages.filter(isUserMessage)
+```
+
+### 响应式状态类型
+```typescript
+// 使用 ref 和 reactive
+const count = ref<number>(0)
+const user = reactive<User>({
+  name: '',
+  email: ''
+})
+
+// 计算属性类型推断
+const doubleCount = computed(() => count.value * 2)
+```
+
+---
+
+## 三、Composition API 最佳实践
+
+### 响应式状态管理
+- 使用 `ref` 处理基本类型
+- 使用 `reactive` 处理对象类型
+- 使用 `computed` 进行派生状态
+- 合理使用 `watch` 和 `watchEffect`
+- 在适当情况下使用 `provide/inject` 进行依赖注入
+
+### 生命周期钩子
+```vue
+<script setup lang="ts">
+import { onMounted, onUnmounted, onUpdated } from 'vue'
+
+// 组件挂载后执行
+onMounted(() => {
+  console.log('组件已挂载')
+})
+
+// 组件卸载前清理
+onUnmounted(() => {
+  console.log('组件即将卸载')
+})
+</script>
+```
+
+### Composables 开发
+- 文件名使用 `use` 前缀（如：useUserAuth.ts）
+- 放置在 `src/composables/` 目录
+- 返回响应式状态和方法
+- 处理副作用和清理逻辑
+
+```typescript
+// composables/useCounter.ts
+export const useCounter = (initialValue = 0) => {
+  const count = ref(initialValue)
+  
+  const increment = () => count.value++
+  const decrement = () => count.value--
+  const reset = () => count.value = initialValue
+  
+  return {
+    count: readonly(count),
+    increment,
+    decrement,
+    reset
+  }
+}
+```
+
+---
+
+## 四、状态管理规范
+
+### Pinia 使用
+- 使用 Pinia 进行全局状态管理
+- 保持 stores 模块化
+- 使用 TypeScript 定义 store 类型
+- 实施适当的状态持久化
+
+```typescript
+// stores/user.ts
+export const useUserStore = defineStore('user', () => {
+  const user = ref<User | null>(null)
+  const isLoggedIn = computed(() => !!user.value)
+  
+  const login = async (credentials: LoginCredentials) => {
+    // 登录逻辑
+  }
+  
+  const logout = () => {
+    user.value = null
+  }
+  
+  return {
+    user: readonly(user),
+    isLoggedIn,
+    login,
+    logout
+  }
+})
+```
+
+---
+
+## 五、Tailwind CSS 使用规范
+
+### 样式组织
+- 推荐直接写原生 CSS 替代 @apply，避免 PostCSS 配置问题
+- 如需使用 @apply，确保 postcss.config.js 配置正确
+- 复杂样式建议写在 `<style>` 标签内，注释标明对应 Tailwind 类名
+- 使用 Tailwind CSS 实现响应式设计，采用移动优先的方法
+
+### 响应式设计
+```vue
+<template>
+  <!-- 移动优先的响应式设计 -->
+  <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+    <h1 class="text-lg md:text-xl lg:text-2xl font-bold">
+      响应式标题
+    </h1>
+  </div>
+</template>
+```
+
+### 组件样式
+```vue
+<template>
+  <button 
+    class="btn-primary"
+    :class="{
+      'btn-disabled': disabled,
+      'btn-loading': loading
+    }"
+  >
+    <slot />
+  </button>
+</template>
+
+<style scoped>
+.btn-primary {
+  @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors;
+}
+
+.btn-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.btn-loading {
+  @apply opacity-75;
+}
+</style>
+```
+
+### 配置要求
+- `postcss.config.js` 必须包含 tailwindcss 和 autoprefixer
+- `tailwind.config.js` 的 content 字段需覆盖所有 Vue/TS 文件
+
+---
+
+## 六、性能优化指南
+
+### 组件优化
+- 使用 `v-show` vs `v-if` 的正确场景
+- 实施适当的 key 管理
+- 使用 `defineAsyncComponent` 进行组件懒加载
+- 避免在模板中使用复杂表达式
+
+### 列表渲染优化
+```vue
+<template>
+  <!-- 使用唯一 key -->
+  <div 
+    v-for="item in items" 
+    :key="item.id"
+    class="item"
+  >
+    {{ item.name }}
+  </div>
+  
+  <!-- 虚拟滚动处理大列表 -->
+  <VirtualList 
+    :items="largeList"
+    :item-height="50"
+    height="400px"
+  >
+    <template #default="{ item }">
+      <ListItem :data="item" />
+    </template>
+  </VirtualList>
+</template>
+```
+
+### 计算属性和监听器
+```vue
+<script setup lang="ts">
+// 使用计算属性缓存复杂计算
+const expensiveValue = computed(() => {
+  return items.value.reduce((sum, item) => sum + item.value, 0)
+})
+
+// 避免不必要的监听器
+watch(
+  () => props.userId,
+  (newId) => {
+    if (newId) {
+      fetchUserData(newId)
+    }
+  },
+  { immediate: true }
+)
+</script>
+```
+
+---
+
+## 七、全局UI组件复用规范
+
+### 组件库使用
+- 所有全局UI组件必须统一使用 `src/components/ui/` 目录下的组件
+- 包括但不限于：Button.vue、Input.vue、Card.vue、Modal.vue、Checkbox.vue
+- 不允许在项目中重复实现类似功能的组件
+- 所有页面和业务组件必须引用 `@/components/ui/` 下的对应组件
+
+### 组件扩展
+```vue
+<!-- 正确：使用全局UI组件 -->
+<template>
+  <UiButton 
+    variant="primary" 
+    size="lg"
+    @click="handleClick"
+  >
+    提交
+  </UiButton>
+</template>
+
+<script setup lang="ts">
+import { UiButton } from '@/components/ui'
+</script>
+```
+
+---
+
+## 八、测试规范
+
+### 组件测试
+- 使用 Vue Test Utils 进行组件测试
+- 测试组件的 props、emits 和用户交互
+- 模拟外部依赖和API调用
+- 保持测试的独立性和可重复性
+
+```typescript
+// Button.test.ts
+import { mount } from '@vue/test-utils'
+import Button from '@/components/ui/Button.vue'
+
+describe('Button', () => {
+  it('renders correctly', () => {
+    const wrapper = mount(Button, {
+      props: { variant: 'primary' },
+      slots: { default: 'Click me' }
+    })
+    
+    expect(wrapper.text()).toBe('Click me')
+    expect(wrapper.classes()).toContain('btn-primary')
+  })
+  
+  it('emits click event', async () => {
+    const wrapper = mount(Button)
+    await wrapper.trigger('click')
+    
+    expect(wrapper.emitted('click')).toBeTruthy()
+  })
+})
+```
+
+---
+
+## 九、代码注释与调试
+
+### 注释规范
+- 关键逻辑、类型保护、样式覆盖等地方必须有中文注释
+- 复杂的业务逻辑需要详细说明
+- API 调用和数据处理需要注释
+- 组件的用途和使用方法需要文档注释
+
+### 调试建议
+- 任何类型相关报错，优先检查联合类型、类型保护、作用域
+- 任何样式相关警告，优先检查 @apply、Tailwind 配置、PostCSS 配置
+- 使用 Vue DevTools 进行组件和状态调试
+- 输出日志要简洁明了，便于调试
+
+---
+
+## 十、最佳实践总结
+
+### 开发流程
+1. 遵循 Vue 官方风格指南和 Tailwind 官方最佳实践
+2. 代码风格、命名、注释保持一致
+3. 变更需最小化影响范围，避免大规模重构
+4. 定期进行代码审查和重构
+5. 保持依赖版本的及时更新
+
+### 性能考虑
+- 合理使用响应式 API
+- 避免不必要的重新渲染
+- 实施代码分割和懒加载
+- 优化打包体积和加载速度
+- 监控应用性能指标
+
+### 可维护性
+- 保持组件的单一职责
+- 提取可复用的逻辑
+- 编写清晰的文档和注释
+- 建立完善的测试覆盖
+- 遵循一致的代码规范
