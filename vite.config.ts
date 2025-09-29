@@ -43,19 +43,26 @@ export default defineConfig({
     port: 3000,
     open: true,
     proxy: {
-      // 主API服务代理
-      '/api': {
-        target: 'https://api.9day.tech',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      },
-      // 用户管理系统代理
-      '/user-api': {
+      // 用户聊天API代理 - 必须放在 /user-api 前面
+      '/user-api/chat': {
         target: 'https://user.9day.tech',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/user-api/, '/api/v1')
+        rewrite: (path) => path.replace(/^\/user-api\/chat/, '/api/v1/chat')
+      },
+      // 用户管理系统代理
+      '/user-api': {
+        target: 'https://nineday-core-wlg9.onrender.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/user-api/, '/')
+      },
+      // 主API服务代理
+      '/api': {
+        target: 'https://nineday-core-wlg9.onrender.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       },
       // N8N 服务代理
       '/n8n': {
