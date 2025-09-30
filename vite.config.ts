@@ -64,14 +64,14 @@ export default defineConfig(({ mode }) => {
       },
       // 用户管理系统代理
       '/user-api': {
-        target: env.VITE_APP_HOST,
+        target: env.VITE_APP_HOST || 'https://nineday-core-wlg9.onrender.com',
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/user-api/, '/')
       },
       // 主API服务代理
       '/api': {
-        target: env.VITE_APP_HOST,
+        target: env.VITE_APP_HOST || 'https://nineday-core-wlg9.onrender.com',
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, '')
