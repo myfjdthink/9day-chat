@@ -1,9 +1,14 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  console.log('a  5 c',env.VITE_APP_HOST)
+
+  return {
   plugins: [vue()],
   resolve: {
     alias: {
@@ -50,16 +55,23 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/user-api\/chat/, '/api/v1/chat')
       },
+      // 用户聊天API代理 - 必须放在 /user-api 前面
+      '/user-api/bazi': {
+        target: 'https://user.9day.tech',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/user-api\/bazi/, '/api/v1/bazi')
+      },
       // 用户管理系统代理
       '/user-api': {
-        target: 'https://nineday-core-wlg9.onrender.com',
+        target: env.VITE_APP_HOST,
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/user-api/, '/')
       },
       // 主API服务代理
       '/api': {
-        target: 'https://nineday-core-wlg9.onrender.com',
+        target: env.VITE_APP_HOST,
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, '')
@@ -72,5 +84,6 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/n8n/, '/webhook')
       }
     }
-  },
+  }
+  }
 })
