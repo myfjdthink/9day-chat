@@ -29,7 +29,7 @@ export const API_ENDPOINTS = {
   BAZI_ANALYSIS: '/bazi/ai',
   BAZI_FORTUNE: '/bazi/fortune',
   // 生肖运势
-  ZODIAC_FORTUNE: '/zodiac-fortune/analyze',
+  ZODIAC_FORTUNE: '/bazi/zodiac-fortune',
   // 用户管理
   AUTH_LOGIN: '/auth/login',
   AUTH_REGISTER: '/auth/register',

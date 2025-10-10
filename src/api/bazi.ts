@@ -502,7 +502,7 @@ export async function analyzeZodiacFortune(params: ZodiacFortuneParams = {}, for
   }
   
   // 请求新数据
-  const response: AxiosResponse<ZodiacFortuneResponse> = await request.post('/zodiac-fortune/analyze', requestParams)
+  const response: AxiosResponse<ZodiacFortuneResponse> = await request.post('/bazi/zodiac-fortune', requestParams)
   
   // 缓存成功的数据
   if (response.data.success) {
