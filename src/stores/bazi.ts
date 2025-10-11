@@ -10,6 +10,7 @@ import {
   syncBaziAnalyses
 } from '@/api/bazi'
 import { useUserStore } from './user'
+import { trackFeatureUse } from '@/lib/analytics'
 
 // 本地存储键名
 const STORAGE_KEY = 'bazi_analyses'
@@ -109,6 +110,8 @@ export const useBaziStore = defineStore('bazi', () => {
     }
     analyses.value.unshift(newAnalysis)
     saveAnalyses()
+    // 埋点：创建八字分析
+    trackFeatureUse('bazi_analysis', { action: 'start', surface: 'analysis' })
     // 自动同步到云端（仅已登录时）
     const userStore = useUserStore()
     if (!userStore.user || !userStore.token) return

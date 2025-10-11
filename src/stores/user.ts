@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { login as apiLogin, getCurrentUser } from '@/api/user'
 import { useChatStore } from '@/stores/chat'
 import { useBaziStore } from '@/stores/bazi'
+import { trackEvent } from '@/lib/analytics'
 
 // 用户信息类型
 export interface UserInfo {
@@ -71,6 +72,8 @@ export const useUserStore = defineStore('user', {
       setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
       // 登录后获取用户信息
       await this.fetchUser()
+      // 埋点：登录成功
+      trackEvent('login', { method: 'email' })
       // 登录后异步拉取云端会话，不阻塞登录流程
       const chatStore = useChatStore()
       this.asyncLoadChatHistory(chatStore)

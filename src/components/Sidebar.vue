@@ -280,6 +280,7 @@ import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
 import { useSidebar } from '@/composables/useSidebar'
 import { computed, onMounted, ref, nextTick } from 'vue'
+import { trackFeatureUse } from '@/lib/analytics'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
 import homeIcon from '@/assets/home.png'
@@ -416,14 +417,17 @@ const handleNewAnalysis = () => {
   router.push('/analysis')
 }
 const handleGoHome = () => {
+  trackFeatureUse('navigation_home', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'home')
   router.push('/')
 }
 const handleGoAIChat = () => {
+  trackFeatureUse('navigation_ai_chat', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'ai-chat')
   router.push('/chat')
 }
 const handleGoAnalysis = () => {
+  trackFeatureUse('navigation_analysis', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'analysis')
   router.push('/analysis')
 }

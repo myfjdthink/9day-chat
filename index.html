@@ -74,16 +74,15 @@
       })();
     </script> -->
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-google29bfed81c87b089d"></script>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ND28SNRGXB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){ dataLayer.push(arguments); }
+      // 调试：本地/预发开启
+      const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
       gtag('js', new Date());
-      gtag('config', 'G-google29bfed81c87b089d', {
-        'page_path': location.pathname + location.search,
-        'send_page_view': true
-      });
+      gtag('config', 'G-ND28SNRGXB', { debug_mode: isLocal });
     </script>
     
     <!-- 结构化数据 - 网站信息 -->

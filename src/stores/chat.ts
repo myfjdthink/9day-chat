@@ -12,6 +12,7 @@ import {
   ChatMessage,
   updateSession
 } from '@/api/chat'
+import { trackFeatureUse, trackEvent } from '@/lib/analytics'
 
 // 消息接口，扩展以兼容后端字段
 export interface Message {
@@ -159,6 +160,8 @@ export const useChatStore = defineStore('chat', () => {
     currentConversationId.value = newConversation.id
     saveToStorage(STORAGE_KEYS.conversations, conversations.value)
     saveToStorage(STORAGE_KEYS.currentConversationId, currentConversationId.value)
+    // 埋点：创建新对话
+    trackFeatureUse('chat_conversation', { action: 'start', surface: 'chat' })
     // 新建后自动同步，等待同步完成
     await syncConversationWithBackend(newConversation)
     // 返回同步后的 UUID（后端 id）
@@ -228,6 +231,12 @@ export const useChatStore = defineStore('chat', () => {
       }
       conversation.messages.push(newMessage)
       conversation.updatedAt = new Date()
+
+      // 埋点：用户发送消息
+      if (message.role === 'user') {
+        trackFeatureUse('chat_message', { action: 'send', surface: 'chat' })
+      }
+
       // 如果是首次用户消息，自动用内容覆盖会话标题并同步到后端
       if (conversation.title === '新对话' && message.role === 'user') {
         conversation.title = message.content.substring(0, 20) + (message.content.length > 20 ? '...' : '')
