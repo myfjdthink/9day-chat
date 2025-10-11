@@ -71,10 +71,22 @@ export const useUserStore = defineStore('user', {
       setExpireAt(TOKEN_EXPIRE_DAYS) // 登录时写入过期时间
       // 登录后获取用户信息
       await this.fetchUser()
-      // 登录后自动拉取云端会话
+      // 登录后异步拉取云端会话，不阻塞登录流程
       const chatStore = useChatStore()
-      await chatStore.loadConversationsFromBackend()
-      await chatStore.loadAllMessagesForSyncedConversations()
+      this.asyncLoadChatHistory(chatStore)
+    },
+    // 异步加载聊天历史，不阻塞登录流程
+    asyncLoadChatHistory(chatStore: any) {
+      // 使用 Promise 异步执行，不使用 await 等待
+      Promise.resolve().then(async () => {
+        try {
+          await chatStore.loadConversationsFromBackend()
+          await chatStore.loadAllMessagesForSyncedConversations()
+        } catch (error) {
+          console.warn('加载聊天历史失败:', error)
+          // 不抛出错误，避免影响登录流程
+        }
+      })
     },
     // 获取当前用户信息
     async fetchUser() {
