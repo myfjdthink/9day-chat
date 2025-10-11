@@ -238,7 +238,7 @@ async function fetchAllUsers() {
   let skip = 0
   const limit = 100
   while (true) {
-    const res = await request.get(`/users/list?skip=${skip}&limit=${limit}`)
+    const res = await request.get(`/users?skip=${skip}&limit=${limit}`)
     const list = res.data || []
     all.push(...list)
     if (list.length < limit) break
