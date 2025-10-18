@@ -59,62 +59,47 @@ export class ChatAPIError extends Error {
 }
 
 /**
- * 发送 AI 对话请求（主接口优先，失败降级到后备接口）
+ * 发送 AI 对话请求
  * @param chatRequest 对话请求参数
  * @returns Promise<ChatResponse>
  */
 export async function sendChatMessage(chatRequest: ChatRequest): Promise<ChatResponse> {
-  // 1. 主接口（n8n webhook，POST，x-www-form-urlencoded）
+  if (!ENV_CONFIG.N8N_AI_USER || !ENV_CONFIG.N8N_AI_PASS) {
+    throw new ChatAPIError('缺少 N8N 认证配置')
+  }
+
+  const basicAuth = btoa(`${ENV_CONFIG.N8N_AI_USER}:${ENV_CONFIG.N8N_AI_PASS}`)
+  const params = new URLSearchParams()
+  params.append('message', chatRequest.prompt)
+
   try {
-    if (ENV_CONFIG.N8N_AI_USER && ENV_CONFIG.N8N_AI_PASS) {
-      const basicAuth = btoa(`${ENV_CONFIG.N8N_AI_USER}:${ENV_CONFIG.N8N_AI_PASS}`)
-      const params = new URLSearchParams()
-      params.append('message', chatRequest.prompt)
-      const mainResp = await axios.post(API_CONFIG.N8N_AI_URL, params, {
-        headers: {
-          'Authorization': `Basic ${basicAuth}`,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        timeout: REQUEST_CONFIG.N8N_TIMEOUT
-      })
-      if (mainResp.data && typeof mainResp.data.output === 'string' && mainResp.data.output.trim()) {
-        // 主接口成功，返回兼容 ChatResponse 格式
-        return {
-          success: true,
-          message: '主接口调用成功',
-          data: {
-            content: mainResp.data.output,
-            type: 'text',
-            extra: {}
-          }
+    const response = await axios.post(API_CONFIG.N8N_AI_URL, params, {
+      headers: {
+        'Authorization': `Basic ${basicAuth}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      timeout: REQUEST_CONFIG.N8N_TIMEOUT
+    })
+
+    if (response.data && typeof response.data.output === 'string' && response.data.output.trim()) {
+      return {
+        success: true,
+        message: '对话请求成功',
+        data: {
+          content: response.data.output,
+          type: 'text',
+          extra: {}
         }
       }
     }
-  } catch (mainErr) {
-    // 主接口异常，降级到后备
-    // 可选：console.warn('主接口调用失败，降级到后备接口', mainErr)
-  }
-  // 2. 后备接口（原有）
-  try {
-    const response = await request({
-      url: API_ENDPOINTS.CHAT,
-      method: 'POST',
-      data: chatRequest
-    })
-    if (!response.data.success) {
-      throw new ChatAPIError(
-        response.data.message || '对话请求失败',
-        response.status,
-        response.data
-      )
-    }
-    return response.data
+
+    throw new ChatAPIError('AI 返回数据格式错误')
   } catch (error) {
     if (error instanceof ChatAPIError) {
       throw error
     }
     throw new ChatAPIError(
-      error instanceof Error ? error.message : '网络请求失败',
+      error instanceof Error ? error.message : 'AI 对话请求失败',
       undefined,
       error
     )

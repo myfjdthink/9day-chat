@@ -66,8 +66,7 @@ export default defineConfig(({ mode }) => {
       '/user-api': {
         target: env.VITE_APP_HOST || 'https://nineday-core-wlg9.onrender.com',
         changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/user-api/, '/')
+        secure: true
       },
       // 主API服务代理
       '/api': {
