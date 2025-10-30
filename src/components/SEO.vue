@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router'
 
 interface SEOProps {
   title?: string
+  pageTitle?: string  // 用于GA显示的简洁页面标题
   description?: string
   keywords?: string
   image?: string
@@ -25,6 +26,7 @@ const defaultType = 'website'
 
 const props = withDefaults(defineProps<SEOProps>(), {
   title: defaultTitle,
+  pageTitle: undefined,  // 默认不设置，使用原有逻辑
   description: defaultDescription,
   keywords: defaultKeywords,
   image: defaultImage,
@@ -36,7 +38,13 @@ const route = useRoute()
 
 // 更新页面标题和meta标签
 const updateSEO = () => {
-  const fullTitle = props.title.includes('北斗九号日历') ? props.title : `${props.title} - 北斗九号日历`
+  // 如果提供了pageTitle，使用简洁格式；否则使用原有逻辑
+  let fullTitle: string
+  if (props.pageTitle) {
+    fullTitle = `${props.pageTitle} - 北斗九号日历`
+  } else {
+    fullTitle = props.title.includes('北斗九号日历') ? props.title : `${props.title} - 北斗九号日历`
+  }
   
   // 更新页面标题
   document.title = fullTitle

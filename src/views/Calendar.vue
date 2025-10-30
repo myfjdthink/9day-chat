@@ -1,5 +1,13 @@
 <template>
   <div class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- SEO组件 -->
+    <SEO 
+      title="智能择日日历 - 专业黄道吉日查询 | 北斗九号日历"
+      pageTitle="择日日历"
+      description="提供专业的智能择日服务，基于八字命理分析推荐黄道吉日。支持结婚择日、开业择日、搬家择日等多种场景，结合个人八字信息提供精准的择日建议和运势指导。"
+      keywords="择日日历,黄道吉日,智能择日,八字择日,结婚择日,开业择日,搬家择日,吉日查询,择日推荐"
+    />
+    
     <!-- 页面主标题 -->
     <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center pt-6">智能择日日历 - 专属运势指导</h1>
     
