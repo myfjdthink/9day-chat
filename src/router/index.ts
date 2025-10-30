@@ -4,6 +4,7 @@ import Chat from '../views/Chat.vue'
 import Analysis from '../views/Analysis.vue'
 import Calendar from '@/views/Calendar.vue'
 import ZodiacFortune from '@/views/ZodiacFortune.vue'
+import FengShuiFortune from '@/views/FengShuiFortune.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/zodiac-fortune',
       name: 'ZodiacFortune',
       component: ZodiacFortune
+    },
+    {
+      path: '/fengshui-fortune',
+      name: 'FengShuiFortune',
+      component: FengShuiFortune
     },
     {
       path: '/exam-fortune',

@@ -6,7 +6,7 @@
   <!-- 首页 -->
   <url>
     <loc>https://www.9day.tech/</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <mobile:mobile/>
@@ -20,23 +20,59 @@
   <!-- 主要功能页面 -->
   <url>
     <loc>https://www.9day.tech/chat</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <mobile:mobile/>
+    <image:image>
+      <image:loc>https://www.9day.tech/chat.png</image:loc>
+      <image:title>AI智能对话 - 专业命理咨询</image:title>
+      <image:caption>基于人工智能的专业命理咨询服务，提供个性化的运势分析和建议</image:caption>
+    </image:image>
   </url>
   
   <url>
     <loc>https://www.9day.tech/analysis</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <mobile:mobile/>
+    <image:image>
+      <image:loc>https://www.9day.tech/analysis.png</image:loc>
+      <image:title>八字分析 - 专业命理测算</image:title>
+      <image:caption>传统八字命理分析，精准预测个人运势，提供专业的人生指导建议</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.9day.tech/fengshui-fortune</loc>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <mobile:mobile/>
+    <image:image>
+      <image:loc>https://www.9day.tech/fengshui.png</image:loc>
+      <image:title>2025年风水布局分析 - 九宫飞星图专业测算</image:title>
+      <image:caption>基于中国传统风水学的九宫飞星图在线测算，支持户型图上传，智能分析风水布局，覆盖全国各大城市</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.9day.tech/exam-fortune</loc>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <mobile:mobile/>
+    <image:image>
+      <image:loc>https://www.9day.tech/graduation.png</image:loc>
+      <image:title>考试运势分析 - 智能择日考试运势预测</image:title>
+      <image:caption>专业的考试运势分析工具，基于传统命理学预测考试运势，为学生提供考试择日建议</image:caption>
+    </image:image>
   </url>
   
   <url>
     <loc>https://www.9day.tech/calendar</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <mobile:mobile/>
@@ -49,7 +85,7 @@
   
   <url>
     <loc>https://www.9day.tech/zodiac-fortune</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <mobile:mobile/>
@@ -63,7 +99,7 @@
   <!-- 用户相关页面 -->
   <url>
     <loc>https://www.9day.tech/login</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <mobile:mobile/>
@@ -71,7 +107,7 @@
   
   <url>
     <loc>https://www.9day.tech/register</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <mobile:mobile/>
@@ -79,7 +115,7 @@
   
   <url>
     <loc>https://www.9day.tech/forgot-password</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
     <mobile:mobile/>
@@ -87,7 +123,7 @@
   
   <url>
     <loc>https://www.9day.tech/reset-password</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
     <mobile:mobile/>
@@ -95,7 +131,7 @@
   
   <url>
     <loc>https://www.9day.tech/profile</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
     <mobile:mobile/>
@@ -103,7 +139,7 @@
   
   <url>
     <loc>https://www.9day.tech/admin</loc>
-    <lastmod>2025-01-15T12:00:00+08:00</lastmod>
+    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
     <mobile:mobile/>

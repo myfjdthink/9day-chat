@@ -154,6 +154,39 @@
           </Card>
         </div>
 
+        <!-- 新增功能区域 -->
+        <div class="mb-8">
+          <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">🏠 专业风水分析</h2>
+          
+          <!-- 流年风水卡片 -->
+          <div class="grid grid-cols-1 md:grid-cols-1 gap-4 md:gap-6 mb-8">
+            <Card class="hover:shadow-lg transition-shadow dark:bg-gray-800 group cursor-pointer" @click="router.push('/fengshui-fortune')">
+              <CardContent class="p-4 md:p-6">
+                <div class="flex items-center space-x-3 mb-3">
+                  <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-lg">🏠</span>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">流年风水分析</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-3">上传户型图，智能叠加九宫飞星方位，精准分析家居风水布局，助您趋吉避凶</p>
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3 mb-3">
+                  <div class="text-xs text-indigo-600 dark:text-indigo-300 font-medium mb-1">🎯 核心功能</div>
+                  <div class="text-xs text-indigo-700 dark:text-indigo-200">
+                    • 户型图上传分析<br>
+                    • 九宫飞星智能叠加<br>
+                    • 年份飞星排布调整<br>
+                    • 方位精准对应
+                  </div>
+                </div>
+                <div class="flex items-center text-sm text-indigo-600 dark:text-indigo-300">
+                  <span>开始分析</span>
+                  <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
         <!-- 今日黄历动态展示 -->
         <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl shadow-lg p-6 md:p-8 mb-8">
           <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-6">📅 今日黄历 · 每日一卦</h3>

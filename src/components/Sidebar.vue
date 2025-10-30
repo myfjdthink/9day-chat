@@ -84,6 +84,14 @@
         <img :src="graduationIcon" alt="考运测算" class="w-5 h-5" />
       </button>
       <button
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
+        :class="activeTab === 'fengshui-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        @click="handleGoFengShuiFortune"
+        title="流年风水"
+      >
+        <img :src="fengshuiIcon" alt="流年风水" class="w-5 h-5" />
+      </button>
+      <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-[#0b3289] hover:bg-[#e6eaf6]"
         @click="handleGoBlog"
         title="命理知识"
@@ -212,6 +220,16 @@
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
+              :class="activeTab === 'fengshui-fortune'
+                ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              @click="handleGoFengShuiFortune"
+            >
+              <img :src="fengshuiIcon" alt="风水布局" class="w-5 h-5 opacity-80" />
+              风水布局
+            </Button>
+            <Button
+              class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoBlog"
             >
@@ -290,6 +308,7 @@ import analysisIcon from '@/assets/analysis.png'
 import dragonIcon from '@/assets/dragon.png'
 import blogIcon from '@/assets/blog.png'
 import graduationIcon from '@/assets/graduation.png'
+import fengshuiIcon from '@/assets/fengshui.png'
 
 interface SidebarProps {
   activeTab: string
@@ -449,6 +468,11 @@ const handleGoBlog = () => {
 const handleGoExamFortune = () => {
   emit('set-active-tab', 'exam-fortune')
   router.push('/exam-fortune')
+}
+
+const handleGoFengShuiFortune = () => {
+  emit('set-active-tab', 'fengshui-fortune')
+  router.push('/fengshui-fortune')
 }
 </script>
 
