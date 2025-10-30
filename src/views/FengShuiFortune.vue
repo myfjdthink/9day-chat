@@ -19,9 +19,9 @@
       <!-- 页面标题 - 紧凑版 -->
       <div class="text-center mb-3 sm:mb-4">
         <div class="w-12 h-12 sm:w-16 sm:h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-2 border border-gray-100 dark:border-gray-700 shadow-sm">
-          <span class="text-xl sm:text-2xl">🏠</span>
+          <img src="@/assets/fengshui.png" alt="风水布局" class="w-6 h-6 sm:w-8 sm:h-8" />
         </div>
-        <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">中国传统风水布局专业分析</h1>
+        <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">流年九宫飞星风水布局</h1>
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hidden sm:block">基于千年传统文化智慧，上传户型图，智能叠加九宫飞星方位，科学精准分析家居风水布局，适用全国各地</p>
       </div>
 
