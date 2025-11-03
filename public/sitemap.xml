@@ -96,52 +96,12 @@
     </image:image>
   </url>
   
-  <!-- 用户相关页面 -->
-  <url>
-    <loc>https://www.9day.tech/login</loc>
-    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <mobile:mobile/>
-  </url>
-  
-  <url>
-    <loc>https://www.9day.tech/register</loc>
-    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <mobile:mobile/>
-  </url>
-  
-  <url>
-    <loc>https://www.9day.tech/forgot-password</loc>
-    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <mobile:mobile/>
-  </url>
-  
-  <url>
-    <loc>https://www.9day.tech/reset-password</loc>
-    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <mobile:mobile/>
-  </url>
-  
+  <!-- 用户相关页面 - 移除被robots.txt屏蔽的页面，只保留允许索引的页面 -->
   <url>
     <loc>https://www.9day.tech/profile</loc>
     <lastmod>2025-01-16T12:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-    <mobile:mobile/>
-  </url>
-  
-  <url>
-    <loc>https://www.9day.tech/admin</loc>
-    <lastmod>2025-01-16T12:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
     <mobile:mobile/>
   </url>
 

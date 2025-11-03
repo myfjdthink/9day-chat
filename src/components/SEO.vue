@@ -49,6 +49,9 @@ const updateSEO = () => {
   // 更新页面标题
   document.title = fullTitle
   
+  // 更新canonical链接标签
+  updateCanonical()
+  
   // 更新meta description
   let metaDescription = document.querySelector('meta[name="description"]')
   if (!metaDescription) {
@@ -96,6 +99,28 @@ const updateOpenGraph = () => {
     }
     meta.setAttribute('content', content)
   })
+}
+
+// 更新canonical链接标签
+const updateCanonical = () => {
+  // 构建规范URL，确保不包含尾部斜杠（除了根路径）
+  let canonicalPath = route.path
+  if (canonicalPath !== '/' && canonicalPath.endsWith('/')) {
+    canonicalPath = canonicalPath.slice(0, -1)
+  }
+  const canonicalUrl = props.url.replace(/\/$/, '') + canonicalPath
+  
+  // 移除旧的canonical链接
+  const oldCanonical = document.querySelector('link[rel="canonical"]')
+  if (oldCanonical) {
+    oldCanonical.remove()
+  }
+  
+  // 添加新的canonical链接
+  const canonical = document.createElement('link')
+  canonical.setAttribute('rel', 'canonical')
+  canonical.setAttribute('href', canonicalUrl)
+  document.head.appendChild(canonical)
 }
 
 // 更新Twitter Cards
