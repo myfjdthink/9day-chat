@@ -142,7 +142,7 @@
             @click="handleNewChat"
           >
             <Plus class="w-5 h-5 opacity-80 text-white" />
-            新建对话
+            对话自己八字
           </Button>
           <!-- 新建分析 次按钮 薰衣草色线框 -->
           <Button
@@ -150,7 +150,7 @@
             @click="handleNewAnalysis"
           >
             <Star class="w-5 h-5 opacity-80 text-[#b67fda]" />
-            新建分析
+            获取八字报告
           </Button>
         </div>
         <!-- 功能菜单 Claude 风格 -->
@@ -186,7 +186,7 @@
               @click="handleGoAIChat"
             >
               <img :src="chatIcon" alt="命理问答" class="w-5 h-5 opacity-80" />
-              命理问答
+              对话八字
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -196,7 +196,7 @@
               @click="handleGoAnalysis"
             >
               <img :src="analysisIcon" alt="八字分析" class="w-5 h-5 opacity-80" />
-              八字分析
+              运势分析
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -216,7 +216,7 @@
               @click="handleGoExamFortune"
             >
               <img :src="graduationIcon" alt="考运测算" class="w-5 h-5 opacity-80" />
-              考运测算
+              考试运势
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"

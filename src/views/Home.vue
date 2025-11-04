@@ -69,7 +69,7 @@
                 <div class="pt-2 pb-2">
                   <Button size="lg" variant="default" :disabled="isAnalyzing" @click="handleStartAnalysisHome">
                     <Star class="w-5 h-5 mr-2" />
-                    {{ isAnalyzing ? '分析中...' : '开始分析' }}
+                    {{ isAnalyzing ? '分析中...' : '立即获取我的八字报告' }}
                   </Button>
                 </div>
               </CardContent>
@@ -104,7 +104,7 @@
                 <div class="pt-2 pb-2">
                   <Button size="lg" variant="default" :disabled="isChatSending" @click="handleHomeChatSubmit">
                     <Send class="w-5 h-5 mr-2" />
-                    {{ isChatSending ? '发送中...' : '开始咨询' }}
+                    {{ isChatSending ? '发送中...' : '立即开始咨询' }}
                   </Button>
                 </div>
               </CardContent>
@@ -139,7 +139,7 @@
                 </div>
               </div>
               <div class="flex items-center text-sm text-blue-600 dark:text-blue-300">
-                <span>立即体验</span>
+                <span>立即开始对话</span>
                 <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </CardContent>
@@ -165,7 +165,7 @@
                 </div>
               </div>
               <div class="flex items-center text-sm text-green-600 dark:text-green-300">
-                <span>开始分析</span>
+                <span>立即获取我的八字报告</span>
                 <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </CardContent>
@@ -191,7 +191,7 @@
                 </div>
               </div>
               <div class="flex items-center text-sm text-purple-600 dark:text-purple-300">
-                <span>选择吉日</span>
+                <span>立即选吉日</span>
                 <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </CardContent>
@@ -217,7 +217,7 @@
                 </div>
               </div>
               <div class="flex items-center text-sm text-orange-600 dark:text-orange-300">
-                <span>查看运势</span>
+                <span>立即查看今日运势</span>
                 <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </CardContent>
@@ -249,7 +249,7 @@
                   </div>
                 </div>
                 <div class="flex items-center text-sm text-indigo-600 dark:text-indigo-300">
-                  <span>开始分析</span>
+                  <span>立即开始风水分析</span>
                   <ArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </CardContent>
