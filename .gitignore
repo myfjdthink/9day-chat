@@ -90,3 +90,5 @@ docker-compose.yaml
 # Build artifacts
 build/
 *.build
+# Ignore local reference files
+参考/
