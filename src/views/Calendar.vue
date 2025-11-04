@@ -193,16 +193,16 @@
 
             <!-- 右侧区域：展开的大日历 -->
             <div class="flex-1">
-              <div class="flex items-center justify-center mb-6">
+              <div class="flex items-center justify-center mb-3">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
                   {{ currentMonthLabel }} - 择日日历
                 </h2>
               </div>
 
               <!-- 大日历表格 -->
-              <div class="grid grid-cols-7 gap-2">
+              <div class="grid grid-cols-7 gap-1 md:gap-1 lg:gap-2">
                 <!-- 星期标题 -->
-                <div v-for="day in weekDays" :key="day" class="text-center text-sm font-medium text-gray-500 dark:text-gray-300 py-3">
+                <div v-for="day in weekDays" :key="day" class="text-center text-xs md:text-sm font-medium text-gray-500 dark:text-gray-300 py-1.5 md:py-2">
                   {{ day }}
                 </div>
                 <!-- 日期格子 -->
@@ -210,20 +210,20 @@
                   v-for="day in calendarDays"
                   :key="day.date"
                   @click="selectDate(day.date)"
-                  class="relative aspect-square border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors flex flex-col items-center justify-center p-2 rounded-lg"
+                  class="relative border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors flex flex-col items-center justify-center p-1 md:p-1.5 rounded"
                   :class="[
-                    day.date === selectedDate ? 'bg-blue-50 border-blue-300 ring-2 ring-blue-200 dark:bg-blue-900/20 dark:border-blue-500' : '',
+                    day.date === selectedDate ? 'bg-blue-50 border-blue-300 ring-1 ring-blue-200 dark:bg-blue-900/20 dark:border-blue-500' : '',
                     !day.isCurrentMonth ? 'text-gray-400' : '',
                     recommendedDays.includes(day.date) ? 'bg-green-50 border-green-300 dark:bg-green-900/20 dark:border-green-500' : '',
                     day.date === todayStr ? 'bg-yellow-50 border-yellow-300 dark:bg-yellow-900/20 dark:border-yellow-500' : ''
                   ]"
                 >
-                  <span class="text-lg font-medium mb-1">{{ day.dayOfMonth }}</span>
+                  <span class="text-sm md:text-base font-medium mb-0.5">{{ day.dayOfMonth }}</span>
                   
                   <!-- 择日评分显示 -->
-                  <div v-if="selectedPurpose && day.isCurrentMonth && getPurposeScore(day.date) > 0" class="text-center mt-1">
+                  <div v-if="selectedPurpose && day.isCurrentMonth && getPurposeScore(day.date) > 0" class="text-center mt-0.5">
                     <span
-                      class="text-xs font-bold px-1 py-0.5 rounded"
+                      class="text-[10px] md:text-xs font-bold px-1 py-0.5 rounded"
                       :class="[
                         getPurposeScoreColor(getPurposeScore(day.date)),
                         getPurposeScore(day.date) >= 65 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-900'
@@ -236,7 +236,7 @@
                   <!-- 吉日标记 -->
                   <div
                     v-if="recommendedDays.includes(day.date) && day.isCurrentMonth"
-                    class="absolute top-1 right-1 text-red-600 font-bold text-sm"
+                    class="absolute top-1 right-1 text-red-600 font-bold text-xs"
                   >
                     吉
                   </div>
