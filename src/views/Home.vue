@@ -104,7 +104,7 @@
                 <div class="pt-2 pb-2">
                   <Button size="lg" variant="default" :disabled="isChatSending" @click="handleHomeChatSubmit">
                     <Send class="w-5 h-5 mr-2" />
-                    {{ isChatSending ? '发送中...' : '立即开始咨询' }}
+                    {{ isChatSending ? '发送中...' : '立即对话我的八字' }}
                   </Button>
                 </div>
               </CardContent>
@@ -127,7 +127,7 @@
                 <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                   <MessageCircle class="w-5 h-5 text-white" />
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">命理问答</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">对话八字</h3>
               </div>
               <p class="text-gray-600 dark:text-gray-300 mb-3">专业解答八字运势、生活、事业等多领域问题，为您指引人生方向</p>
               <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 mb-3">
