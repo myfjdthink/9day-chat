@@ -24,23 +24,93 @@
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 md:mb-3">免费八字排盘 · AI智能算命平台</h1>
         <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4 md:mb-6">专业生辰八字分析、在线算命问答、黄历择日推荐、生肖运势预测，传统命理与AI技术完美结合</p>
 
-        <div class="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-2 md:space-y-0">
-          <Button
-            size="lg"
-            variant="default"
-            @click="router.push('/chat')"
-          >
-            <MessageCircle class="w-5 h-5 mr-2" />
-            开始命理问答
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            @click="router.push('/analysis')"
-          >
-            <Star class="w-5 h-5 mr-2" />
-            八字运势分析
-          </Button>
+
+
+        <!-- 首页直接提问入口（ChatGPT 风格） -->
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <!-- 左侧：八字分析输入组件 -->
+          <div class="flex flex-col h-full">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
+              <User class="w-4 h-4 text-green-500 mr-2" />
+              八字分析输入
+            </h3>
+            <Card class="bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm border border-purple-500/20 shadow-lg h-full">
+              <CardContent class="p-4 sm:p-6 flex flex-col justify-between space-y-4">
+                <!-- 性别选择 -->
+                <div>
+                  <label class="block text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">性别 <span class="text-red-500">*</span></label>
+                  <div class="flex space-x-3">
+                    <Button :variant="gender === '男' ? 'default' : 'outline'" @click="gender = '男'">男</Button>
+                    <Button :variant="gender === '女' ? 'default' : 'outline'" @click="gender = '女'">女</Button>
+                  </div>
+                </div>
+
+                <!-- 出生日期时间 -->
+                <div>
+                  <label class="block text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    出生日期和时间 <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <Input type="datetime-local" v-model="birthDateTime" class="w-full" />
+                    <CalendarIcon class="absolute right-3 top-3 w-4 h-4 text-gray-400" />
+                  </div>
+                  <div class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-md">
+                    <div class="flex items-center space-x-2">
+                      <CalendarIcon class="w-4 h-4 text-green-600" />
+                      <span class="text-xs sm:text-sm text-green-800 dark:text-green-200">
+                        已选择：{{ formatDateTime(birthDateTime) }} <span class="text-green-600">(新历)</span>
+                      </span>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">出生时间已选择，可点击输入框重新调整</p>
+                </div>
+
+                <!-- 开始分析按钮 -->
+                <div class="pt-2 pb-2">
+                  <Button size="lg" variant="default" :disabled="isAnalyzing" @click="handleStartAnalysisHome">
+                    <Star class="w-5 h-5 mr-2" />
+                    {{ isAnalyzing ? '分析中...' : '开始分析' }}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <!-- 右侧：对话输入组件 -->
+          <div class="flex flex-col h-full">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
+              <MessageCircle class="w-4 h-4 text-purple-500 mr-2" />
+              AI 命理问答
+            </h3>
+            <Card class="bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm border border-purple-500/20 shadow-lg h-full">
+              <CardContent class="p-4 sm:p-6 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <MessageCircle class="w-4 h-4 mr-2 text-purple-500" />
+                    按 Enter 发送 · Shift+Enter 换行
+                  </div>
+                </div>
+                <div class="relative">
+                  <textarea
+                    ref="homeChatInputRef"
+                    v-model="homeChatInput"
+                    @keydown="handleHomeKeydown"
+                    @input="handleHomeInput"
+                    rows="7"
+                    placeholder="在此直接提问，进入 AI 命理对话..."
+                    class="w-full resize-none rounded-2xl bg-transparent border border-gray-300 dark:border-gray-700 px-4 py-4 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent min-h-[10rem] sm:min-h-[13rem] overflow-y-auto"
+                  />
+                </div>
+                <div class="pt-2 pb-2">
+                  <Button size="lg" variant="default" :disabled="isChatSending" @click="handleHomeChatSubmit">
+                    <Send class="w-5 h-5 mr-2" />
+                    {{ isChatSending ? '发送中...' : '开始咨询' }}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <div class="mt-2 text-xs text-center text-gray-500 dark:text-gray-400 md:hidden">将携带此问题进入对话页，体验与之前一致</div>
+          </div>
         </div>
       </div>
 
@@ -240,7 +310,7 @@
                 <span class="text-green-500 mr-2">⚡</span>
                 五行相生相克
               </h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">金、木、水、火、土五行之间存在相生相克关系，是AI命理分析的核心理论基础。</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">金、木、水、火、土五行之间存在相生相克关系，是AI命理分析的核理论基础。</p>
               <div class="text-xs text-green-600 dark:text-green-400">
                 <span class="font-medium">关键词：</span>五行分析、相生相克、命理基础
               </div>
@@ -445,25 +515,64 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { Home, MessageCircle, Star, User, Users, BarChart3, TrendingUp, ArrowRight, Calendar, Zap } from 'lucide-vue-next'
+import { Home, MessageCircle, Star, User, Users, BarChart3, TrendingUp, ArrowRight, Calendar, Zap, Send, CalendarIcon } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
+// 采用自定义 textarea 实现更贴近 ChatGPT 的输入体验
 import Card from '@/components/ui/Card.vue'
 import CardContent from '@/components/ui/CardContent.vue'
 import SEO from '@/components/SEO.vue' // 导入 SEO 组件
-
-// QQ号码点击复制功能
+import Input from '@/components/ui/Input.vue'
+import dayjs from 'dayjs'
 import { ref } from 'vue'
 
 const router = useRouter()
 
-// 复制QQ号码到剪贴板
-function copyQQ() {
-  const qq = '3960688438'
-  navigator.clipboard.writeText(qq).then(() => {
-    // 简单提示，实际项目可用 ElMessage 或自定义弹窗
-    alert('QQ号码已复制到剪贴板：' + qq)
-  }).catch(() => {
-    alert('复制失败，请手动复制：' + qq)
-  })
+// 首页提问入口状态与提交
+const homeChatInput = ref('')
+const isChatSending = ref(false)
+const homeChatInputRef = ref<HTMLTextAreaElement | null>(null)
+const handleHomeInput = (e: Event) => {
+  const el = e.target as HTMLTextAreaElement
+  if (!el) return
+  el.style.height = 'auto'
+  el.style.height = Math.min(el.scrollHeight, 240) + 'px'
 }
+const handleHomeChatSubmit = async () => {
+  const q = homeChatInput.value.trim()
+  if (!q) return
+  isChatSending.value = true
+  await router.push({ path: '/chat', query: { q } })
+  setTimeout(() => { isChatSending.value = false }, 600)
+}
+
+ // 首页输入框键盘行为：Enter 发送，Shift+Enter 换行
+ const handleHomeKeydown = (e: KeyboardEvent) => {
+   if (e.key === 'Enter' && !e.shiftKey) {
+     e.preventDefault()
+     handleHomeChatSubmit()
+   }
+ }
+
+// 八字分析输入区域状态
+const gender = ref<'男' | '女'>('男')
+const birthDateTime = ref<string>('1999-09-09T09:09')
+const isAnalyzing = ref(false)
+const formatDateTime = (dt: string): string => dayjs(dt).format('YYYY-MM-DD HH:mm:ss')
+const handleStartAnalysisHome = async () => {
+  if (!birthDateTime.value) { alert('请选择出生日期时间'); return }
+  isAnalyzing.value = true
+  await router.push({ path: '/analysis', query: { gender: gender.value, birth: birthDateTime.value, auto: '1' } })
+  setTimeout(() => { isAnalyzing.value = false }, 800)
+}
+
+ // 复制QQ号码到剪贴板
+ function copyQQ() {
+   const qq = '3960688438'
+   navigator.clipboard.writeText(qq).then(() => {
+     // 简单提示，实际项目可用 ElMessage 或自定义弹窗
+     alert('QQ号码已复制到剪贴板：' + qq)
+   }).catch(() => {
+     alert('复制失败，请手动复制：' + qq)
+   })
+ }
 </script>

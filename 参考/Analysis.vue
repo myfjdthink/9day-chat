@@ -3,15 +3,11 @@
     <!-- SEO组件 -->
     <SEO 
       title="专业八字分析排盘 - AI智能命理解读 | 北斗九号日历"
-      pageTitle="八字分析"
-      description="提供专业的八字分析排盘服务，智能解读命理格局、用神喜忌、十神关系、流年运势等。基于传统四柱八字理论，结合AI算法，为您提供精准的命理分析报告和人生指导建议。支持在线八字排盘、大运分析、流年预测等功能。"
+      description="提供专业的八字分析排盘服务，智能解读命理格局、用神喜忌、十神关系、流年运势等。基于传统四柱八字理论，结合AI算法，为您提供精准的命理分析报告和人生指导建议。支持在线八字排盘、大运分析、流年预测。"
       keywords="八字分析,八字排盘,命理分析,用神分析,十神分析,大运流年,命理格局,四柱八字,在线排盘,AI命理解读"
     />
     
     <div class="max-w-6xl mx-auto">
-      <!-- 页面主标题 -->
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">专业八字分析排盘 - AI智能命理解读</h1>
-      
       <!-- 功能介绍卡片 -->
       <div v-if="!analysisResult" class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 mb-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -825,29 +821,6 @@ const userStore = useUserStore()
 const baziStore = useBaziStore()
 const route = useRoute()
 const router = useRouter()
-
-// 从首页路由参数自动填充并触发分析
-watch(
-  () => [route.query.birth, route.query.gender, route.query.auto],
-  async ([birth, genderParam, auto]) => {
-    const bd = typeof birth === 'string' ? birth : ''
-    const gd = typeof genderParam === 'string' ? genderParam : ''
-    const needAuto = auto === '1'
-    if (bd) birthDateTime.value = bd
-    if (gd === '男' || gd === '女') gender.value = gd
-    if (needAuto) {
-      // 确保有默认范围，避免校验失败
-      analysisTypes.basic = true
-      analysisTypes.deity = true
-      analysisTypes.ai = true
-      analysisScope.year = true
-      await nextTick()
-      await handleStartAnalysis()
-      router.replace({ path: route.path, query: { ...route.query, auto: undefined } })
-    }
-  },
-  { immediate: true }
-)
 
 // ========== 新增：自动导入用户八字信息 ========== //
 const userHasBaziInfo = computed(() => {

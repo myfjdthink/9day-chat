@@ -430,6 +430,32 @@ watch(
   { immediate: true }
 )
 
+// 从路由查询参数读取用户初始问题并自动发送
+// 确保自动发送前已准备好会话，避免初始化时序问题
+const ensureConversationReady = async () => {
+  if (!chatStore.currentConversationId) {
+    chatStore.createConversation()
+    await nextTick()
+  }
+}
+watch(
+  () => route.query.q,
+  async (q) => {
+    const val = typeof q === 'string' ? q : ''
+    if (val && val.trim()) {
+      await ensureConversationReady()
+      input.value = val
+      await handleSubmit()
+      // 发送后清理查询参数，避免刷新重复发送
+      router.replace({
+        path: route.path,
+        query: { ...route.query, q: undefined }
+      })
+    }
+  },
+  { immediate: true }
+)
+
 // 渲染 Markdown
 const renderMarkdown = (content: string) => {
   return md.render(content)
