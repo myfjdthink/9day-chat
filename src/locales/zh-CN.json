@@ -1,0 +1,1159 @@
+{
+  "common": {
+    "home": "首页",
+    "startAnalysisButton": "立即获取八字报告",
+    "aiChatLabel": "AI 命理问答",
+    "enterToSend": "按 Enter 发送 · Shift+Enter 换行",
+    "askPlaceholder": "在此直接提问，进入 AI 命理对话...",
+    "startChatCTA": "立即对话我的八字",
+    "send": "发送",
+    "cancel": "取消",
+    "confirm": "确定",
+    "unknown": "未知",
+    "etc": "等",
+    "loading": {
+      "analyzing": "分析中...",
+      "sending": "发送中..."
+    },
+    "breadcrumb": {
+      "home": "首页"
+    }
+  },
+  "pages": {
+    "chat": "AI对话",
+    "analysis": "八字分析",
+    "calendar": "择日日历",
+    "zodiac-fortune": "生肖运势",
+    "fengshui-fortune": "风水运势",
+    "exam-fortune": "考试运势",
+    "login": "用户登录",
+    "register": "用户注册",
+    "profile": "个人中心",
+    "password-reset": "重置密码",
+    "forgot-password": "找回密码"
+  },
+  "home": {
+    
+    "breadcrumb": {
+      "platform": "AI智能八字运势分析平台"
+    },
+    "hero": {
+      "title": "免费八字排盘 · AI智能算命平台",
+      "subtitle": "专业生辰八字分析、在线算命问答、黄历择日推荐、生肖运势预测，传统命理与AI技术完美结合"
+    },
+    "coreFeaturesTitle": "🎯 核心功能展示",
+    "card": {
+      "chat": {
+        "title": "对话八字",
+        "desc": "专业解答八字运势、生活、事业等多领域问题，为您指引人生方向"
+      },
+      "examples": {
+        "label": "💡 使用示例",
+        "q1": "请分析我的八字用神",
+        "q2": "我适合做什么工作？",
+        "q3": "我的感情运势如何？"
+      },
+      "cta": {
+        "chat": "立即开始对话",
+        "analysis": "立即获取我的八字报告",
+        "calendar": "立即选吉日",
+        "zodiac": "立即查看今日运势"
+      },
+      "analysis": {
+        "title": "八字运势分析",
+        "desc": "基于传统命理学的专业八字分析，精准预测你的当年当月运势与注意事项"
+      },
+      "calendar": {
+        "title": "择日推荐",
+        "desc": "智能推荐黄道吉日，为重要事项选择最佳时机，趋吉避凶"
+      },
+      "zodiac": {
+        "title": "生肖运势",
+        "desc": "每日生肖运势分析，了解今日吉凶，把握良机，趋利避害"
+      }
+    },
+    "seo": {
+      "title": "北斗九号日历 - 免费八字排盘|在线算命|AI智能命理分析平台",
+      "pageTitle": "首页",
+      "description": "北斗九号日历是专业的免费八字排盘和在线算命平台，提供AI智能命理预测、生辰八字分析、择日推荐、生肖运势查询等服务。基于传统命理学理论与现代AI技术，为用户提供精准的运势分析、人生指导和决策建议。支持四柱预测、用神分析、五行相生相克等专业功能，立即体验免费八字分析服务。",
+      "keywords": "免费八字排盘,在线算命,AI命理分析,生辰八字,四柱预测,用神分析,五行相生相克,择日推荐,生肖运势,命理咨询,智能预测,运势分析,北斗九号日历,八字分析,命理问答,黄历择日,AI智能算命"
+    },
+    "input": {
+      "title": "八字分析输入",
+      "gender": {
+        "label": "性别",
+        "male": "男",
+        "female": "女"
+      },
+      "birth": {
+        "label": "出生日期和时间",
+        "selected": "已选择",
+        "newCalendar": "新历",
+        "hint": "出生时间已选择，可点击输入框重新调整"
+      }
+    },
+    "chat": {
+      "carryHint": "将携带此问题进入对话页，体验与之前一致"
+    },
+    "calendar": {
+      "scenarios": {
+        "title": "🎯 适用场景",
+        "items": {
+          "love": "感情择日",
+          "opening": "开业择日",
+          "moving": "搬家择日",
+          "travel": "出行择日"
+        }
+      }
+    },
+    "zodiac": {
+      "content": {
+        "title": "📈 运势内容",
+        "items": {
+          "todayScore": "今日运势评分",
+          "careerFinance": "事业财运分析",
+          "healthLove": "健康感情运势",
+          "advice": "吉凶建议"
+        }
+      }
+    },
+    "fengshui": {
+      "seo": {
+        "title": "中国传统风水布局分析 - 九宫飞星图在线专业测算 | 北斗九号日历",
+        "pageTitle": "风水布局分析",
+        "description": "北斗九号日历提供专业的中国传统风水布局分析服务，适用全国各地。基于传统文化智慧，结合现代分析方法，提供九宫飞星图在线测算、户型风水评估、方位吉凶判断等服务。上传户型图，智能叠加九宫飞星方位，根据年份精准调整飞星排布，科学分析家居风水布局，助您趋吉避凶，改善运势。",
+        "keywords": "中国风水,传统风水,风水布局,九宫飞星,风水分析,户型风水,飞星排布,家居风水,风水测算,方位调整,在线风水,风水咨询,住宅风水,办公室风水,风水化解,吉凶方位"
+      },
+      "title": "🏠 专业风水分析",
+      "card": {
+        "title": "流年风水分析",
+        "desc": "上传户型图，智能叠加九宫飞星方位，精准分析家居风水布局，助您趋吉避凶",
+        "features": {
+          "title": "🎯 核心功能",
+          "items": {
+            "upload": "户型图上传分析",
+            "overlay": "九宫飞星智能叠加",
+            "adjust": "年份飞星排布调整",
+            "mapping": "方位精准对应"
+          }
+        },
+        "cta": "立即开始风水分析"
+      },
+      "ui": {
+        "titleLong": "流年九宫飞星风水布局",
+        "subtitle": "基于千年传统文化智慧，上传户型图，智能叠加九宫飞星方位，科学精准分析家居风水布局，适用全国各地"
+      },
+      "controls": {
+        "yearLabel": "选择年份",
+        "yearSuffix": "年",
+        "orientationAdjust": "房屋方位对应调整",
+        "rotateLeftFull": "左转45°",
+        "rotateLeftShort": "左转",
+        "rotateRightFull": "右转45°",
+        "rotateRightShort": "右转",
+        "overlayOpacity": "飞星显示不透明度",
+        "taishuiSansha": "{year} 年太岁三煞方位",
+        "hide": "隐藏",
+        "show": "显示",
+        "grid": "九宫图",
+        "reupload": "重新上传"
+      },
+      "labels": {
+        "taisuiPrefix": "太岁位：",
+        "sanshaPrefix": "三煞位：",
+        "taisui": "太岁",
+        "sansha": "三煞",
+        "suitablePrefix": "✅ 宜：",
+        "avoidPrefix": "❌ 忌："
+      },
+      "items": {
+        "fishTank": "鱼缸养鱼",
+        "waterCup": "一杯水",
+        "musicBox": "音乐盒",
+        "flowingWater": "流动的水",
+        "blueCarpet": "蓝色地毯",
+        "yellowItems": "黄色物品",
+        "brownItems": "咖啡色物品",
+        "copperGourd": "铜葫芦",
+        "fiveEmperorsCoins": "五帝钱",
+        "copperQilin": "铜麒麟",
+        "copperPieces": "铜片",
+        "metalSoundItems": "金属发声物件",
+        "redItems": "红色物件",
+        "water": "水",
+        "metalItems": "金属物件",
+        "plants": "植物",
+        "groundBreaking": "动土",
+        "fan": "风扇",
+        "fourLuckyBamboo": "四棵富贵竹",
+        "blueItems": "蓝色物品",
+        "sixWhiteStones": "六颗白石",
+        "goldenItems": "金色物件",
+        "whiteColor": "白色",
+        "vinegarOpen": "开口陈醋",
+        "greenItems": "绿色物品",
+        "nineRedEnvelopes": "九个利是封",
+        "blackItems": "黑色物品"
+      },
+      "directions": {
+        "正东": "正东",
+        "东南": "东南",
+        "正南": "正南",
+        "西南": "西南",
+        "中央": "中宫",
+        "正西": "正西",
+        "东北": "东北",
+        "正北": "正北",
+        "西北": "西北"
+      },
+      "upload": {
+        "title": "上传户型图 - 专业风水分析",
+        "dragTip": "拖拽图片到此处或点击上传",
+        "supportedFormats": "支持 JPG、PNG、GIF 格式",
+        "imageAlt": "上传的户型图",
+        "steps": {
+          "1": "• 第一步：点击上传按钮，选择房屋平面图（支持JPG、PNG格式）",
+          "2": "• 第二步：在左侧选择年份，系统自动显示当年的风水方位",
+          "3": "• 第三步：用旋转按钮调整方向，让图上的方位和实际房屋朝向一致",
+          "4": "• 第四步：查看每个房间的颜色提示，绿色代表好位置，红色需要注意",
+          "5": "• 最后：根据下方建议调整家居摆放，让家里风水更好"
+        }
+      },
+      "advice": {
+        "still": "⚠️ 宜静不宜动",
+        "noGroundwork": "⚠️ 不宜动土",
+        "taisuiTitle": "太岁位（{direction}）",
+        "taisuiDesc": "宜静不宜动，不宜装修、挖掘、敲打。可放置吉祥物品镇宅。",
+        "sanshaTitle": "三煞位（{direction}）",
+        "sanshaDesc": "不宜坐向此方，不宜动土。避免在此方位放置重要家具。",
+        "yearTitle": "{year} 年风水建议",
+        "templates": {
+          "fortune": {
+            "title": "财运旺盛方位",
+            "content": "大门或睡房在{directions}的小伙伴，今年财运不错哟！"
+          },
+          "joy": {
+            "title": "喜事连连",
+            "content": "大门或睡房在{directions}的，今年家里容易有喜事哟，结婚或生小孩，搬新家！"
+          },
+          "health": {
+            "title": "健康注意",
+            "content": "大门或睡房在房屋{directions}的，要特别注意身体，容易生病哟。容易因为官司破财。要注意肠胃问题。"
+          },
+          "finance": {
+            "title": "财务谨慎",
+            "content": "大门或睡房在房屋{directions}的，今年要注意不要做太大的风险投资，容易有损失哟，也要注意财务情况，容易会有意外的损失。"
+          }
+        }
+      },
+      "info": {
+        "yearStarsTitle": "{year} 年九宫飞星",
+        "detailsTitle": "九宫飞星详细说明",
+        "directionSuffix": "方位",
+        "classificationTitle": "吉凶分类",
+        "goodStarsLabel": "吉星：一白、六白、八白",
+        "badStarsLabel": "凶星：二黑、三碧、五黄、七赤",
+        "neutralStarsLabel": "中性：四绿、九紫",
+        "yearKeyPositionsTitle": "{year} 年风水要位"
+      },
+      "stars": {
+        "attrPrefix": "五行属",
+        "types": { "auspicious": "吉星", "inauspicious": "凶星" },
+        "elements": {
+          "water": "水",
+          "earth": "土",
+          "wood": "木",
+          "metal": "金",
+          "fire": "火"
+        },
+        "1": { "title": "一白星", "desc": "代表官升、名气、人缘与财运，适合合理摆放水元素。" },
+        "2": { "title": "二黑星", "desc": "主疾病与阻碍，宜静不宜动，忌动土，可用金属性化解。" },
+        "3": { "title": "三碧星", "desc": "易惹是非与官司，避免装修扰动，木属性宜平稳使用。" },
+        "4": { "title": "四绿星", "desc": "利于学业与创意，适合儿童房与书房，可适度加强木性。" },
+        "5": { "title": "五黄星", "desc": "大凶之星，忌动土与敲打，避免扰动，需强力化解。" },
+        "6": { "title": "六白星", "desc": "助权威、事业与出行，适宜金属性增强与稳固。" },
+        "7": { "title": "七赤星", "desc": "主盗劫与意外，减少尖锐金属，注意防护与安全。" },
+        "8": { "title": "八白星", "desc": "当旺财星，助旺财运，可用土属性适度催旺。" },
+        "9": { "title": "九紫星", "desc": "主喜庆与未来好运，适合喜事与氛围营造。" }
+      }
+    },
+    "analysis": {
+      "seo": {
+        "title": "专业八字分析 - AI智能命理解读 | 北斗老黄历",
+        "pageTitle": "八字分析",
+        "description": "借助AI进行八字（四柱）专业分析：排盘、五行分布、用神/忌神与运势预测。以传统理论为基础，结合现代模型，提供准确指导。",
+        "keywords": "八字分析, 四柱, 用神分析, 运势预测, AI命理, 在线排盘"
+      },
+      "hero": {
+        "title": "专业八字分析排盘 - AI智能命理解读"
+      },
+      "features": {
+        "chart": { "title": "八字排盘", "desc": "精准排盘，分析五行与格局" },
+        "analysis": { "title": "全面分析", "desc": "多维度洞察性格、事业、财运与情感" },
+        "advice": { "title": "专业建议", "desc": "结合命理分析的实用建议，助力人生决策" }
+      },
+      "content": {
+        "title": "📈 运势内容",
+        "items": {
+          "basic": "基础分析",
+          "elements": "五行分布",
+          "aiPrediction": "运势预测",
+          "score": "运势评分"
+        }
+      },
+      "form": {
+        "basicInfo": "基本信息",
+        "gender": "性别",
+        "male": "男",
+        "female": "女",
+        "birthLabel": "出生日期和时间",
+        "selectedTip": "已选择：{date}（新历）",
+        "adjustHint": "出生时间已选择，可点击输入框重新调整"
+      },
+      "config": { "title": "分析配置" },
+      "types": {
+        "title": "分析类型",
+        "basic": { "title": "基础分析", "desc": "八字排盘、五行分析、基本信息" },
+        "deity": { "title": "用神分析", "desc": "用神喜忌、避神分析、格局判断" },
+        "ai": { "title": "运势预测", "desc": "运势分析、性格分析、人生建议" }
+      },
+      "scope": { "title": "选择分析范围", "year": "流年", "month": "流月", "day": "流日" },
+      "actions": {
+        "start": "开始分析",
+        "loading": "分析中...",
+        "save": "保存报告",
+        "reset": "重新分析",
+        "chat": "对话报告"
+      },
+      "report": {
+        "title": "八字分析报告",
+        "timePrefix": "分析时间：",
+        "typePrefix": "分析类型：",
+        "baseAndDeityTitle": "基础分析及用神分析",
+        "typeSuffix": "{type} 分析",
+        "labels": {
+          "baseTitle": "基础信息",
+          "gender": "性别",
+          "baziInfo": "八字信息",
+          "fiveElementsStats": "五行统计",
+          "distribution": "五行分布",
+          "strongest": "最强五行",
+          "weakest": "最弱五行",
+          "dayunInfo": "当前大运信息",
+          "timeInfoTitle": "流年流月流日信息",
+          "flowYear": "流年",
+          "flowMonth": "流月",
+          "flowDay": "流日",
+          "deityTitle": "用神分析",
+          "pattern": "格局",
+          "usefulElements": "用神"
+          ,
+          "tabooElements": "忌神",
+          "principle": "取用原则",
+          "pillarYear": "年柱",
+          "pillarMonth": "月柱",
+          "pillarDay": "日柱",
+          "pillarHour": "时柱",
+          "emptyUseful": "暂无用神信息",
+          "emptyTaboo": "暂无忌神信息"
+        }
+      },
+      "summary": { "title": "分析总结", "desc": "本次分析覆盖 {count} 个维度，请结合结果合理调整。" },
+      "overlay": {
+        "title": "正在为您分析，请稍候...",
+        "sub1": "首次分析可能需要较长时间，请耐心等待",
+        "sub2": "如果长时间无响应，请点击重试"
+      },
+      "guide": {
+        "title": "使用说明",
+        "step1": { "title": "填写基本信息", "desc": "准确填写性别、出生日期和时间，确保分析结果的准确性" },
+        "step2": { "title": "选择分析类型", "desc": "选择基础分析、用神分析或运势预测" },
+        "step3": { "title": "设置分析范围", "desc": "选择流年/流月/流日范围用于运势预测" },
+        "step4": { "title": "开始分析", "desc": "点击开始，生成详细分析报告" }
+      },
+      "faq": {
+        "title": "常见问题",
+        "q1": { "title": "八字分析准确吗？", "answer": "基于传统命理理论结合现代算法，结果仅供参考，请结合个人努力和现实情况。" },
+        "q2": { "title": "出生时间不准确会影响结果吗？", "answer": "会。准确度直接影响排盘与分析，请尽可能提供准确时间，最佳误差不超过1小时。" },
+        "q3": { "title": "基础分析与用神分析的区别？", "answer": "基础分析侧重排盘与五行统计；用神分析深入格局与喜忌；运势预测针对具体时期的趋势。" },
+        "q4": { "title": "如何理解专业术语？", "answer": "我们提供通俗解释；也可使用“对话报告”获取详细说明与咨询。" },
+        "q5": { "title": "是否可以保存分析报告？", "answer": "可以。点击“保存报告”导出为图片，便于保存与分享。" }
+      },
+      "modalLogin": { "title": "需要登录", "message": "请先登录后使用该功能", "confirm": "去登录", "cancel": "取消" },
+      "errors": {
+        "selectBirthTime": "请选择出生日期时间",
+        "selectType": "请至少选择一种分析类型",
+        "selectScopeForAI": "选择运势预测时，请至少选择一个分析范围",
+        "allAPIsFailed": "所有分析接口调用失败",
+        "analysisError": "分析过程出现错误"
+      },
+      "share": { "downloadPrefix": "分析报告_", "reportNamePrefix": "八字分析-" },
+      "typeLabels": {
+        "basic": "基础分析",
+        "deity": "用神分析",
+        "ai": "运势预测"
+      },
+      "fields": {
+        "analysisType": "分析类型",
+        "analysisTime": "分析时间",
+        "analysisResult": "分析结果",
+        "genderMale": "男",
+        "genderFemale": "女",
+        "fiveElementsStats": "五行统计",
+        "strongestElement": "最强五行",
+        "weakestElement": "最弱五行",
+        "dayun": "大运",
+        "tiangan": "天干",
+        "dizhi": "地支",
+        "wuxing": "五行",
+        "liunian": "流年",
+        "liuyue": "流月",
+        "liuri": "流日",
+        "pattern": "格局",
+        "usefulElement": "用神",
+        "tabooElement": "忌神",
+        "principle": "取用原则",
+        "conclusion": "分析结论"
+      }
+    },
+    "almanac": {
+      "title": "📅 今日黄历 · 每日一卦",
+      "yiji": {
+        "title": "今日宜忌",
+        "yi": "宜",
+        "ji": "忌",
+        "sampleYi": "祈福、开市、签约、出行",
+        "sampleJi": "动土、破土、安葬"
+      },
+      "gua": {
+        "title": "每日一卦",
+        "name": "天火同人卦",
+        "desc": "天火同人，志同道合。事业顺利，贵人相助。"
+      }
+    },
+    "contact": {
+      "title": "联系我们",
+      "description": "欢迎通过以下方式与我们交流：",
+      "qq": "QQ号码",
+      "email": "邮件联系",
+      "twitter": "Twitter",
+      "xhs": "小红书"
+    },
+    "knowledge": {
+      "title": "📚 命理知识科普",
+      "items": {
+        "whatIsBazi": {
+          "title": "什么是八字？",
+          "desc": "八字又称四柱，是根据出生年、月、日、时的天干地支组合，形成八个字，用于分析人的命运轨迹。",
+          "keywordsLabel": "关键词：",
+          "keywords": "免费八字排盘、生辰八字、四柱预测"
+        },
+        "fiveElements": {
+          "title": "五行相生相克",
+          "desc": "金、木、水、火、土五行之间存在相生相克关系，是AI命理分析的核理论基础。",
+          "keywordsLabel": "关键词：",
+          "keywords": "五行分析、相生相克、命理基础"
+        },
+        "usefulElements": {
+          "title": "用神与忌神",
+          "desc": "用神是八字中最需要的五行，忌神是最不利的五行。准确判断用神忌神是在线算命的关键。",
+          "keywordsLabel": "关键词：",
+          "keywords": "用神分析、忌神判断、AI智能预测"
+        }
+      }
+    },
+    "steps": {
+      "title": "🚀 三步解锁您的命运密码",
+      "items": {
+        "register": {
+          "title": "快速注册体验",
+          "descPrefix": "30秒",
+          "descSuffix": "，立即开启专属AI命理分析服务"
+        },
+        "chart": {
+          "title": "智能八字排盘",
+          "descPrefix": "输入生辰信息，获得专业",
+          "descSuffix": "和AI智能分析"
+        },
+        "services": {
+          "title": "全方位命理服务",
+          "descSuffix": "一站搞定"
+        }
+      },
+      "links": {
+        "register": "免费注册",
+        "analysis": "免费八字排盘",
+        "chat": "在线算命",
+        "zodiac": "生肖运势",
+        "calendar": "择日推荐"
+      }
+    },
+    "testimonials": {
+      "title": "✨ 用户真实体验",
+      "items": {
+        "1": {
+          "nameAbbr": "张",
+          "nameFull": "张先生",
+          "job": "企业高管",
+          "quote": "AI对话功能很实用，帮我分析了事业运势，建议很中肯，对决策很有帮助！"
+        },
+        "2": {
+          "nameAbbr": "李",
+          "nameFull": "李女士",
+          "job": "创业者",
+          "quote": "择日功能太棒了！开业选的日子确实很顺利，生意红火，感谢推荐！"
+        },
+        "3": {
+          "nameAbbr": "王",
+          "nameFull": "王先生",
+          "job": "上班族",
+          "quote": "每日生肖运势很准确，帮我避开了很多麻烦，现在每天都会查看！"
+        }
+      }
+    },
+    "faq": {
+      "title": "❓ 常见问题解答 (FAQ)",
+      "sections": {
+        "bazi": {
+          "title": "🎯 关于八字分析",
+          "qa1": {
+            "q": "Q: 免费八字排盘准确吗？",
+            "a": "A: 我们的AI智能八字排盘系统基于传统命理学理论，结合现代算法，确保排盘的准确性。所有计算都经过严格验证。"
+          },
+          "qa2": {
+            "q": "Q: 八字分析需要提供哪些信息？",
+            "a": "A: 只需提供准确的出生年月日时和出生地点，我们的系统就能为您生成详细的八字分析报告。"
+          }
+        },
+        "calendar": {
+          "title": "📅 关于个人运历择日推荐",
+          "qa1": {
+            "q": "Q: 择日推荐的依据是什么？",
+            "a": "A: 我们综合考虑黄历宜忌、个人八字、五行相配等多个因素，为您推荐最适合的吉日良辰。"
+          },
+          "qa2": {
+            "q": "Q: 可以为哪些事情择日？",
+            "a": "A: 支持开业、结婚、搬家、出行、签约等各类重要事项的择日推荐，帮您趋吉避凶。"
+          }
+        },
+        "zodiac": {
+          "title": "🐲 关于生肖运势",
+          "qa1": {
+            "q": "Q: 生肖运势多久更新一次？",
+            "a": "A: 我们每日更新生肖运势，包括事业、财运、感情、健康等各方面的运势分析和建议。"
+          },
+          "qa2": {
+            "q": "Q: 生肖运势的准确性如何？",
+            "a": "A: 基于传统生肖理论和现代统计学方法，结合AI算法分析，为您提供参考性的运势指导。"
+          }
+        },
+        "ai": {
+          "title": "🤖 关于AI命理问答",
+          "qa1": {
+            "q": "Q: AI命理分析可靠吗？",
+            "a": "A: 我们的AI系统学习了大量传统命理典籍和实践案例，能够提供专业的命理分析和人生指导建议。"
+          },
+          "qa2": {
+            "q": "Q: 可以问哪些类型的问题？",
+            "a": "A: 支持事业发展、感情婚姻、财运分析、健康状况、学业考试等各个方面的命理咨询。"
+          }
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "menu": "功能菜单",
+    "newAnalysis": "获取八字报告",
+    "newChat": "新建对话",
+    "brand": "北斗九号日历",
+    "logoAlt": "北斗九号日历Logo",
+    "expand": "展开侧边栏",
+    "collapse": "收起侧边栏",
+    "avatarAlt": "用户头像",
+    "avatarAltDetailed": "用户头像 - 个人账户设置与资料管理",
+    "user": {
+      "profile": "个人信息管理",
+      "admin": "管理员菜单",
+      "logout": "退出登录"
+    },
+    "nav": {
+      "home": "首页",
+      "calendar": "个人运历",
+      "aiChat": "命理问答",
+      "analysis": "八字分析",
+      "zodiac": "生肖运势",
+      "fengshui": "风水分析",
+      "exam": "考试运势",
+      "knowledge": "命理知识"
+    }
+  },
+  "exam": {
+    "seo": {
+      "title": "考试运势分析 - 北斗九号日历",
+      "pageTitle": "考试运势",
+      "description": "基于八字命理分析考试运势，提供专业的考试时机建议和备考指导",
+      "keywords": "考试运势,八字分析,考试时机,备考建议,命理分析"
+    },
+    "breadcrumb": {
+      "home": "首页",
+      "exam": "考运测算",
+      "ariaLabel": "面包屑导航"
+    },
+    "header": {
+      "title": "考运测算预测 - 学业运势分析",
+      "alt": "考运测算",
+      "intro": "基于八字命理分析您的考试运势，为您提供专业的考试时机建议和备考指导"
+    },
+    "features": {
+      "timing": {
+        "title": "精准时机分析",
+        "desc": "根据八字命理分析最佳考试时间，提升考试成功率"
+      },
+      "score": {
+        "title": "运势评分",
+        "desc": "量化分析考试运势，提供详细的有利和不利因素"
+      },
+      "advice": {
+        "title": "专业建议",
+        "desc": "提供个性化的考试策略和注意事项"
+      }
+    },
+    "form": {
+      "title": "基本信息",
+      "birth": "出生时间 *",
+      "current": "当前时间 *",
+      "gender": "性别 *",
+      "genderMale": "男",
+      "genderFemale": "女",
+      "analysisType": "分析类型 *",
+      "analysisTypeMonthly": "月度分析",
+      "analysisTypeYearly": "年度分析",
+      "submitAlt": "开始分析",
+      "submit": "开始分析",
+      "submitting": "分析中..."
+    },
+    "errors": {
+      "fillRequired": "请填写完整的出生时间和当前时间",
+      "invalidDate": "请输入有效的日期时间",
+      "birthAfterCurrent": "出生时间不能晚于或等于当前时间",
+      "serverFormat": "服务器返回数据格式错误",
+      "analyzeFailed": "分析失败，请稍后重试"
+    },
+    "common": {
+      "unknown": "未知",
+      "unknownTime": "未知时间",
+      "invalidTime": "无效时间",
+      "scoreUnit": "分",
+      "yearCount": "{count} 个年份",
+      "monthCount": "{count} 个月",
+      "summaryNone": "暂无总结",
+      "pros": "有利因素",
+      "cons": "不利因素",
+      "advice": "考试建议",
+      "reminder": "特别提醒"
+    },
+    "overview": {
+      "title": "分析概览",
+      "analysisType": "分析类型",
+      "baseYear": "基准年份",
+      "analysisYear": "分析年份",
+      "analysisMonth": "分析月份",
+      "yearUnit": "年"
+    },
+    "gradeMap": {
+      "优秀": "优秀",
+      "良好": "良好",
+      "一般": "一般",
+      "较弱": "较弱",
+      "很弱": "很弱",
+      "未知": "未知"
+    },
+    "guide": {
+      "title": "使用说明",
+      "steps": {
+        "1": {
+          "title": "填写出生信息",
+          "desc": "准确填写您的出生日期和时间，这是分析的基础"
+        },
+        "2": {
+          "title": "设置考试时间",
+          "desc": "输入您计划参加考试的时间或当前时间"
+        },
+        "3": {
+          "title": "选择分析类型",
+          "desc": "选择按月分析或按年分析，获得不同时间维度的运势"
+        },
+        "4": {
+          "title": "查看分析结果",
+          "desc": "获得详细的运势评分、建议和注意事项"
+        }
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "qa": {
+        "accuracyQ": "Q: 考试运势分析的准确性如何？",
+        "accuracyA": "A: 基于传统八字命理理论，结合现代算法分析。运势分析仅供参考，实际考试成功还需要充分的准备和努力。",
+        "birthTimeQ": "Q: 出生时间不准确会影响分析结果吗？",
+        "birthTimeA": "A: 是的，出生时间的准确性直接影响八字排盘和分析结果。建议尽量提供准确的出生时间，误差不超过2小时。",
+        "diffQ": "Q: 月分析和年分析有什么区别？",
+        "diffA": "A: 月分析提供更精细的时间维度，适合短期考试规划；年分析提供整体运势趋势，适合长期学习规划。",
+        "badLuckQ": "Q: 运势不好的时候还能参加考试吗？",
+        "badLuckA": "A: 运势分析只是参考因素之一。即使运势一般，通过充分准备、调整心态和采纳建议，仍然可以取得好成绩。",
+        "improveQ": "Q: 如何提升考试运势？",
+        "improveA": "A: 根据分析结果中的建议，调整学习方法、选择合适的考试时间、保持良好心态，并结合实际情况制定备考策略。"
+      }
+    }
+  },
+  "locale": {
+    "zh": "中文",
+    "en": "English",
+    "switch": "语言切换"
+  },
+  "chat": {
+    "seo": {
+      "title": "AI智能命理对话 - 专业八字运势咨询 | 北斗九号日历",
+      "pageTitle": "AI对话",
+      "description": "与专业AI命理助手在线对话，获取个性化八字分析、运势预测、择日建议等服务。基于深度学习的智能命理系统，24小时为您提供专业的命理咨询和人生指导建议。支持语音对话和文字交流。",
+      "keywords": "AI命理对话,智能八字咨询,在线运势预测,AI命理助手,智能择日建议,命理问答,运势咨询,人工智能算命,在线命理师"
+    },
+    "topbar": {
+      "logoAlt": "北斗九号日历Logo - AI智能八字运势分析平台",
+      "title": "AI命理问答 - 智能算命咨询"
+    },
+    "welcome": {
+      "title": "开始命理咨询",
+      "subtitle": "专业解答您的困惑，一起探讨人生方向"
+    },
+    "loading": {
+      "analyzingDetailed": "正在为您认真分析..."
+    },
+    "avatarAlt": "AI智能命理大师头像 - 专业八字运势分析助手",
+    "userAvatarAlt": "用户头像",
+    "preview": {
+      "alt": "图片预览"
+    },
+    "prompt": {
+      "report": "分析报告",
+      "history": "历史对话",
+      "userQuestion": "用户提问"
+    },
+    "quick": {
+      "bazi": "对话八字",
+      "exam": "考公考编",
+      "love": "感情运势",
+      "health": "健康运势",
+      "title": "选择八字分析报告",
+      "subtitle": "请选择一份历史八字分析报告作为对话上下文"
+    },
+    "input": {
+      "placeholder": "输入您的问题..."
+    },
+    "dialogs": {
+      "login": {
+        "title": "登录提示",
+        "message": "请先登录后再使用此功能",
+        "confirm": "去登录"
+      },
+      "noAnalysis": {
+        "title": "提示",
+        "message": "您还没有完成八字分析，请先去完成八字分析，然后才能使用此功能。",
+        "confirm": "去八字分析"
+      },
+      "choose": "选择"
+    },
+    "history": {
+      "title": "选择历史对话",
+      "subtitle": "请选择一条历史对话进入"
+    },
+    "report": {
+      "select": {
+        "title": "选择要添加的八字分析报告",
+        "subtitle": "请选择一份历史八字分析报告作为对话上下文"
+      },
+      "add": "添加",
+      "defaultName": "分析报告",
+      "unknown": "未知"
+    },
+    "messages": {
+      "user": "用户",
+      "ai": "AI"
+    },
+    "errors": {
+      "unknown": "抱歉，发生了未知错误，请稍后重试。",
+      "tooManyRequests": "请求过于频繁，请稍后再试。",
+      "serverUnavailable": "服务器暂时不可用，请稍后重试。",
+      "requestFailed": "请求失败：{message}",
+      "aiServiceError": "AI服务错误：{message}",
+      "network": "网络连接失败，请检查网络连接后重试。",
+      "errorWithMessage": "错误：{message}"
+    },
+    "quickPrompts": {
+      "bazi": "请基于我的八字分析报告，为我详细解读八字信息，包括日主、用神、喜忌等关键信息。",
+      "exam": "请基于我的八字分析报告，分析我在考公考编方面的运势和注意事项，包括适合的岗位方向、考试时间选择等。",
+      "love": "请基于我的八字分析报告，分析我的感情运势，包括桃花运、婚姻时机、配偶特征等。",
+      "health": "请基于我的八字分析报告，分析我的身体健康状况，包括需要注意的疾病、养生建议等。"
+    }
+  }
+  ,
+  "calendar": {
+    "seo": {
+      "title": "智能择日日历 - 专业黄道吉日查询 | 北斗九号日历",
+      "pageTitle": "择日日历",
+      "description": "提供专业的智能择日服务，基于八字命理分析推荐黄道吉日。支持结婚择日、开业择日、搬家择日等多种场景，结合个人八字信息提供精准的择日建议和运势指导。",
+      "keywords": "择日日历,黄道吉日,智能择日,八字择日,结婚择日,开业择日,搬家择日,吉日查询,择日推荐"
+    },
+    "title": "智能择日日历 - 专属运势指导",
+    "unauthed": {
+      "title": "探索您的专属运势",
+      "subtitle": "登录后查看个人运历，获取精准的择日建议",
+      "tagline": "✨ 专业八字分析 • 每日运势指导 • 智能择日推荐"
+    },
+    "labels": {
+      "gregorian": "公历",
+      "lunar": "农历",
+      "ganzhi": "干支",
+      "score": "运势评分",
+      "points": "分",
+      "adviceTitle": "今日建议",
+      "avoidTitle": "今日忌讳",
+      "emptyPrompt": "请登录并完善八字信息查看运势详情",
+      "choosePurpose": "选择事项",
+      "recommendButton": "择日推荐",
+      "monthHeadingSuffix": " - 择日日历",
+      "luckyTag": "吉"
+    },
+    "purposes": {
+      "career": "求职",
+      "love": "婚恋",
+      "travel": "旅行",
+      "exam": "考运",
+      "wealth": "理财"
+    },
+    "weekdays": {
+      "sun": "日",
+      "mon": "一",
+      "tue": "二",
+      "wed": "三",
+      "thu": "四",
+      "fri": "五",
+      "sat": "六"
+    },
+    "scoreFields": {
+      "career": "事业",
+      "love": "情感",
+      "wealth": "财富",
+      "luck": "贵人",
+      "mood": "心情",
+      "travel": "出行",
+      "friend": "朋友",
+      "entertainment": "娱乐"
+    },
+    "fallback": {
+      "overallDesc": "请先登录以查看运势分析",
+      "advice1": "请点击上方登录按钮进行登录",
+      "avoid1": "未登录状态无法获取个人运势数据"
+    },
+    "overall": {
+      "excellent": "运势极佳，宜大胆进取，扩展事业版图",
+      "good": "运势优异，适合把握机会，开展新事物",
+      "stable": "运势平稳，可以按部就班推进计划",
+      "low": "运势偏低，宜静观其变，做好风险防范",
+      "veryLow": "今日运势较低，建议谨慎行事，避免重大决策"
+    },
+    "advice": {
+      "investSmall": "适合进行小额投资理财",
+      "grabOpportunity": "主动争取工作表现机会",
+      "arrangeDate": "适合安排浪漫约会",
+      "planShortTrip": "适合计划短途旅行",
+      "visitBenefactor": "适合拜会贵人寻求帮助",
+      "stayPositive": "保持积极心态，迎接挑战"
+    },
+    "avoid": {
+      "highRiskInvest": "避免高风险投资",
+      "conflictWithSuperior": "避免与上级正面冲突",
+      "emotionalConflict": "减少情感冲突，避免误会",
+      "longTrip": "长途出行建议改期",
+      "majorDecisions": "减少重大决策避免情绪化"
+    },
+    "modal": {
+      "title": "提示",
+      "goComplete": "去完善",
+      "confirm": "确定",
+      "selectPurpose": "请先选择择日事项",
+      "recommendFail": "获取推荐吉日失败，请稍后重试。",
+      "incompleteBazi": "请先在个人信息页面完善您的八字信息"
+    },
+    "month": {
+      "noLucky": "本月{label}暂无65分以上的吉日，请尝试其他事项。",
+      "luckyListTitle": "本月{label}吉日："
+    },
+    "errors": {
+      "fetchFailed": "获取运势数据失败，请稍后重试"
+    }
+  },
+  "zodiac": {
+    "breadcrumb": {
+      "title": "生肖运势查询",
+      "ariaLabel": "面包屑导航"
+    },
+    "seo": {
+      "title": "十二生肖运势查询 - 每日生肖运势分析 | 北斗九号日历",
+      "pageTitle": "生肖运势",
+      "description": "提供专业的十二生肖每日运势分析，包括鼠牛虎兔龙蛇马羊猴鸡狗猪全年运势预测。基于传统命理学理论，分析生肖与地支关系，提供今日运势评分、事业财运建议、健康感情指导。助您了解生肖吉凶，把握运势机遇。",
+      "keywords": "十二生肖运势,生肖运势查询,每日生肖运势,生肖运势分析,鼠牛虎兔龙蛇马羊猴鸡狗猪运势,生肖地支关系,生肖吉凶预测,生肖运势评分"
+    },
+    "title": "生肖运势",
+    "loading": "正在分析生肖运势...",
+    "overview": {
+      "title": "今日运势总览",
+      "refresh": "刷新运势数据",
+      "share": "分享生肖运势",
+      "todayZodiacPrefix": "今日生肖属："
+    },
+    "labels": {
+      "earthBranch": "地支：",
+      "relation": "关系：",
+      "intensity": "强度:",
+      "todayEarthBranch": "今日地支：",
+      "zodiacPrefix": "属"
+    },
+    "names": {
+      "鼠": "鼠",
+      "牛": "牛",
+      "虎": "虎",
+      "兔": "兔",
+      "龙": "龙",
+      "蛇": "蛇",
+      "马": "马",
+      "羊": "羊",
+      "猴": "猴",
+      "鸡": "鸡",
+      "狗": "狗",
+      "猪": "猪"
+    },
+    "sections": {
+      "valueTaiSui": {
+        "title": "值太岁（龙）",
+        "subtitle": "本命年运势"
+      },
+      "xiangPo": {
+        "title": "相破（牛）",
+        "subtitle": "运势平平"
+      },
+      "xiangHai": {
+        "title": "相害（虎、兔）",
+        "subtitle": "需注意人际关系"
+      },
+      "xiangChong": {
+        "title": "相冲",
+        "subtitle": "易有冲突"
+      },
+      "xiangXing": {
+        "title": "相刑",
+        "subtitle": "需谨慎行事"
+      },
+      "sanHe": {
+        "title": "三合（鼠、猴）",
+        "subtitle": "贵人相助"
+      },
+      "liuHe": {
+        "title": "六合（鸡）",
+        "subtitle": "运势极佳"
+      },
+      "pingYun": {
+        "title": "平运（蛇、马、羊、狗、猪）",
+        "subtitle": "运势平稳"
+      }
+    },
+    "share": {
+      "title": "十二生肖运势查询 - 每日运势预测",
+      "subtitle": "今日生肖运势分析，助您把握良机",
+      "downloadPrefix": "生肖运势_"
+    },
+    "status": {
+      "三合": "贵人运旺",
+      "平运": "运势平稳",
+      "值太岁": "需谨慎",
+      "六合": "运气极佳",
+      "相破": "易遇变故",
+      "相害": "需注意",
+      "相冲": "易有冲突",
+      "相刑": "需谨慎",
+      "相合": "相合",
+      "default": "运势一般"
+    }
+    ,
+    "errors": {
+      "analyzeFailed": "分析失败，请稍后重试",
+      "refreshFailed": "刷新失败，请稍后重试",
+      "shareFailed": "生成分享图片失败，请稍后重试"
+    }
+  },
+  "auth": {
+    "login": "立即登录",
+    "register": "注册新账号",
+    "email": "邮箱",
+    "backToLogin": "返回登录"
+  },
+  "admin": {
+    "forgotPassword": {
+      "title": "忘记密码 - 北斗九号日历",
+      "desc": "请输入注册邮箱，接收重置链接",
+      "emailPlaceholder": "邮箱",
+      "submit": "发送重置邮件",
+      "backToLogin": "返回登录",
+      "success": "如果邮箱存在，重置链接已发送，请查收邮件",
+      "emptyEmail": "请输入邮箱",
+      "errorDefault": "发送失败，请重试"
+    }
+    ,
+    "passwordReset": {
+      "title": "重置密码 - 北斗九号日历",
+      "desc": "请设置新密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认新密码",
+      "submit": "重置密码",
+      "invalidLink": "重置链接无效或已过期，请重新申请。",
+      "requireNewPassword": "请输入新密码",
+      "requireConfirm": "请再次输入新密码",
+      "mismatch": "两次输入的密码不一致",
+      "success": "密码重置成功，请返回登录",
+      "errorDefault": "重置失败，请重试"
+    }
+    ,
+    "login": {
+      "title": "用户登录 - 北斗九号日历",
+      "desc": "欢迎回来，请输入您的账号信息",
+      "usernameOrEmail": "用户名或邮箱",
+      "password": "密码",
+      "submit": "登录",
+      "forgot": "忘记密码？",
+      "register": "注册新账号",
+      "requireCredential": "请输入用户名和密码",
+      "errorDefault": "登录失败，请重试"
+    }
+    ,
+    "profile": {
+      "headerTitle": "个人信息管理 - 用户中心",
+      "usernameLabel": "用户名",
+      "usernameUnset": "未设置用户名",
+      "phoneLabel": "手机号",
+      "genderLabel": "性别",
+      "genderOptions": {
+        "male": "男",
+        "female": "女",
+        "other": "其他"
+      },
+      "birthLabel": "出生日期和时间",
+      "idLabel": "用户ID",
+      "createdAtLabel": "注册时间",
+      "updatedAtLabel": "更新时间",
+      "lastLoginLabel": "最后登录",
+      "edit": "编辑",
+      "save": "保存",
+      "cancel": "取消",
+      "statuses": {
+        "activeTrue": "已激活",
+        "activeFalse": "未激活",
+        "verifiedTrue": "已验证",
+        "verifiedFalse": "未验证"
+      },
+      "errors": {
+        "fetchFailed": "获取用户信息失败"
+      },
+      "messages": {
+        "saveSuccess": "保存成功！",
+        "saveFailed": "保存失败"
+      },
+      "validation": {
+        "phoneInvalid": "请输入有效的手机号",
+        "yearRange": "出生年份范围1900-2100",
+        "monthRange": "出生月份范围1-12",
+        "dayRange": "出生日范围1-31",
+        "timeFormat": "出生时间格式应为HH:MM"
+      }
+    }
+    ,
+    "panel": {
+      "headerTitle": "管理员控制台 - 用户信息管理",
+      "stats": {
+        "totalUsers": "累计注册用户",
+        "activeUsers": "活跃用户（30天内登录）",
+        "activeRate": "活跃率"
+      },
+      "noAccess": "无权限访问",
+      "actions": {
+        "export": "导出用户数据",
+        "import": "导入用户数据"
+      },
+      "filters": {
+        "roleAll": "全部角色",
+        "active": "激活状态",
+        "verified": "验证状态",
+        "boolean": { "true": "是", "false": "否" }
+      },
+      "search": { "placeholder": "搜索用户名/邮箱..." },
+      "table": {
+        "title": "用户列表",
+        "columns": {
+          "index": "序号",
+          "username": "用户名",
+          "email": "邮箱",
+          "role": "角色",
+          "active": "激活",
+          "verified": "验证",
+          "createdAt": "注册时间",
+          "lastLogin": "最后登录",
+          "baziInfo": "八字信息",
+          "actions": "操作"
+        }
+      },
+      "buttons": { "edit": "编辑", "delete": "删除" },
+      "modal": {
+        "editTitle": "编辑用户",
+        "deleteTitle": "删除用户",
+        "editMessage": "可修改用户属性",
+        "deleteMessage": "确定要删除该用户吗？",
+        "confirmSave": "保存",
+        "confirmDelete": "删除",
+        "cancel": "取消",
+        "deleteWarn": "该操作不可恢复，确定要删除该用户吗？"
+      },
+      "form": {
+        "role": "角色",
+        "active": "激活",
+        "verified": "验证",
+        "gender": "性别",
+        "genderOptions": { "male": "男", "female": "女" }
+      }
+    }
+    ,
+    "form": {
+      "birthYear": "出生年份",
+      "birthMonth": "出生月份",
+      "birthDay": "出生日",
+      "birthTime": "出生时间"
+    }
+    ,
+    "placeholders": {
+      "birthYear": "1900-2100",
+      "birthMonth": "1-12",
+      "birthDay": "1-31",
+      "birthTime": "HH:MM"
+    }
+    ,
+    "messages": {
+      "updated": "已更新",
+      "saveFailed": "保存失败",
+      "deactivated": "已删除",
+      "onlySuperAdmin": "仅超级管理员可删除用户",
+      "deleteFailed": "删除失败",
+      "exportSuccess": "导出成功",
+      "exportFailed": "导出失败",
+      "importSuccess": "导入成功",
+      "importFailed": "导入失败"
+    }
+  }
+
+}

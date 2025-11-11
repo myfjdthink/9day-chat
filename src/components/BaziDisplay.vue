@@ -4,7 +4,7 @@
     <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
       <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
         <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-        八字排盘
+        {{ t('home.analysis.report.labels.baziInfo') }}
       </h3>
       
       <!-- 传统竖排八字格式 -->
@@ -13,7 +13,7 @@
           <div class="flex flex-col space-y-3 text-center">
             <!-- 年柱 -->
             <div class="flex justify-center items-center space-x-4 py-2">
-              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">年</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">{{ t('home.analysis.report.labels.pillarYear') }}</div>
               <div class="flex items-center space-x-2">
                 <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {{ baziData.八字信息.年柱.干支组合.天干 }}
@@ -29,7 +29,7 @@
             
             <!-- 月柱 -->
             <div class="flex justify-center items-center space-x-4 py-2">
-              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">月</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">{{ t('home.analysis.report.labels.pillarMonth') }}</div>
               <div class="flex items-center space-x-2">
                 <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {{ baziData.八字信息.月柱.干支组合.天干 }}
@@ -45,7 +45,7 @@
             
             <!-- 日柱 -->
             <div class="flex justify-center items-center space-x-4 py-2 bg-red-50 dark:bg-red-900/20 rounded">
-              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">日</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">{{ t('home.analysis.report.labels.pillarDay') }}</div>
               <div class="flex items-center space-x-2">
                 <div class="text-2xl font-bold text-red-600 dark:text-red-400">
                   {{ baziData.八字信息.日柱.干支组合.天干 }}
@@ -61,7 +61,7 @@
             
             <!-- 时柱 -->
             <div class="flex justify-center items-center space-x-4 py-2">
-              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">时</div>
+              <div class="text-sm text-gray-500 dark:text-gray-400 w-8">{{ t('home.analysis.report.labels.pillarHour') }}</div>
               <div class="flex items-center space-x-2">
                 <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {{ baziData.八字信息.时柱.干支组合.天干 }}
@@ -83,13 +83,13 @@
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
       <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
         <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-        五行统计
+        {{ t('home.analysis.report.labels.fiveElementsStats') }}
       </h3>
       
       <div class="grid grid-cols-2 gap-3">
         <!-- 五行分布 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
-          <h4 class="font-medium text-gray-900 dark:text-gray-100 mb-2">五行分布</h4>
+          <h4 class="font-medium text-gray-900 dark:text-gray-100 mb-2">{{ t('home.analysis.report.labels.distribution') }}</h4>
           <div class="space-y-2">
             <div v-for="(count, element) in baziData.五行统计.五行分布" :key="element" class="flex justify-between items-center">
               <span class="text-sm text-gray-600 dark:text-gray-300">{{ element }}</span>
@@ -108,14 +108,14 @@
         
         <!-- 最强最弱五行 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
-          <h4 class="font-medium text-gray-900 dark:text-gray-100 mb-2">五行强弱</h4>
+          <h4 class="font-medium text-gray-900 dark:text-gray-100 mb-2">{{ t('home.analysis.report.labels.fiveElementsStats') }}</h4>
           <div class="space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-600 dark:text-gray-300">最强五行</span>
+              <span class="text-sm text-gray-600 dark:text-gray-300">{{ t('home.analysis.report.labels.strongest') }}</span>
               <span class="text-sm font-medium text-green-600 dark:text-green-400">{{ baziData.五行统计.最强五行 }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-600 dark:text-gray-300">最弱五行</span>
+              <span class="text-sm text-gray-600 dark:text-gray-300">{{ t('home.analysis.report.labels.weakest') }}</span>
               <span class="text-sm font-medium text-red-600 dark:text-red-400">{{ baziData.五行统计.最弱五行 }}</span>
             </div>
           </div>
@@ -126,6 +126,7 @@
 </template>
 
 <script setup lang="ts">
+import * as vueI18n from 'vue-i18n'
 interface BaziInfo {
   性别: string
   八字信息: {
@@ -178,4 +179,7 @@ interface BaziInfo {
 defineProps<{
   baziData: BaziInfo
 }>()
+
+const { useI18n } = vueI18n as any
+const { t } = useI18n()
 </script>

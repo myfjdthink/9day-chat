@@ -2,14 +2,14 @@
   <div class="flex-1 bg-gray-50 dark:bg-gray-900 min-h-screen">
     <!-- SEO组件 -->
     <SEO 
-      title="智能择日日历 - 专业黄道吉日查询 | 北斗九号日历"
-      pageTitle="择日日历"
-      description="提供专业的智能择日服务，基于八字命理分析推荐黄道吉日。支持结婚择日、开业择日、搬家择日等多种场景，结合个人八字信息提供精准的择日建议和运势指导。"
-      keywords="择日日历,黄道吉日,智能择日,八字择日,结婚择日,开业择日,搬家择日,吉日查询,择日推荐"
+      :title="$t('calendar.seo.title')"
+      :pageTitle="$t('calendar.seo.pageTitle')"
+      :description="$t('calendar.seo.description')"
+      :keywords="$t('calendar.seo.keywords')"
     />
     
     <!-- 页面主标题 -->
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center pt-6">智能择日日历 - 专属运势指导</h1>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center pt-6">{{ $t('calendar.title') }}</h1>
     
     <!-- 未登录提示 -->
     <div v-if="!userStore.isLoggedIn" class="flex flex-col items-center justify-center min-h-[60vh] p-4">
@@ -30,16 +30,16 @@
               />
             </div>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">探索您的专属运势</h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-2">登录后查看个人运历，获取精准的择日建议</p>
-          <p class="text-sm text-purple-600 dark:text-purple-400">✨ 专业八字分析 • 每日运势指导 • 智能择日推荐</p>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ $t('calendar.unauthed.title') }}</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-2">{{ $t('calendar.unauthed.subtitle') }}</p>
+          <p class="text-sm text-purple-600 dark:text-purple-400">{{ $t('calendar.unauthed.tagline') }}</p>
         </div>
         <div class="space-y-3">
           <Button @click="goToLogin" class="w-full" variant="default">
-            立即登录
+            {{ $t('auth.login') }}
           </Button>
           <Button @click="goToRegister" class="w-full" variant="outline">
-            注册新账号
+            {{ $t('auth.register') }}
           </Button>
         </div>
       </div>
@@ -100,15 +100,15 @@
                 <div class="mb-2 p-2 bg-white/30 dark:bg-gray-800/30 rounded-lg border border-purple-200/50 dark:border-purple-700/50">
                   <div class="grid grid-cols-1 gap-2 text-xs">
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-600 dark:text-gray-400">公历</span>
+                      <span class="text-gray-600 dark:text-gray-400">{{ $t('calendar.labels.gregorian') }}</span>
                       <span class="font-medium text-gray-800 dark:text-gray-200">{{ selectedDateInfo.solar }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-600 dark:text-gray-400">农历</span>
+                      <span class="text-gray-600 dark:text-gray-400">{{ $t('calendar.labels.lunar') }}</span>
                       <span class="font-medium text-gray-800 dark:text-gray-200">{{ selectedDateInfo.lunar }}</span>
                     </div>
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-600 dark:text-gray-400">干支</span>
+                      <span class="text-gray-600 dark:text-gray-400">{{ $t('calendar.labels.ganzhi') }}</span>
                       <span class="font-medium text-gray-800 dark:text-gray-200">{{ selectedDateInfo.ganzhi }}</span>
                     </div>
                   </div>
@@ -117,7 +117,7 @@
                 <!-- 运势数据显示 -->
                 <div v-if="fortuneData">
                   <div class="flex items-center justify-between mb-2">
-                  <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">运势评分</h4>
+                  <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ $t('calendar.labels.score') }}</h4>
                   <div class="flex items-center space-x-1">
                     <span class="text-xl font-bold text-purple-600 dark:text-purple-400">{{ fortuneData.overallScore }}</span>
                     <span class="text-xs text-gray-600 dark:text-gray-400">分</span>
@@ -128,7 +128,7 @@
 
                 <!-- 运势评分网格 -->
                 <div class="grid grid-cols-4 gap-1 mb-3">
-                  <div v-for="field in [...coreFields, ...otherFields]" :key="field.key" class="text-center">
+                  <div v-for="field in scoreFields" :key="field.key" class="text-center">
                     <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">{{ field.label }}</div>
                     <div class="text-sm font-semibold" :class="getPurposeScoreColor(fortuneData[field.key])">
                       {{ fortuneData[field.key] }}
@@ -139,7 +139,7 @@
                 <!-- 今日建议和忌讳 -->
                 <div class="space-y-2">
                   <div v-if="fortuneData.advice?.length">
-                    <h5 class="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">今日建议</h5>
+                    <h5 class="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">{{ $t('calendar.labels.adviceTitle') }}</h5>
                     <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
                       <li v-for="item in fortuneData.advice" :key="item" class="flex items-start">
                         <span class="text-green-500 mr-1">•</span>
@@ -148,7 +148,7 @@
                     </ul>
                   </div>
                   <div v-if="fortuneData.avoid?.length">
-                    <h5 class="text-xs font-semibold text-red-700 dark:text-red-400 mb-2">今日忌讳</h5>
+                    <h5 class="text-xs font-semibold text-red-700 dark:text-red-400 mb-2">{{ $t('calendar.labels.avoidTitle') }}</h5>
                     <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
                       <li v-for="item in fortuneData.avoid" :key="item" class="flex items-start">
                         <span class="text-red-500 mr-1">•</span>
@@ -161,12 +161,12 @@
                 
                 <!-- 无运势数据时的提示 -->
                 <div v-else class="text-center py-4">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">请登录并完善八字信息查看运势详情</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">{{ $t('calendar.labels.emptyPrompt') }}</p>
                 </div>
                 
                 <!-- 事项选择 -->
                 <div class="mt-3">
-                  <div class="font-bold text-sm mb-2">选择事项</div>
+                  <div class="font-bold text-sm mb-2">{{ $t('calendar.labels.choosePurpose') }}</div>
                   <div class="grid grid-cols-3 gap-1 mb-2">
                     <Button
                       v-for="item in purposes"
@@ -185,7 +185,7 @@
                     :disabled="!selectedPurpose" 
                     class="w-full px-6 py-2 text-sm font-medium mt-2"
                   >
-                    择日推荐
+                    {{ $t('calendar.labels.recommendButton') }}
                   </Button>
                 </div>
               </div>
@@ -195,7 +195,7 @@
             <div class="flex-1">
               <div class="flex items-center justify-center mb-3">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  {{ currentMonthLabel }} - 择日日历
+                  {{ currentMonthLabel }}{{ $t('calendar.labels.monthHeadingSuffix') }}
                 </h2>
               </div>
 
@@ -229,7 +229,7 @@
                         getPurposeScore(day.date) >= 65 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-900'
                       ]"
                     >
-                      {{ getPurposeScore(day.date) }}分
+                      {{ getPurposeScore(day.date) }}{{ $t('calendar.labels.points') }}
                     </span>
                   </div>
                   
@@ -238,7 +238,7 @@
                     v-if="recommendedDays.includes(day.date) && day.isCurrentMonth"
                     class="absolute top-1 right-1 text-red-600 font-bold text-xs"
                   >
-                    吉
+                    {{ $t('calendar.labels.luckyTag') }}
                   </div>
                 </div>
               </div>
@@ -252,17 +252,17 @@
       <!-- 登录/信息不全弹窗 -->
       <Modal
         :show="showModal"
-        title="提示"
+        :title="$t('calendar.modal.title')"
         :message="modalMsg"
-        :confirmText="modalType === 'incomplete' ? '去完善' : '确定'"
-        :cancelText="modalType === 'incomplete' ? '取消' : ''"
+        :confirmText="modalType === 'incomplete' ? $t('calendar.modal.goComplete') : $t('calendar.modal.confirm')"
+        :cancelText="modalType === 'incomplete' ? $t('common.cancel') : ''"
         :onConfirm="modalType === 'incomplete' ? handleGoProfile : () => (showModal = false)"
         :onCancel="() => (showModal = false)"
       >
         <template #icon>
           <!-- 使用自定义9.png图标替换默认加号 -->
-          <img src="@/assets/9.png" alt="北斗九号日历图标 - 专业命理预测服务标识" class="mx-auto mb-4 w-12 h-12 rounded-full shadow" />
-        </template>
+          <img src="@/assets/9.png" :alt="$t('sidebar.logoAlt')" class="mx-auto mb-4 w-12 h-12 rounded-full shadow" />
+      </template>
       </Modal>
     </div>
   </div>
@@ -280,15 +280,16 @@ import { fetchFortuneAnalysis, analyzeFortuneRange } from '@/api/bazi'
 import { useRouter } from 'vue-router'
 // @ts-ignore
 import { Lunar, Solar } from 'lunar-javascript'
+import { i18n } from '@/i18n'
 
-// 事项类型
-const purposes = [
-  { key: 'career', label: '求职' },
-  { key: 'love', label: '婚恋' },
-  { key: 'travel', label: '旅行' },
-  { key: 'exam', label: '考运' },
-  { key: 'wealth', label: '理财' }
-]
+// 事项类型（国际化）
+const purposes = computed(() => [
+  { key: 'career', label: i18n.global.t('calendar.purposes.career') },
+  { key: 'love', label: i18n.global.t('calendar.purposes.love') },
+  { key: 'travel', label: i18n.global.t('calendar.purposes.travel') },
+  { key: 'exam', label: i18n.global.t('calendar.purposes.exam') },
+  { key: 'wealth', label: i18n.global.t('calendar.purposes.wealth') }
+])
 const selectedPurpose = ref('')
 
 // 事项类型与API字段映射
@@ -304,7 +305,15 @@ const purposeFieldMap: Record<string, string> = {
 const todayStr = dayjs().format('YYYY-MM-DD')
 const selectedDate = ref(todayStr)
 const currentMonth = ref(dayjs())
-const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+const weekDays = computed(() => [
+  i18n.global.t('calendar.weekdays.sun'),
+  i18n.global.t('calendar.weekdays.mon'),
+  i18n.global.t('calendar.weekdays.tue'),
+  i18n.global.t('calendar.weekdays.wed'),
+  i18n.global.t('calendar.weekdays.thu'),
+  i18n.global.t('calendar.weekdays.fri'),
+  i18n.global.t('calendar.weekdays.sat')
+])
 
 const calendarDays = computed(() => {
   const firstDay = currentMonth.value.startOf('month')
@@ -322,7 +331,12 @@ const calendarDays = computed(() => {
   }
   return days
 })
-const currentMonthLabel = computed(() => currentMonth.value.format('YYYY年M月'))
+const currentMonthLabel = computed(() => {
+  const locale = i18n.global.locale.value
+  return locale === 'zh-CN'
+    ? currentMonth.value.format('YYYY年M月')
+    : currentMonth.value.format('MMMM YYYY')
+})
 
 // 选中日期的详细信息
 const selectedDateInfo = computed(() => {
@@ -375,45 +389,43 @@ const fortuneScores = ref<Record<string, Record<string, number>>>({})
 // 运势数据
 const fortuneData = ref<any>(null)
 
-// 评分字段与标签
-const coreFields = [
-  { key: 'career', label: '事业', icon: '💼' },
-  { key: 'love', label: '情感', icon: '💝' },
-  { key: 'wealth', label: '财富', icon: '💰' },
-  { key: 'luck', label: '贵人', icon: '🌟' }
-]
-const otherFields = [
-  { key: 'mood', label: '心情', icon: '😊' },
-  { key: 'travel', label: '出行', icon: '✈️' },
-  { key: 'friend', label: '朋友', icon: '👫' },
-  { key: 'entertainment', label: '娱乐', icon: '🎮' }
-]
+// 评分字段与标签（国际化）
+const scoreFields = computed(() => [
+  { key: 'career', label: i18n.global.t('calendar.scoreFields.career'), icon: '💼' },
+  { key: 'love', label: i18n.global.t('calendar.scoreFields.love'), icon: '💝' },
+  { key: 'wealth', label: i18n.global.t('calendar.scoreFields.wealth'), icon: '💰' },
+  { key: 'luck', label: i18n.global.t('calendar.scoreFields.luck'), icon: '🌟' },
+  { key: 'mood', label: i18n.global.t('calendar.scoreFields.mood'), icon: '😊' },
+  { key: 'travel', label: i18n.global.t('calendar.scoreFields.travel'), icon: '✈️' },
+  { key: 'friend', label: i18n.global.t('calendar.scoreFields.friend'), icon: '👫' },
+  { key: 'entertainment', label: i18n.global.t('calendar.scoreFields.entertainment'), icon: '🎮' }
+])
 
 // 评分描述与建议
 function getOverallDesc(score: number) {
-  if (score >= 90) return '运势极佳，宜大胆进取，扩展事业版图';
-  if (score >= 75) return '运势优异，适合把握机会，开展新事物';
-  if (score >= 60) return '运势平稳，可以按部就班推进计划';
-  if (score >= 40) return '运势偏低，宜静观其变，做好风险防范';
-  return '今日运势较低，建议谨慎行事，避免重大决策';
+  if (score >= 90) return i18n.global.t('calendar.overall.excellent')
+  if (score >= 75) return i18n.global.t('calendar.overall.good')
+  if (score >= 60) return i18n.global.t('calendar.overall.stable')
+  if (score >= 40) return i18n.global.t('calendar.overall.low')
+  return i18n.global.t('calendar.overall.veryLow')
 }
 function generateAdvice(data: any) {
   return [
-    data.wealth > 70 && '适合进行小额投资理财',
-    data.career > 65 && '主动争取工作表现机会',
-    data.love > 60 && '适合安排浪漫约会',
-    data.travel > 60 && '适合计划短途旅行',
-    data.luck > 80 && '适合拜会贵人寻求帮助',
-    data.mood > 70 && '保持积极心态，迎接挑战'
+    data.wealth > 70 && i18n.global.t('calendar.advice.investSmall'),
+    data.career > 65 && i18n.global.t('calendar.advice.grabOpportunity'),
+    data.love > 60 && i18n.global.t('calendar.advice.arrangeDate'),
+    data.travel > 60 && i18n.global.t('calendar.advice.planShortTrip'),
+    data.luck > 80 && i18n.global.t('calendar.advice.visitBenefactor'),
+    data.mood > 70 && i18n.global.t('calendar.advice.stayPositive')
   ].filter(Boolean).slice(0, 3)
 }
 function generateAvoid(data: any) {
   return [
-    data.wealth < 50 && '避免高风险投资',
-    data.career < 50 && '避免与上级正面冲突',
-    data.love < 40 && '减少情感冲突，避免误会',
-    data.travel < 40 && '长途出行建议改期',
-    data.mood < 40 && '减少重大决策避免情绪化'
+    data.wealth < 50 && i18n.global.t('calendar.avoid.highRiskInvest'),
+    data.career < 50 && i18n.global.t('calendar.avoid.conflictWithSuperior'),
+    data.love < 40 && i18n.global.t('calendar.avoid.emotionalConflict'),
+    data.travel < 40 && i18n.global.t('calendar.avoid.longTrip'),
+    data.mood < 40 && i18n.global.t('calendar.avoid.majorDecisions')
   ].filter(Boolean).slice(0, 3)
 }
 
@@ -470,7 +482,7 @@ async function fetchFortune(date: string) {
     // 显示友好的提示信息
     fortuneData.value = {
       overallScore: 0,
-      overallDesc: '请先登录以查看运势分析',
+      overallDesc: i18n.global.t('calendar.fallback.overallDesc'),
       career: 0,
       love: 0,
       wealth: 0,
@@ -479,8 +491,8 @@ async function fetchFortune(date: string) {
       travel: 0,
       friend: 0,
       entertainment: 0,
-      advice: ['请点击上方登录按钮进行登录'],
-      avoid: ['未登录状态无法获取个人运势数据']
+      advice: [i18n.global.t('calendar.fallback.advice1')],
+      avoid: [i18n.global.t('calendar.fallback.avoid1')]
     }
     return;
   }
@@ -495,7 +507,7 @@ async function fetchFortune(date: string) {
   if (!params) {
     console.log('❌ 八字信息不完整:', userStore.user)
     console.log('八字信息不完整，退出函数')
-    modalMsg.value = '请先在个人信息页面完善您的八字信息';
+    modalMsg.value = i18n.global.t('calendar.modal.incompleteBazi');
     showModal.value = true;
     fortuneData.value = null;
     return;
@@ -545,7 +557,7 @@ async function fetchFortune(date: string) {
       console.error('获取运势失败:', res.message)
       console.log('9. 失败响应详情:', res)
       fortuneData.value = null
-      modalMsg.value = res.message || '获取运势数据失败'
+      modalMsg.value = res.message || i18n.global.t('calendar.errors.fetchFailed')
       showModal.value = true
     }
   } catch (e: any) {
@@ -558,7 +570,7 @@ async function fetchFortune(date: string) {
       data: e.data
     })
     fortuneData.value = null
-    modalMsg.value = '获取运势数据失败，请稍后重试'
+    modalMsg.value = i18n.global.t('calendar.errors.fetchFailed')
     showModal.value = true
   } finally {
     console.log('=== fetchFortune 调试结束 ===')
@@ -571,7 +583,7 @@ async function handleRecommend() {
   console.log('2. 当前选择的事项:', selectedPurpose.value)
   
   if (!selectedPurpose.value) {
-    modalMsg.value = '请先选择择日事项'
+    modalMsg.value = i18n.global.t('calendar.modal.selectPurpose')
     modalType.value = 'info'
     showModal.value = true
     return
@@ -583,7 +595,7 @@ async function handleRecommend() {
   
   if (!params) {
     console.log('八字信息不完整，退出函数')
-    modalMsg.value = '请先在个人信息页面完善您的八字信息';
+    modalMsg.value = i18n.global.t('calendar.modal.incompleteBazi');
     modalType.value = 'incomplete';
     showModal.value = true;
     return;
@@ -608,7 +620,7 @@ async function handleRecommend() {
     
   } catch (e) {
     console.error('14. 择日推荐过程出错:', e)
-    modalMsg.value = '获取推荐吉日失败，请稍后重试。'
+    modalMsg.value = i18n.global.t('calendar.modal.recommendFail')
     modalType.value = 'info';
     showModal.value = true;
   } finally {
@@ -686,15 +698,17 @@ function processMonthlyData(data: any) {
   // 显示结果
   const luckyDays = recommendedDays.value
   if (luckyDays.length === 0) {
-    modalMsg.value = `本月${purposes.find(p => p.key === selectedPurpose.value)?.label}暂无65分以上的吉日，请尝试其他事项。`
+    const label = purposes.value.find(p => p.key === selectedPurpose.value)?.label || ''
+    modalMsg.value = i18n.global.t('calendar.month.noLucky', { label })
     modalType.value = 'info'
     showModal.value = true
   } else {
     const luckyDaysWithScores = luckyDays.map(date => {
       const score = fortuneScores.value[date]?.[purposeFieldMap[selectedPurpose.value]] || 0
-      return `${date}（${score}分）`
+      return `${date} (${score}${i18n.global.t('calendar.labels.points')})`
     })
-    modalMsg.value = `本月${purposes.find(p => p.key === selectedPurpose.value)?.label}吉日：\n` + luckyDaysWithScores.join('\n')
+    const label = purposes.value.find(p => p.key === selectedPurpose.value)?.label || ''
+    modalMsg.value = i18n.global.t('calendar.month.luckyListTitle', { label }) + '\n' + luckyDaysWithScores.join('\n')
     modalType.value = 'info'
     showModal.value = true
   }

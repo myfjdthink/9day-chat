@@ -2,18 +2,18 @@
   <div class="flex-1 flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
-      title="AI智能命理对话 - 专业八字运势咨询 | 北斗九号日历"
-      pageTitle="AI对话"
-      description="与专业AI命理助手在线对话，获取个性化八字分析、运势预测、择日建议等服务。基于深度学习的智能命理系统，24小时为您提供专业的命理咨询和人生指导建议。支持语音对话和文字交流。"
-      keywords="AI命理对话,智能八字咨询,在线运势预测,AI命理助手,智能择日建议,命理问答,运势咨询,人工智能算命,在线命理师"
+      :title="t('chat.seo.title')"
+      :pageTitle="t('chat.seo.pageTitle')"
+      :description="t('chat.seo.description')"
+      :keywords="t('chat.seo.keywords')"
     />
     
     <!-- Top Bar -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <img src="@/assets/logo.png" alt="北斗九号日历Logo - AI智能八字运势分析平台" class="w-5 h-5 object-contain" />
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">AI命理问答 - 智能算命咨询</h1>
+          <img src="@/assets/logo.png" :alt="t('chat.topbar.logoAlt')" class="w-5 h-5 object-contain" />
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ t('chat.topbar.title') }}</h1>
         </div>
         <!-- 移除重复的暗黑模式按钮 -->
       </div>
@@ -27,10 +27,10 @@
       <div v-if="chatStore.currentMessages.length === 0" class="flex-1 flex items-center justify-center">
         <div class="text-center">
           <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-            <img src="@/assets/logo.png" alt="北斗九号日历 - 专业AI智能命理预测服务平台标志" class="w-16 h-16 object-contain" />
+            <img src="@/assets/logo.png" :alt="t('chat.topbar.logoAlt')" class="w-16 h-16 object-contain" />
           </div>
-          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">开始命理咨询</h2>
-          <p class="text-gray-500 dark:text-gray-300">专业解答您的困惑，一起探讨人生方向</p>
+          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.welcome.title') }}</h2>
+          <p class="text-gray-500 dark:text-gray-300">{{ t('chat.welcome.subtitle') }}</p>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
             <!-- 分析报告消息 -->
             <template v-if="message.role === 'report'">
               <div class="flex-shrink-0">
-                <img :src="aiAvatar" alt="AI智能命理大师头像 - 专业八字运势分析助手" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
+                <img :src="aiAvatar" :alt="t('chat.avatarAlt')" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
               </div>
               <div
                 class="max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
@@ -73,7 +73,7 @@
               <div class="flex-shrink-0">
                 <img 
                   :src="message.sender_type === 'user' ? (userStore.user?.gender === 'female' ? girlAvatar : boyAvatar) : aiAvatar"
-                  :alt="message.sender_type === 'user' ? 'User Avatar' : 'AI Avatar'"
+                  :alt="message.sender_type === 'user' ? t('chat.userAvatarAlt') : t('chat.avatarAlt')"
                   class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
                 />
               </div>
@@ -98,7 +98,7 @@
                 <!-- 错误消息 -->
                 <p v-else class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
                 <span class="text-xs opacity-50 mt-1 block text-gray-600 dark:text-gray-400">
-                  {{ new Date(message.timestamp).toLocaleTimeString() }}
+                  {{ new Date(message.timestamp).toLocaleTimeString(locale.value, { hour: '2-digit', minute: '2-digit' }) }}
                 </span>
               </div>
             </template>
@@ -111,7 +111,7 @@
             <div class="flex-shrink-0">
               <img 
                 :src="aiAvatar"
-                alt="AI Avatar"
+                :alt="t('chat.avatarAlt')"
                 class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
               />
             </div>
@@ -122,7 +122,7 @@
                   <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
                   <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
                 </div>
-                <span class="text-sm text-gray-500 dark:text-gray-300">正在为您认真分析...</span>
+                <span class="text-sm text-gray-500 dark:text-gray-300">{{ t('chat.loading.analyzingDetailed') }}</span>
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@
 
       <!-- Image Preview -->
       <div v-if="previewImage" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" @click="closePreview">
-        <img :src="previewImage" alt="Preview" class="max-w-[90%] max-h-[90vh] object-contain" />
+        <img :src="previewImage" :alt="t('chat.preview.alt')" class="max-w-[90%] max-h-[90vh] object-contain" />
       </div>
 
       <!-- Input Area (Fixed at bottom) -->
@@ -148,7 +148,7 @@
               @click="handleQuickAction('bazi')"
             >
               <span class="text-purple-600">🔮</span>
-              <span>对话八字</span>
+              <span>{{ t('chat.quick.bazi') }}</span>
             </Button>
             <Button
               type="button"
@@ -159,7 +159,7 @@
               @click="handleQuickAction('exam')"
             >
               <span class="text-blue-600">📚</span>
-              <span>考公考编</span>
+              <span>{{ t('chat.quick.exam') }}</span>
             </Button>
             <Button
               type="button"
@@ -170,7 +170,7 @@
               @click="handleQuickAction('love')"
             >
               <span class="text-pink-600">💕</span>
-              <span>感情运势</span>
+              <span>{{ t('chat.quick.love') }}</span>
             </Button>
             <Button
               type="button"
@@ -181,7 +181,7 @@
               @click="handleQuickAction('health')"
             >
               <span class="text-green-600">🏥</span>
-              <span>健康运势</span>
+              <span>{{ t('chat.quick.health') }}</span>
             </Button>
           </div>
           
@@ -189,7 +189,7 @@
             <Input
               v-model="input"
               ref="inputRef"
-              placeholder="输入您的问题..."
+              :placeholder="t('chat.input.placeholder')"
               class="flex-1"
             />
             <Button
@@ -197,7 +197,7 @@
               variant="default"
               :disabled="chatStore.isLoading || !input.trim()"
             >
-              发送
+              {{ t('common.send') }}
             </Button>
           </form>
         </div>
@@ -207,8 +207,8 @@
     <div v-if="showReportDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">选择要添加的八字分析报告</h3>
-          <p class="text-gray-500 dark:text-gray-300">请选择一份历史八字分析报告作为对话上下文</p>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.report.select.title') }}</h3>
+          <p class="text-gray-500 dark:text-gray-300">{{ t('chat.report.select.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
           <div v-for="record in analyses" :key="record.id" class="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
@@ -221,12 +221,12 @@
               </div>
             </div>
             <Button size="sm" variant="default" class="ml-2" @click="addReportToContext(record)">
-              添加
+              {{ t('chat.report.add') }}
             </Button>
           </div>
         </div>
         <div class="flex justify-end gap-2">
-          <Button size="sm" variant="outline" @click="showReportDialog = false">取消</Button>
+          <Button size="sm" variant="outline" @click="showReportDialog = false">{{ t('common.cancel') }}</Button>
         </div>
       </div>
     </div>
@@ -234,8 +234,8 @@
     <div v-if="showHistoryDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">选择历史对话</h3>
-          <p class="text-gray-500 dark:text-gray-300">请选择一条历史对话进入</p>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.history.title') }}</h3>
+          <p class="text-gray-500 dark:text-gray-300">{{ t('chat.history.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
           <div v-for="chat in chatStore.chatHistory" :key="chat.id" class="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-all cursor-pointer" @click="selectHistoryChat(chat.id)">
@@ -246,26 +246,26 @@
           </div>
         </div>
         <div class="flex justify-end gap-2">
-          <Button size="sm" variant="outline" @click="showHistoryDialog = false">取消</Button>
+          <Button size="sm" variant="outline" @click="showHistoryDialog = false">{{ t('common.cancel') }}</Button>
         </div>
       </div>
     </div>
     <Modal
       :show="showLoginModal"
-      title="登录提示"
-      message="请先登录后再使用此功能"
-      confirmText="去登录"
-      cancelText="取消"
+      :title="t('chat.dialogs.login.title')"
+      :message="t('chat.dialogs.login.message')"
+      :confirmText="t('chat.dialogs.login.confirm')"
+      :cancelText="t('common.cancel')"
       :onConfirm="handleLoginConfirm"
       :onCancel="handleLoginCancel"
     />
     <!-- 没有八字分析历史提示弹窗 -->
     <Modal
       :show="showNoAnalysisDialog"
-      title="提示"
-      message="您还没有完成八字分析，请先去完成八字分析，然后才能使用此功能。"
-      confirmText="去八字分析"
-      cancelText="取消"
+      :title="t('chat.dialogs.noAnalysis.title')"
+      :message="t('chat.dialogs.noAnalysis.message')"
+      :confirmText="t('chat.dialogs.noAnalysis.confirm')"
+      :cancelText="t('common.cancel')"
       :onConfirm="handleNoAnalysisConfirm"
       :onCancel="handleNoAnalysisCancel"
     />
@@ -273,8 +273,8 @@
     <div v-if="showQuickActionDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
         <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">选择八字分析报告</h3>
-          <p class="text-gray-500 dark:text-gray-300">请选择一份历史八字分析报告作为对话上下文</p>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.quick.title') }}</h3>
+          <p class="text-gray-500 dark:text-gray-300">{{ t('chat.quick.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
           <div v-for="record in analyses" :key="record.id" class="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
@@ -287,12 +287,12 @@
               </div>
             </div>
             <Button size="sm" variant="default" class="ml-2" @click="handleQuickActionWithReport(record)">
-              选择
+              {{ t('chat.dialogs.choose') }}
             </Button>
           </div>
         </div>
         <div class="flex justify-end gap-2">
-          <Button size="sm" variant="outline" @click="showQuickActionDialog = false">取消</Button>
+          <Button size="sm" variant="outline" @click="showQuickActionDialog = false">{{ t('common.cancel') }}</Button>
         </div>
       </div>
     </div>
@@ -321,8 +321,11 @@ import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
 import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
+import * as vueI18n from 'vue-i18n'
 
 const props = defineProps<{ conversationId?: string | null }>()
+const { useI18n } = vueI18n as any
+const { t, locale } = useI18n()
 
 // 初始化 markdown-it
 const md = new MarkdownIt({
@@ -359,7 +362,7 @@ const previewImage = ref<string | null>(null)
 
 // 展开分析报告相关逻辑
 const showReportPanel = ref(false)
-const reportName = ref('分析报告')
+const reportName = ref(t('chat.report.defaultName'))
 const reportContent = ref('')
 
 // 插入/替换分析报告消息
@@ -411,7 +414,7 @@ watch(
       const hasReport = chatStore.currentMessages.some(msg => msg.role === 'report')
       if (!hasReport) {
         // 优先用query.name，否则查找
-        const name = route.query.name as string || '分析报告'
+        const name = (route.query.name as string) || t('chat.report.defaultName')
         reportName.value = name
         reportContent.value = reportContext as string
         insertReportMessage(reportName.value, reportContent.value)
@@ -422,7 +425,7 @@ watch(
         })
       }
     } else {
-      reportName.value = '分析报告'
+      reportName.value = t('chat.report.defaultName')
       reportContent.value = ''
       showReportPanel.value = false
     }
@@ -478,7 +481,7 @@ const closePreview = () => {
 const showReportDialog = ref(false)
 const formatDate = (date: Date) => {
   const d = new Date(date)
-  return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleString(locale.value, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 // 格式化八字报告内容，优先用 analysis_results 字段
 function formatReportText(record: any): string {
@@ -493,11 +496,11 @@ function formatReportText(record: any): string {
 }
 // 安全生成八字报告标题，避免 undefined
 function safeReportName(record: any): string {
-  const type = record.analysis_type || '分析报告'
-  const year = record.birth_year || '未知'
-  const month = record.birth_month || '未知'
-  const day = record.birth_day || '未知'
-  const time = record.birth_time || '未知'
+  const type = record.analysis_type || t('chat.report.defaultName')
+  const year = record.birth_year || t('chat.report.unknown')
+  const month = record.birth_month || t('chat.report.unknown')
+  const day = record.birth_day || t('chat.report.unknown')
+  const time = record.birth_time || t('chat.report.unknown')
   return `${type}（${year}-${month}-${day} ${time}）`
 }
 // 添加八字报告到对话上下文（role: 'report'，不进入20轮历史）
@@ -538,7 +541,7 @@ function isUserOrAssistant(msg: StoreMessage): msg is StoreMessage & { role: 'us
 // 格式化历史对话
 const formatHistory = (historyArr: APIMessage[]) => {
   if (!historyArr.length) return ''
-  return historyArr.map(msg => `${msg.role === 'user' ? '用户' : 'AI'}：${msg.content}`).join('\n')
+  return historyArr.map(msg => `${msg.role === 'user' ? t('chat.messages.user') : t('chat.messages.ai')}：${msg.content}`).join('\n')
 }
 
 // 便捷的对话发送逻辑
@@ -563,7 +566,7 @@ const handleSubmit = async () => {
     }))
 
   if (reportContext) {
-    prompt = `【分析报告】\n${reportContext}\n【历史对话】\n${formatHistory(history)}\n【用户提问】\n${userInput}`
+    prompt = `【${t('chat.prompt.report')}】\n${reportContext}\n【${t('chat.prompt.history')}】\n${formatHistory(history)}\n【${t('chat.prompt.userQuestion')}】\n${userInput}`
   } else {
     prompt = userInput
   }
@@ -596,23 +599,23 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error('Error sending message:', error)
     
-    let errorMessage = '抱歉，发生了未知错误，请稍后重试。'
+    let errorMessage = t('chat.errors.unknown') as string
     
     if (error instanceof ChatAPIError) {
       if (error.statusCode === 429) {
-        errorMessage = '请求过于频繁，请稍后再试。'
+        errorMessage = t('chat.errors.tooManyRequests')
       } else if (error.statusCode === 500) {
-        errorMessage = '服务器暂时不可用，请稍后重试。'
+        errorMessage = t('chat.errors.serverUnavailable')
       } else if (error.statusCode && error.statusCode >= 400) {
-        errorMessage = `请求失败：${error.message}`
+        errorMessage = t('chat.errors.requestFailed', { message: (error as any).message })
       } else {
-        errorMessage = `AI服务错误：${error.message}`
+        errorMessage = t('chat.errors.aiServiceError', { message: (error as any).message })
       }
     } else if (error instanceof Error) {
       if (error.message.includes('fetch')) {
-        errorMessage = '网络连接失败，请检查网络连接后重试。'
+        errorMessage = t('chat.errors.network')
       } else {
-        errorMessage = `错误：${error.message}`
+        errorMessage = t('chat.errors.errorWithMessage', { message: (error as any).message })
       }
     }
     
@@ -710,10 +713,10 @@ const handleNoAnalysisCancel = () => {
 // 获取动作类型的中文名称
 const getActionTypeName = (actionType: string) => {
   switch (actionType) {
-    case 'bazi': return '对话八字'
-    case 'exam': return '考公考编'
-    case 'love': return '感情问题'
-    case 'health': return '身体健康'
+    case 'bazi': return t('chat.quick.bazi')
+    case 'exam': return t('chat.quick.exam')
+    case 'love': return t('chat.quick.love')
+    case 'health': return t('chat.quick.health')
     default: return ''
   }
 }
@@ -737,16 +740,16 @@ const handleQuickActionWithReport = async (record: any) => {
   let prompt = ''
   switch (actionType) {
     case 'bazi':
-      prompt = '请基于我的八字分析报告，为我详细解读八字信息，包括日主、用神、喜忌等关键信息。'
+      prompt = t('chat.quickPrompts.bazi')
       break
     case 'exam':
-      prompt = '请基于我的八字分析报告，分析我在考公考编方面的运势和注意事项，包括适合的岗位方向、考试时间选择等。'
+      prompt = t('chat.quickPrompts.exam')
       break
     case 'love':
-      prompt = '请基于我的八字分析报告，分析我的感情运势，包括桃花运、婚姻时机、配偶特征等。'
+      prompt = t('chat.quickPrompts.love')
       break
     case 'health':
-      prompt = '请基于我的八字分析报告，分析我的身体健康状况，包括需要注意的疾病、养生建议等。'
+      prompt = t('chat.quickPrompts.health')
       break
     default:
       return
@@ -779,7 +782,7 @@ const handleQuickActionWithReport = async (record: any) => {
 
     // 构建包含报告的 prompt
     const fullPrompt = reportContext 
-      ? `【分析报告】\n${reportContext}\n【历史对话】\n${formatHistory(history)}\n【用户提问】\n${prompt}`
+      ? `【${t('chat.prompt.report')}】\n${reportContext}\n【${t('chat.prompt.history')}】\n${formatHistory(history)}\n【${t('chat.prompt.userQuestion')}】\n${prompt}`
       : prompt
 
     // 调用 chat API
@@ -800,23 +803,23 @@ const handleQuickActionWithReport = async (record: any) => {
   } catch (error) {
     console.error('Error sending message:', error)
     
-    let errorMessage = '抱歉，发生了未知错误，请稍后重试。'
+    let errorMessage = t('chat.errors.unknown') as string
     
     if (error instanceof ChatAPIError) {
       if (error.statusCode === 429) {
-        errorMessage = '请求过于频繁，请稍后再试。'
+        errorMessage = t('chat.errors.tooManyRequests')
       } else if (error.statusCode === 500) {
-        errorMessage = '服务器暂时不可用，请稍后重试。'
+        errorMessage = t('chat.errors.serverUnavailable')
       } else if (error.statusCode && error.statusCode >= 400) {
-        errorMessage = `请求失败：${error.message}`
+        errorMessage = t('chat.errors.requestFailed', { message: (error as any).message })
       } else {
-        errorMessage = `AI服务错误：${error.message}`
+        errorMessage = t('chat.errors.aiServiceError', { message: (error as any).message })
       }
     } else if (error instanceof Error) {
       if (error.message.includes('fetch')) {
-        errorMessage = '网络连接失败，请检查网络连接后重试。'
+        errorMessage = t('chat.errors.network')
       } else {
-        errorMessage = `错误：${error.message}`
+        errorMessage = t('chat.errors.errorWithMessage', { message: (error as any).message })
       }
     }
     
@@ -833,7 +836,7 @@ const handleQuickActionWithReport = async (record: any) => {
 }
 </script>
 
-<style>
+<style lang="postcss">
 .scroll-smooth {
   scroll-behavior: smooth;
 }

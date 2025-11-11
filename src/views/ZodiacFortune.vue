@@ -1,41 +1,41 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4">
     <!-- 面包屑导航 -->
-    <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4 max-w-6xl mx-auto" aria-label="面包屑导航">
-      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">首页</a>
+    <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4 max-w-6xl mx-auto" :aria-label="t('zodiac.breadcrumb.ariaLabel')">
+      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ t('sidebar.nav.home') }}</a>
       <span class="text-gray-400">/</span>
-      <span class="text-gray-900 dark:text-gray-100 font-medium">生肖运势查询</span>
+      <span class="text-gray-900 dark:text-gray-100 font-medium">{{ t('zodiac.breadcrumb.title') }}</span>
     </nav>
     
     <!-- SEO组件 -->
     <SEO 
-      title="十二生肖运势查询 - 每日生肖运势分析 | 北斗九号日历"
-      pageTitle="生肖运势"
-      description="提供专业的十二生肖每日运势分析，包括鼠牛虎兔龙蛇马羊猴鸡狗猪全年运势预测。基于传统命理学理论，分析生肖与地支关系，提供今日运势评分、事业财运建议、健康感情指导。助您了解生肖吉凶，把握运势机遇。"
-      keywords="十二生肖运势,生肖运势查询,每日生肖运势,生肖运势分析,鼠牛虎兔龙蛇马羊猴鸡狗猪运势,生肖地支关系,生肖吉凶预测,生肖运势评分"
+      :title="t('zodiac.seo.title')"
+      :pageTitle="t('zodiac.seo.pageTitle')"
+      :description="t('zodiac.seo.description')"
+      :keywords="t('zodiac.seo.keywords')"
     />
     
     <div class="max-w-7xl mx-auto">
       <!-- 页面标题 -->
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
-          {{ fortuneData?.分析时间 ? `${new Date(fortuneData.分析时间).getMonth() + 1}月${new Date(fortuneData.分析时间).getDate()}日生肖运势` : '生肖运势' }}
+          {{ fortuneData?.分析时间 ? `${formatDate(fortuneData.分析时间)} · ${t('zodiac.title')}` : t('zodiac.title') }}
         </h1>
-        <p class="text-gray-600 dark:text-gray-300">今日生肖运势分析，助您把握良机。配合<a href="/analysis" class="text-blue-600 dark:text-blue-400 hover:underline">八字分析</a>和<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">择日推荐</a>，获得更全面的运势预测</p>
+        <p class="text-gray-600 dark:text-gray-300">{{ t('zodiac.share.subtitle') }}</p>
       </div>
 
       <!-- 加载状态 -->
-      <div v-if="loading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 text-gray-600 dark:text-gray-300">正在分析生肖运势...</p>
-      </div>
+        <div v-if="loading" class="text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p class="mt-4 text-gray-600 dark:text-gray-300">{{ t('zodiac.loading') }}</p>
+        </div>
 
       <!-- 运势分析结果 -->
       <div v-if="fortuneData && !loading" class="space-y-4">
         <!-- 总体运势分析 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
           <div class="flex items-center justify-between mb-3">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">今日运势总览</h2>
+            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">{{ t('zodiac.overview.title') }}</h2>
             <div class="flex items-center gap-3">
               <div class="text-sm text-gray-500 dark:text-gray-400">
                 {{ formatDateTime(fortuneData.分析时间) }}
@@ -44,7 +44,7 @@
                 @click="refreshFortune" 
                 :disabled="loading"
                 class="p-2 bg-green-600 text-white rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                title="刷新运势数据"
+                :title="t('zodiac.overview.refresh')"
               >
                 <svg v-if="!loading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -55,7 +55,7 @@
                 @click="shareFortune" 
                 :disabled="sharing"
                 class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                title="分享生肖运势"
+                :title="t('zodiac.overview.share')"
               >
                 <svg v-if="!sharing" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
@@ -70,7 +70,7 @@
             <!-- 今日生肖信息 -->
             <div class="flex items-center mb-3">
               <div>
-                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">今日生肖属：{{ getZodiacFromEarthBranch(fortuneData.今日地支) }}</h3>
+                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">{{ t('zodiac.overview.todayZodiacPrefix') }}{{ getZodiacFromEarthBranch(fortuneData.今日地支) }}</h3>
               </div>
             </div>
 
@@ -91,8 +91,8 @@
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <h4 class="text-base font-bold" :class="getSectionTextClass(section.type)">{{ section.title }}</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ section.subtitle }}</p>
+                    <h4 class="text-base font-bold" :class="getSectionTextClass(section.type)">{{ getSectionTitle(section.type) }}</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ getSectionSubtitle(section.type) }}</p>
                   </div>
                 </div>
 
@@ -108,7 +108,7 @@
                     <!-- 运势内容 -->
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center mb-1">
-                        <span class="font-medium text-gray-800 dark:text-gray-200 mr-2 text-xs">属{{ fortune.zodiac }}</span>
+                        <span class="font-medium text-gray-800 dark:text-gray-200 mr-2 text-xs">{{ t('zodiac.labels.zodiacPrefix') }}{{ t('zodiac.names.' + fortune.zodiac) }}</span>
                         <span class="text-xs px-1.5 py-0.5 rounded-full flex-shrink-0" :class="getZodiacStatusClass(section.type)">
                           {{ getZodiacStatusText(section.type) }}
                         </span>
@@ -152,12 +152,12 @@
             <!-- 运势详情 -->
             <div class="p-3">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-500 dark:text-gray-400">地支：{{ fortune.地支 || '未知' }}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">{{ t('zodiac.labels.earthBranch') }}{{ fortune.地支 || t('common.unknown') }}</span>
                 <span 
                   :class="getRelationTypeClass(fortune.关系类型)"
                   class="px-2 py-1 rounded-full text-xs font-medium"
                 >
-                  {{ fortune.关系类型 }}
+                  {{ t('zodiac.status.' + fortune.关系类型) }}
                 </span>
               </div>
 
@@ -191,8 +191,8 @@
           <div class="p-4 h-full flex flex-col">
             <!-- 分享标题 -->
             <div class="text-center mb-4">
-              <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">十二生肖运势查询 - 每日运势预测</h1>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">今日生肖运势分析，助您把握良机</p>
+              <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">{{ t('zodiac.share.title') }}</h1>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">{{ t('zodiac.share.subtitle') }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatDateTime(fortuneData?.分析时间 || '') }}</p>
             </div>
 
@@ -203,8 +203,8 @@
                   <span class="text-white font-bold text-sm">{{ fortuneData?.今日地支 }}</span>
                 </div>
                 <div>
-                  <h2 class="text-sm font-bold text-gray-800 dark:text-gray-100">今日运势总览</h2>
-                  <p class="text-xs text-gray-600 dark:text-gray-400">今日地支：{{ fortuneData?.今日地支 }}</p>
+                  <h2 class="text-sm font-bold text-gray-800 dark:text-gray-100">{{ t('zodiac.overview.title') }}</h2>
+                  <p class="text-xs text-gray-600 dark:text-gray-400">{{ t('zodiac.labels.todayEarthBranch') }}{{ fortuneData?.今日地支 }}</p>
                 </div>
               </div>
               <div class="text-gray-700 dark:text-gray-300 leading-relaxed text-xs">
@@ -224,18 +224,18 @@
                   <div class="mb-1">
                     <ZodiacIcon :zodiac="zodiac" class="text-lg" />
                   </div>
-                  <h3 class="text-xs font-bold text-gray-800 dark:text-gray-200">{{ zodiac }}</h3>
+                  <h3 class="text-xs font-bold text-gray-800 dark:text-gray-200">{{ t('zodiac.names.' + zodiac) }}</h3>
                 </div>
 
                 <!-- 运势详情 -->
                 <div class="p-2">
                   <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs text-gray-500 dark:text-gray-400">地支：{{ fortune.地支 || '未知' }}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ t('zodiac.labels.earthBranch') }}{{ fortune.地支 || t('common.unknown') }}</span>
                     <span 
                       :class="getRelationTypeClass(fortune.关系类型)"
                       class="px-1 py-0.5 rounded-full text-xs font-medium"
                     >
-                      {{ fortune.关系类型 }}
+                      {{ t('zodiac.status.' + fortune.关系类型) }}
                     </span>
                   </div>
 
@@ -246,9 +246,9 @@
                     </div>
                     <!-- 关系信息 -->
                     <div class="flex items-center justify-between mt-1">
-                      <span class="text-xs text-gray-500 dark:text-gray-400">关系：{{ fortune.关系类型 }}</span>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">{{ t('zodiac.labels.relation') }}{{ t('zodiac.status.' + fortune.关系类型) }}</span>
                       <span class="text-xs px-1 py-0.5 rounded-full" :class="getIntensityClass(fortune.强度值)">
-                        强度: {{ fortune.强度值 }}
+                        {{ t('zodiac.labels.intensity') }} {{ fortune.强度值 }}
                       </span>
                     </div>
                   </div>
@@ -258,7 +258,7 @@
 
             <!-- 水印 - 左下角 -->
             <div class="absolute bottom-2 left-2 text-xs text-gray-400 dark:text-gray-500 font-medium">
-              www.9day.tech 北斗九号日历
+              {{ 'www.9day.tech ' + t('sidebar.brand') }}
             </div>
           </div>
         </div>
@@ -274,6 +274,10 @@ import type { ZodiacFortuneResponse } from '@/api/bazi'
 import ZodiacIcon from '@/components/ZodiacIcon.vue'
 import SEO from '@/components/SEO.vue'
 import html2canvas from 'html2canvas'
+import * as I18n from 'vue-i18n'
+
+const { useI18n } = I18n as any
+const { t, locale } = useI18n()
 
 // 响应式数据
 const loading = ref(false)
@@ -286,7 +290,7 @@ const shareContainer = ref<HTMLElement>()
 // 格式化日期时间
 const formatDateTime = (dateTimeStr: string) => {
   const date = new Date(dateTimeStr)
-  return date.toLocaleString('zh-CN', {
+  return date.toLocaleString(locale.value || 'zh-CN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -298,7 +302,7 @@ const formatDateTime = (dateTimeStr: string) => {
 // 格式化日期
 const formatDate = (dateTimeStr: string) => {
   const date = new Date(dateTimeStr)
-  return date.toLocaleDateString('zh-CN', {
+  return date.toLocaleDateString(locale.value || 'zh-CN', {
     month: '2-digit',
     day: '2-digit'
   })
@@ -306,11 +310,18 @@ const formatDate = (dateTimeStr: string) => {
 
 // 地支到生肖的映射
 const getZodiacFromEarthBranch = (earthBranch: string) => {
-  const mapping: { [key: string]: string } = {
+  const mappingZh: Record<string, string> = {
     '子': '鼠', '丑': '牛', '寅': '虎', '卯': '兔', '辰': '龙', '巳': '蛇',
     '午': '马', '未': '羊', '申': '猴', '酉': '鸡', '戌': '狗', '亥': '猪'
   }
-  return mapping[earthBranch] || earthBranch
+  const mappingEn: Record<string, string> = {
+    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon', '巳': 'Snake',
+    '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster', '戌': 'Dog', '亥': 'Pig'
+  }
+  const currentLocale = (locale.value || 'zh-CN') as string
+  const isEnglish = currentLocale.toLowerCase().startsWith('en')
+  const map = isEnglish ? mappingEn : mappingZh
+  return map[earthBranch] || earthBranch
 }
 
 // 定义运势数据结构类型
@@ -324,6 +335,28 @@ interface FortuneSection {
   title: string
   subtitle: string
   fortunes: ZodiacFortune[]
+}
+
+// 将运势类型映射到 i18n 键
+const sectionKeyMap: Record<string, string> = {
+  '值太岁': 'valueTaiSui',
+  '相破': 'xiangPo',
+  '相害': 'xiangHai',
+  '相冲': 'xiangChong',
+  '相刑': 'xiangXing',
+  '三合': 'sanHe',
+  '六合': 'liuHe',
+  '平运': 'pingYun'
+}
+
+const getSectionTitle = (type: string) => {
+  const key = sectionKeyMap[type]
+  return key ? (t(`zodiac.sections.${key}.title`) as string) : type
+}
+
+const getSectionSubtitle = (type: string) => {
+  const key = sectionKeyMap[type]
+  return key ? (t(`zodiac.sections.${key}.subtitle`) as string) : ''
 }
 
 // 解析运势文本为结构化数据
@@ -528,26 +561,9 @@ const getZodiacStatusClass = (type: string) => {
 
 // 获取生肖状态文字
 const getZodiacStatusText = (type: string) => {
-  switch (type) {
-    case '三合':
-      return '贵人运旺'
-    case '平运':
-      return '运势平稳'
-    case '值太岁':
-      return '需谨慎'
-    case '六合':
-      return '运气极佳'
-    case '相破':
-      return '易遇变故'
-    case '相害':
-      return '需注意'
-    case '相冲':
-      return '易有冲突'
-    case '相刑':
-      return '需谨慎'
-    default:
-      return '运势一般'
-  }
+  const key = `zodiac.status.${type}`
+  const translated = t(key) as string
+  return translated === key ? (t('zodiac.status.default') as string) : translated
 }
 
 // 获取关系类型样式类
@@ -616,13 +632,13 @@ const shareFortune = async () => {
     
     // 转换为图片并下载
     const link = document.createElement('a')
-    link.download = `生肖运势_${formatDateTime(fortuneData.value.分析时间).replace(/[\/\s:]/g, '_')}.png`
+    link.download = `${t('zodiac.share.downloadPrefix')}${formatDateTime(fortuneData.value.分析时间).replace(/[\/\s:]/g, '_')}.png`
     link.href = canvas.toDataURL('image/png', 1.0) // 最高质量
     link.click()
     
   } catch (err) {
     console.error('生成分享图片失败:', err)
-    error.value = '生成分享图片失败，请稍后重试'
+    error.value = t('zodiac.shareFailed') as string
   } finally {
     // 隐藏分享容器
     if (shareContainer.value) {
@@ -649,7 +665,7 @@ const analyzeFortune = async () => {
       cacheStatus.value = { type: 'cache', message: '使用缓存数据，点击刷新按钮获取最新数据' }
     }
   } catch (err) {
-    error.value = err instanceof Error ? err.message : '分析失败，请稍后重试'
+    error.value = err instanceof Error ? err.message : (t('zodiac.analyzeFailed') as string)
     console.error('生肖运势分析失败:', err)
   } finally {
     loading.value = false
@@ -667,7 +683,7 @@ const refreshFortune = async () => {
     fortuneData.value = response.data
     cacheStatus.value = { type: 'fresh', message: '已强制刷新，获取最新数据' }
   } catch (err) {
-    error.value = err instanceof Error ? err.message : '强制刷新失败，请稍后重试'
+    error.value = err instanceof Error ? err.message : (t('zodiac.refreshFailed') as string)
     console.error('强制刷新生肖运势失败:', err)
   } finally {
     loading.value = false
@@ -680,7 +696,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .prose {
   max-width: none;
 }
@@ -688,6 +704,7 @@ onMounted(() => {
 /* 文本截断样式 */
 .line-clamp-3 {
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;

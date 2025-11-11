@@ -4,7 +4,7 @@
     <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
       <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
         <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-        格局分析
+        {{ t('home.analysis.report.labels.deityTitle') }}
       </h3>
       
       <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">
@@ -13,7 +13,7 @@
             {{ yongshenData.格局 }}
           </div>
           <div class="text-sm text-gray-600 dark:text-gray-300">
-            命理格局
+            {{ t('home.analysis.report.labels.pattern') }}
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
       <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
           <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-          用神
+          {{ t('home.analysis.report.labels.usefulElements') }}
         </h3>
         
         <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">
@@ -35,7 +35,7 @@
               <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ god }}</span>
             </div>
             <div v-if="yongshenData.用神.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-2">
-              暂无用神信息
+              {{ t('home.analysis.report.labels.emptyUseful') }}
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
       <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
           <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-          忌神
+          {{ t('home.analysis.fields.tabooElement') }}
         </h3>
         
         <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">
@@ -59,7 +59,7 @@
               <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ god }}</span>
             </div>
             <div v-if="yongshenData.忌神.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-2">
-              暂无忌神信息
+              {{ t('home.analysis.report.labels.emptyTaboo') }}
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
     <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
       <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
         <span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
-        取用原则
+        {{ t('home.analysis.fields.principle') }}
       </h3>
       
       <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
@@ -103,6 +103,7 @@
 </template>
 
 <script setup lang="ts">
+import * as vueI18n from 'vue-i18n'
 interface YongshenInfo {
   格局: string
   用神: string[]
@@ -115,4 +116,7 @@ interface YongshenInfo {
 defineProps<{
   yongshenData: YongshenInfo
 }>()
+
+const { useI18n } = vueI18n as any
+const { t } = useI18n()
 </script>

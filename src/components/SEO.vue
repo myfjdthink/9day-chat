@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import * as vueI18n from 'vue-i18n'
 
 interface SEOProps {
   title?: string
@@ -35,6 +36,8 @@ const props = withDefaults(defineProps<SEOProps>(), {
 })
 
 const route = useRoute()
+const { useI18n } = vueI18n as any
+const { t, locale } = useI18n()
 
 // 更新页面标题和meta标签
 const updateSEO = () => {
@@ -177,7 +180,7 @@ const updateStructuredData = () => {
         }
       },
       "areaServed": "中国",
-      "availableLanguage": "zh-CN"
+      "availableLanguage": locale?.value || 'zh-CN'
     },
     "breadcrumb": {
       "@type": "BreadcrumbList",
@@ -211,11 +214,11 @@ const getBreadcrumbs = () => {
   const breadcrumbs = []
   let currentPath = ''
   
-  // 添加首页
+  // 添加首页（国际化）
   breadcrumbs.push({
     "@type": "ListItem",
     "position": 1,
-    "name": "首页",
+    "name": t('common.breadcrumb.home'),
     "item": props.url
   })
   
@@ -235,24 +238,27 @@ const getBreadcrumbs = () => {
 
 // 获取页面标题
 const getPageTitle = (path: string) => {
-  const titleMap: Record<string, string> = {
-    'chat': 'AI智能对话',
-    'analysis': '八字分析',
-    'calendar': '择日推荐',
-    'zodiac-fortune': '生肖运势',
-    'login': '用户登录',
-    'register': '用户注册',
-    'profile': '个人中心',
-    'password-reset': '重置密码',
-    'forgot-password': '找回密码'
-  }
-  return titleMap[path] || path
+  // 优先使用国际化映射：pages.<segment>
+  const key = `pages.${path}`
+  const translated = t(key)
+  // 如果未配置对应键，回退为原始路径
+  return translated && translated !== key ? translated : path
 }
 
 // 监听路由变化
 watch(() => route.path, () => {
   updateSEO()
 }, { immediate: true })
+
+// 监听语言变化，确保国际化内容更新到 meta 和标题
+watch(locale, () => {
+  updateSEO()
+})
+
+// 监听传入 props 的变化（标题、描述、关键词等）
+watch(() => [props.title, props.pageTitle, props.description, props.keywords, props.image, props.url, props.type], () => {
+  updateSEO()
+})
 
 // 组件挂载时更新SEO
 onMounted(() => {

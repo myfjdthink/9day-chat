@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-5xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-xl shadow">
     <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100 flex items-center">
-      <span class="i-heroicons-users-2 mr-2"></span>管理员控制台 - 用户信息管理
+      <span class="i-heroicons-users-2 mr-2"></span>{{ $t('admin.panel.headerTitle') }}
     </h1>
     <!-- 统计卡片区 -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -11,7 +11,7 @@
         </div>
         <div>
           <div class="text-2xl font-bold text-blue-700 dark:text-blue-200">{{ totalUsers }}</div>
-          <div class="text-sm text-blue-600 dark:text-blue-300">累计注册用户</div>
+          <div class="text-sm text-blue-600 dark:text-blue-300">{{ $t('admin.panel.stats.totalUsers') }}</div>
         </div>
       </div>
       <div class="flex items-center p-5 rounded-xl shadow bg-gradient-to-tr from-green-100 to-green-50 dark:from-green-900 dark:to-green-800">
@@ -20,7 +20,7 @@
         </div>
         <div>
           <div class="text-2xl font-bold text-green-700 dark:text-green-200">{{ activeUsers }}</div>
-          <div class="text-sm text-green-600 dark:text-green-300">活跃用户（30天内登录）</div>
+          <div class="text-sm text-green-600 dark:text-green-300">{{ $t('admin.panel.stats.activeUsers') }}</div>
         </div>
       </div>
       <div class="flex items-center p-5 rounded-xl shadow bg-gradient-to-tr from-yellow-100 to-yellow-50 dark:from-yellow-900 dark:to-yellow-800">
@@ -29,77 +29,77 @@
         </div>
         <div>
           <div class="text-2xl font-bold" :class="activeRateColor">{{ activeRateStr }}</div>
-          <div class="text-sm text-yellow-700 dark:text-yellow-200">活跃率</div>
+          <div class="text-sm text-yellow-700 dark:text-yellow-200">{{ $t('admin.panel.stats.activeRate') }}</div>
         </div>
       </div>
     </div>
-    <div v-if="!isAdmin" class="text-red-600 dark:text-red-400">无权限访问</div>
+    <div v-if="!isAdmin" class="text-red-600 dark:text-red-400">{{ $t('admin.panel.noAccess') }}</div>
     <div v-else>
       <!-- 导入导出按钮区 -->
       <div class="flex gap-2 mb-4">
-        <Button @click="handleExport" variant="outline">导出用户数据</Button>
+        <Button @click="handleExport" variant="outline">{{ $t('admin.panel.actions.export') }}</Button>
         <label class="inline-flex items-center cursor-pointer">
           <input type="file" accept="application/json" class="hidden" @change="handleImport" ref="importInput" />
-          <Button variant="outline">导入用户数据</Button>
+          <Button variant="outline">{{ $t('admin.panel.actions.import') }}</Button>
         </label>
       </div>
       <!-- 筛选与搜索区 -->
       <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
         <div class="flex gap-2">
           <select v-model="filterRole" class="input w-32">
-            <option value="">全部角色</option>
+            <option value="">{{ $t('admin.panel.filters.roleAll') }}</option>
             <option value="user">user</option>
             <option value="admin">admin</option>
             <option value="superadmin">superadmin</option>
           </select>
           <select v-model="filterActive" class="input w-24">
-            <option value="">激活状态</option>
-            <option value="true">是</option>
-            <option value="false">否</option>
+            <option value="">{{ $t('admin.panel.filters.active') }}</option>
+            <option value="true">{{ $t('admin.panel.filters.boolean.true') }}</option>
+            <option value="false">{{ $t('admin.panel.filters.boolean.false') }}</option>
           </select>
           <select v-model="filterVerified" class="input w-24">
-            <option value="">验证状态</option>
-            <option value="true">是</option>
-            <option value="false">否</option>
+            <option value="">{{ $t('admin.panel.filters.verified') }}</option>
+            <option value="true">{{ $t('admin.panel.filters.boolean.true') }}</option>
+            <option value="false">{{ $t('admin.panel.filters.boolean.false') }}</option>
           </select>
         </div>
-        <input v-model="search" class="input flex-1 md:w-64" placeholder="搜索用户名/邮箱..." />
+        <input v-model="search" class="input flex-1 md:w-64" :placeholder="$t('admin.panel.search.placeholder')" />
       </div>
-      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">用户列表</h3>
+      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{{ $t('admin.panel.table.title') }}</h3>
       <table class="w-full text-sm border rounded overflow-hidden">
         <thead class="bg-gray-100 dark:bg-gray-800">
           <tr>
-            <th class="p-2">序号</th>
+            <th class="p-2">{{ $t('admin.panel.table.columns.index') }}</th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('username')">
-              用户名
+              {{ $t('admin.panel.table.columns.username') }}
               <span v-if="sortField==='username'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('email')">
-              邮箱
+              {{ $t('admin.panel.table.columns.email') }}
               <span v-if="sortField==='email'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('role')">
-              角色
+              {{ $t('admin.panel.table.columns.role') }}
               <span v-if="sortField==='role'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('is_active')">
-              激活
+              {{ $t('admin.panel.table.columns.active') }}
               <span v-if="sortField==='is_active'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('is_verified')">
-              验证
+              {{ $t('admin.panel.table.columns.verified') }}
               <span v-if="sortField==='is_verified'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('created_at')">
-              注册时间
+              {{ $t('admin.panel.table.columns.createdAt') }}
               <span v-if="sortField==='created_at'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
             <th class="p-2 cursor-pointer select-none" @click="sortBy('last_login')">
-              最后登录
+              {{ $t('admin.panel.table.columns.lastLogin') }}
               <span v-if="sortField==='last_login'">{{ sortOrder==='asc'?'▲':'▼' }}</span>
             </th>
-            <th class="p-2">八字信息</th>
-            <th class="p-2">操作</th>
+            <th class="p-2">{{ $t('admin.panel.table.columns.baziInfo') }}</th>
+            <th class="p-2">{{ $t('admin.panel.table.columns.actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -108,16 +108,16 @@
             <td class="p-2">{{ user.username }}</td>
             <td class="p-2">{{ user.email }}</td>
             <td class="p-2">{{ user.role }}</td>
-            <td class="p-2">{{ user.is_active ? '是' : '否' }}</td>
-            <td class="p-2">{{ user.is_verified ? '是' : '否' }}</td>
+            <td class="p-2">{{ user.is_active ? $t('admin.panel.filters.boolean.true') : $t('admin.panel.filters.boolean.false') }}</td>
+            <td class="p-2">{{ user.is_verified ? $t('admin.panel.filters.boolean.true') : $t('admin.panel.filters.boolean.false') }}</td>
             <td class="p-2">{{ formatTime(user.created_at) }}</td>
             <td class="p-2">{{ formatTime(user.last_login) }}</td>
             <td class="p-2">{{ formatBaziInfo(user) }}</td>
             <td class="p-2">
               <template v-if="isAdmin">
-                <button class="text-blue-600 dark:text-blue-300 hover:underline mr-2" @click="editUser(user)">编辑</button>
+                <button class="text-blue-600 dark:text-blue-300 hover:underline mr-2" @click="editUser(user)">{{ $t('admin.panel.buttons.edit') }}</button>
                 <template v-if="userStore.user?.role === 'superadmin'">
-                  <button class="text-red-600 dark:text-red-400 hover:underline" @click="confirmDeleteUser(user)">删除</button>
+                  <button class="text-red-600 dark:text-red-400 hover:underline" @click="confirmDeleteUser(user)">{{ $t('admin.panel.buttons.delete') }}</button>
                 </template>
               </template>
               <template v-else>
@@ -132,17 +132,17 @@
   <!-- 用户编辑/删除弹窗 -->
   <Modal
     :show="showUserModal"
-    :title="userModalMode==='edit' ? '编辑用户' : '删除用户'"
-    :message="userModalMode==='edit' ? '可修改用户属性' : '确定要删除该用户吗？'"
-    :confirmText="userModalMode==='edit' ? '保存' : '删除'"
-    :cancelText="'取消'"
+    :title="userModalMode==='edit' ? $t('admin.panel.modal.editTitle') : $t('admin.panel.modal.deleteTitle')"
+    :message="userModalMode==='edit' ? $t('admin.panel.modal.editMessage') : $t('admin.panel.modal.deleteMessage')"
+    :confirmText="userModalMode==='edit' ? $t('admin.panel.modal.confirmSave') : $t('admin.panel.modal.confirmDelete')"
+    :cancelText="$t('admin.panel.modal.cancel')"
     :onConfirm="userModalMode==='edit' ? handleUserSave : handleUserDelete"
     :onCancel="() => { showUserModal = false }"
   >
     <template #default>
       <div v-if="userModalMode==='edit' && editUserForm">
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">角色</label>
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.panel.form.role') }}</label>
           <select v-model="editUserForm.role" class="input w-full">
             <option value="user">user</option>
             <option value="admin">admin</option>
@@ -150,45 +150,45 @@
           </select>
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">激活</label>
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.panel.form.active') }}</label>
           <select v-model="editUserForm.is_active" class="input w-full">
-            <option :value="true">是</option>
-            <option :value="false">否</option>
+            <option :value="true">{{ $t('admin.panel.filters.boolean.true') }}</option>
+            <option :value="false">{{ $t('admin.panel.filters.boolean.false') }}</option>
           </select>
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">验证</label>
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.panel.form.verified') }}</label>
           <select v-model="editUserForm.is_verified" class="input w-full">
-            <option :value="true">是</option>
-            <option :value="false">否</option>
+            <option :value="true">{{ $t('admin.panel.filters.boolean.true') }}</option>
+            <option :value="false">{{ $t('admin.panel.filters.boolean.false') }}</option>
           </select>
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">出生年份</label>
-          <input v-model="editUserForm.birth_year" type="number" class="input w-full" placeholder="如 1990" min="1900" max="2100" />
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.form.birthYear') }}</label>
+          <input v-model="editUserForm.birth_year" type="number" class="input w-full" :placeholder="$t('admin.placeholders.birthYear')" min="1900" max="2100" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">出生月份</label>
-          <input v-model="editUserForm.birth_month" type="number" class="input w-full" placeholder="如 5" min="1" max="12" />
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.form.birthMonth') }}</label>
+          <input v-model="editUserForm.birth_month" type="number" class="input w-full" :placeholder="$t('admin.placeholders.birthMonth')" min="1" max="12" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">出生日</label>
-          <input v-model="editUserForm.birth_day" type="number" class="input w-full" placeholder="如 15" min="1" max="31" />
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.form.birthDay') }}</label>
+          <input v-model="editUserForm.birth_day" type="number" class="input w-full" :placeholder="$t('admin.placeholders.birthDay')" min="1" max="31" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">出生时间</label>
-          <input v-model="editUserForm.birth_time" type="text" class="input w-full" placeholder="如 14:30" />
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.form.birthTime') }}</label>
+          <input v-model="editUserForm.birth_time" type="text" class="input w-full" :placeholder="$t('admin.placeholders.birthTime')" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm font-medium mb-1">性别</label>
+          <label class="block text-sm font-medium mb-1">{{ $t('admin.panel.form.gender') }}</label>
           <select v-model="editUserForm.gender" class="input w-full">
-            <option value="male">男</option>
-            <option value="female">女</option>
+            <option value="male">{{ $t('admin.panel.form.genderOptions.male') }}</option>
+            <option value="female">{{ $t('admin.panel.form.genderOptions.female') }}</option>
           </select>
         </div>
       </div>
       <div v-else-if="userModalMode==='delete'">
-        <div class="text-red-600 dark:text-red-400 font-bold">该操作不可恢复，确定要删除该用户吗？</div>
+        <div class="text-red-600 dark:text-red-400 font-bold">{{ $t('admin.panel.modal.deleteWarn') }}</div>
       </div>
     </template>
   </Modal>
@@ -201,6 +201,7 @@ import request from '@/api/request-user'
 import { exportUsers, importUsers } from '@/api/user'
 import Button from '@/components/ui/Button.vue'
 import Modal from '@/components/ui/Modal.vue'
+import i18n from '@/i18n'
 
 // 1. 用 request.patch/delete 代替 updateUser/deleteUser
 // 2. 确保所有变量已用 ref 定义
@@ -267,9 +268,9 @@ async function handleUserSave() {
     await request.patch(`/users/${editUserObj.value.id}`, editUserForm.value)
     Object.assign(editUserObj.value, editUserForm.value)
     showUserModal.value = false
-    msg.value = '用户信息已更新'
+    msg.value = i18n.global.t('admin.messages.updated')
   } catch (e: any) {
-    error.value = e?.message || '保存失败'
+    error.value = e?.message || i18n.global.t('admin.messages.saveFailed')
   }
 }
 
@@ -279,12 +280,12 @@ async function handleUserDelete() {
     await request.delete(`/users/${editUserObj.value.id}`)
     await fetchAllUsers()
     showUserModal.value = false
-    msg.value = '用户已停用'
+    msg.value = i18n.global.t('admin.messages.deactivated')
   } catch (e: any) {
     if (e?.response?.status === 403) {
-      error.value = '只有超级管理员可以删除用户'
+      error.value = i18n.global.t('admin.messages.onlySuperAdmin')
     } else {
-      error.value = e?.message || '删除失败'
+      error.value = e?.message || i18n.global.t('admin.messages.deleteFailed')
     }
   }
 }
@@ -355,9 +356,9 @@ async function handleExport() {
     a.click()
     window.URL.revokeObjectURL(url)
     a.remove()
-    msg.value = '用户数据导出成功！'
+    msg.value = i18n.global.t('admin.messages.exportSuccess')
   } catch (e: any) {
-    error.value = e?.message || '导出失败'
+    error.value = e?.message || i18n.global.t('admin.messages.exportFailed')
   } finally {
     isLoading.value = false
   }
@@ -374,10 +375,10 @@ async function handleImport(e: Event) {
   try {
     // 调用新版导入接口，后端返回 message 字段
     const res = await importUsers(file)
-    msg.value = res.message || '导入成功'
+    msg.value = res.message || i18n.global.t('admin.messages.importSuccess')
     fetchAllUsers() // 刷新用户列表
   } catch (e: any) {
-    error.value = e?.message || '导入失败'
+    error.value = e?.message || i18n.global.t('admin.messages.importFailed')
   } finally {
     isLoading.value = false
     if (importInput.value) importInput.value.value = '' // 重置文件选择
@@ -391,8 +392,8 @@ function formatBaziInfo(user: any) {
   const d = user.birth_day ? String(user.birth_day).padStart(2, '0') : ''
   const t = user.birth_time || ''
   let g = user.gender
-  if (g === 'male') g = '男'
-  if (g === 'female') g = '女'
+  if (g === 'male') g = i18n.global.t('home.input.gender.male')
+  if (g === 'female') g = i18n.global.t('home.input.gender.female')
   if (y && m && d && t && g) return `${y}-${m}-${d} ${t} ${g}`
   return '-'
 }

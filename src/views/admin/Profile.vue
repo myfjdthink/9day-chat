@@ -2,49 +2,49 @@
   <div class="max-w-2xl mx-auto mt-10 px-4">
     <!-- 顶部卡片：头像+用户名+邮箱 -->
     <div class="flex flex-col items-center bg-white dark:bg-gray-900 rounded-xl shadow p-6 mb-6">
-      <img :src="avatarUrl" class="w-20 h-20 rounded-full border-4 border-green-400 shadow mb-3 bg-gray-100 dark:bg-gray-700 object-cover" alt="avatar" />
-      <div class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ form.username || '未设置用户名' }}</div>
+      <img :src="avatarUrl" class="w-20 h-20 rounded-full border-4 border-green-400 shadow mb-3 bg-gray-100 dark:bg-gray-700 object-cover" :alt="t('sidebar.avatarAltDetailed')" />
+      <div class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ form.username || t('admin.profile.usernameUnset') }}</div>
       <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ form.email }}</div>
       <div class="flex gap-2 mt-2">
         <span class="px-2 py-0.5 rounded bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 text-xs">{{ form.role }}</span>
-        <span class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-xs">{{ form.is_active ? '已激活' : '未激活' }}</span>
-        <span class="px-2 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-xs">{{ form.is_verified ? '已验证' : '未验证' }}</span>
+        <span class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-xs">{{ form.is_active ? t('admin.profile.statuses.activeTrue') : t('admin.profile.statuses.activeFalse') }}</span>
+        <span class="px-2 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-xs">{{ form.is_verified ? t('admin.profile.statuses.verifiedTrue') : t('admin.profile.statuses.verifiedFalse') }}</span>
       </div>
-      <Button v-if="!isEdit" variant="default" size="lg" class="mt-6 px-8 py-2" @click="isEdit = true">编辑</Button>
+      <Button v-if="!isEdit" variant="default" size="lg" class="mt-6 px-8 py-2" @click="isEdit = true">{{ t('admin.profile.edit') }}</Button>
     </div>
 
     <!-- 详细信息卡片 -->
     <div class="bg-white dark:bg-gray-900 rounded-xl shadow p-6 mb-6">
-      <h1 class="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">个人信息管理 - 用户中心</h1>
+      <h1 class="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">{{ t('admin.profile.headerTitle') }}</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
         <!-- 用户名分组 -->
         <div class="md:col-span-2">
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">用户名</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.usernameLabel') }}</label>
           <template v-if="isEdit">
             <Input v-model="form.username" class="input" />
           </template>
           <template v-else>
             <div class="px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700">
-              {{ form.username || '未设置用户名' }}
+              {{ form.username || t('admin.profile.usernameUnset') }}
             </div>
           </template>
         </div>
         <!-- 手机号、性别等其它字段 -->
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">手机号</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.phoneLabel') }}</label>
           <input v-model="form.phone" :readonly="!isEdit" class="input" type="tel" required />
         </div>
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">性别</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.genderLabel') }}</label>
           <select v-model="form.gender" :disabled="!isEdit" class="input">
-            <option value="male">男</option>
-            <option value="female">女</option>
-            <option value="other">其他</option>
+            <option value="male">{{ t('admin.profile.genderOptions.male') }}</option>
+            <option value="female">{{ t('admin.profile.genderOptions.female') }}</option>
+            <option value="other">{{ t('admin.profile.genderOptions.other') }}</option>
           </select>
         </div>
         <!-- 出生日期和时间分组 -->
         <div class="md:col-span-2">
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">出生日期和时间</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.birthLabel') }}</label>
           <template v-if="isEdit">
             <Input type="datetime-local" v-model="birthDateTime" class="input" />
           </template>
@@ -56,26 +56,26 @@
         </div>
         <!-- 只读信息 -->
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">用户ID</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.idLabel') }}</label>
           <input :value="form.id" readonly class="input bg-gray-100 dark:bg-gray-800" />
         </div>
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">注册时间</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.createdAtLabel') }}</label>
           <input :value="formatTime(form.created_at)" readonly class="input bg-gray-100 dark:bg-gray-800" />
         </div>
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">更新时间</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.updatedAtLabel') }}</label>
           <input :value="formatTime(form.updated_at)" readonly class="input bg-gray-100 dark:bg-gray-800" />
         </div>
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1">最后登录</label>
+          <label class="block text-gray-700 dark:text-gray-300 mb-1">{{ t('admin.profile.lastLoginLabel') }}</label>
           <input :value="formatTime(form.last_login)" readonly class="input bg-gray-100 dark:bg-gray-800" />
         </div>
       </div>
       <div v-if="validationError" class="mt-2 text-red-600 dark:text-red-400">{{ validationError }}</div>
       <div v-if="isEdit" class="flex justify-end mt-6 gap-2">
-        <Button type="submit" variant="default" @click="onSubmit">保存</Button>
-        <Button type="button" variant="outline" @click="onCancel">取消</Button>
+        <Button type="submit" variant="default" @click="onSubmit">{{ t('admin.profile.save') }}</Button>
+        <Button type="button" variant="outline" @click="onCancel">{{ t('admin.profile.cancel') }}</Button>
       </div>
       <div v-if="msg" class="mt-4 text-green-600 dark:text-green-400">{{ msg }}</div>
       <div v-if="error" class="mt-4 text-red-600 dark:text-red-400">{{ error }}</div>
@@ -85,6 +85,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick, computed } from 'vue'
+import * as I18n from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { updateUserInfo, fetchUserInfo } from '@/api/user'
 import Input from '@/components/ui/Input.vue'
@@ -125,26 +126,28 @@ const msg = ref('')
 const error = ref('')
 const userStore = useUserStore()
 const validationError = ref('')
+const { useI18n } = I18n as any
+const { t } = useI18n()
 
 function validateForm() {
   if (!/^1[3-9]\d{9}$/.test(form.phone)) {
-    validationError.value = '请输入有效的手机号'
+    validationError.value = t('admin.profile.validation.phoneInvalid')
     return false
   }
   if (form.birth_year < 1900 || form.birth_year > 2100) {
-    validationError.value = '出生年份范围1900-2100'
+    validationError.value = t('admin.profile.validation.yearRange')
     return false
   }
   if (form.birth_month < 1 || form.birth_month > 12) {
-    validationError.value = '出生月份范围1-12'
+    validationError.value = t('admin.profile.validation.monthRange')
     return false
   }
   if (form.birth_day < 1 || form.birth_day > 31) {
-    validationError.value = '出生日范围1-31'
+    validationError.value = t('admin.profile.validation.dayRange')
     return false
   }
   if (!/^\d{2}:\d{2}$/.test(form.birth_time)) {
-    validationError.value = '出生时间格式应为HH:MM'
+    validationError.value = t('admin.profile.validation.timeFormat')
     return false
   }
   validationError.value = ''
@@ -156,7 +159,7 @@ const loadUser = async () => {
     const data = await fetchUserInfo()
     Object.assign(form, data)
   } catch (e: any) {
-    error.value = e?.message || '获取用户信息失败'
+    error.value = e?.message || t('admin.profile.errors.fetchFailed')
   }
 }
 
@@ -176,14 +179,14 @@ const onSubmit = async () => {
       birth_time: form.birth_time,
       gender: form.gender,
     })
-    msg.value = '保存成功！'
+    msg.value = t('admin.profile.messages.saveSuccess')
     error.value = ''
     isEdit.value = false
     userStore.fetchUser()
     await nextTick()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (e: any) {
-    error.value = e?.message || '保存失败'
+    error.value = e?.message || t('admin.profile.messages.saveFailed')
     msg.value = ''
   }
 }
@@ -222,7 +225,7 @@ function formatDateTimeDisplay(val: string) {
 }
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .input {
   @apply w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 transition;
 }

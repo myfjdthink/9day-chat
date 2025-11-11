@@ -1,0 +1,1191 @@
+{
+  "common": {
+    "home": "Home",
+    "startAnalysisButton": "Generate My Bazi Report",
+    "aiChatLabel": "AI Bazi Q&A",
+    "enterToSend": "Press Enter to send · Shift+Enter for newline",
+    "askPlaceholder": "Ask here to start AI bazi conversation...",
+    "startChatCTA": "Start Bazi Chat",
+    "send": "Send",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "unknown": "Unknown",
+    "etc": "etc.",
+    "loading": {
+      "analyzing": "Analyzing...",
+      "sending": "Sending..."
+    },
+    "breadcrumb": {
+      "home": "Home"
+    }
+  },
+  "pages": {
+    "chat": "AI Chat",
+    "analysis": "Bazi Analysis",
+    "calendar": "Auspicious Calendar",
+    "zodiac-fortune": "Zodiac Fortune",
+    "fengshui-fortune": "Feng Shui Fortune",
+    "exam-fortune": "Exam Fortune",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "password-reset": "Reset Password",
+    "forgot-password": "Forgot Password"
+  },
+  "home": {
+    
+    "breadcrumb": {
+      "platform": "AI Bazi Analysis Platform"
+    },
+      "hero": {
+        "title": "Free Bazi Chart · AI Fortune Analysis",
+        "subtitle": "Professional Bazi analysis, AI Q&A, auspicious date selection and zodiac fortune — classical Chinese metaphysics meets modern AI"
+      },
+    "coreFeaturesTitle": "🎯 Core Features",
+    "card": {
+      "chat": {
+        "title": "Bazi Chat",
+        "desc": "Professional answers on fortune, life and career, guiding your decisions"
+      },
+      "examples": {
+        "label": "💡 Examples",
+        "q1": "Analyze my bazi useful elements",
+        "q2": "What job fits me?",
+        "q3": "How is my love fortune?"
+      },
+      "cta": {
+        "chat": "Start Conversation",
+        "analysis": "Generate My Bazi Report",
+        "calendar": "Pick Lucky Day",
+        "zodiac": "View Today’s Fortune"
+      },
+      "analysis": {
+        "title": "Bazi Fortune Analysis",
+        "desc": "Classic metaphysics based analysis with precise yearly/monthly fortune and advice"
+      },
+      "calendar": {
+        "title": "Auspicious Date",
+        "desc": "Intelligently recommends lucky days for key events"
+      },
+      "zodiac": {
+        "title": "Zodiac Fortune",
+        "desc": "Daily zodiac analysis to grasp opportunities and avoid risks"
+      }
+    },
+    "seo": {
+      "title": "Beidou Calendar - Free Bazi Chart | AI Metaphysics Analysis",
+      "pageTitle": "Home",
+      "description": "Beidou Calendar provides free Bazi charting and online fortune analysis with AI-powered metaphysics. Get precise fortune insights, life guidance and practical advice based on classical theory and modern AI. Supports Four Pillars, useful elements analysis and five-element interactions.",
+      "keywords": "free bazi chart, online fortune, AI metaphysics, bazi analysis, four pillars, useful elements, five elements, auspicious date, zodiac fortune, metaphysics consulting, smart prediction, fortune analysis, Beidou Calendar"
+    },
+    "input": {
+      "title": "Bazi Input",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "birth": {
+        "label": "Birth date & time",
+        "selected": "Selected",
+        "newCalendar": "Gregorian",
+        "hint": "Birth time selected; click the input to adjust"
+      }
+    },
+    "chat": {
+      "carryHint": "This question will carry to the chat page for a consistent experience"
+    },
+    "calendar": {
+      "scenarios": {
+        "title": "🎯 Scenarios",
+        "items": {
+          "love": "Love date selection",
+          "opening": "Opening date",
+          "moving": "Moving date",
+          "travel": "Travel date"
+        }
+      }
+    },
+    "zodiac": {
+      "content": {
+        "title": "📈 Fortune Contents",
+        "items": {
+          "todayScore": "Today's fortune score",
+          "careerFinance": "Career & finance analysis",
+          "healthLove": "Health & love fortune",
+          "advice": "Advice"
+        }
+      }
+    },
+    "fengshui": {
+      "seo": {
+        "title": "Traditional Feng Shui Layout Analysis - Nine-Palace Flying Stars | Beidou Calendar",
+        "pageTitle": "Feng Shui Layout Analysis",
+        "description": "Beidou Calendar offers professional traditional Feng Shui layout analysis across regions. Combining classic wisdom with modern methods, we provide online Nine-Palace flying stars computation, home layout evaluation and auspicious/inauspicious direction assessment. Upload a floor plan, overlay flying stars by year, and analyze layouts to improve fortune.",
+        "keywords": "feng shui, traditional feng shui, layout analysis, nine-palace flying stars, home feng shui, star positions, online feng shui, direction adjustment, consulting, office feng shui, residential feng shui"
+      },
+      "title": "🏠 Professional Feng Shui Analysis",
+      "card": {
+        "title": "Yearly Feng Shui (Flying Stars)",
+        "desc": "Upload your floor plan and overlay Nine-Palace Flying Stars to analyze home layout for better fortune.",
+        "features": {
+          "title": "🎯 Core Features",
+          "items": {
+            "upload": "Upload floor plan for analysis",
+            "overlay": "Overlay Nine-Palace Flying Stars",
+            "adjust": "Adjust yearly star positions",
+            "mapping": "Accurate direction mapping"
+          }
+        },
+        "cta": "Start Feng Shui Analysis"
+      },
+      "ui": {
+        "titleLong": "Yearly Nine-Palace Flying Stars Feng Shui Layout",
+        "subtitle": "Grounded in classical wisdom: upload a floor plan, overlay the year's Nine-Palace flying stars, and precisely assess your home's layout across regions"
+      },
+      "controls": {
+        "yearLabel": "Select Year",
+        "yearSuffix": "Year",
+        "orientationAdjust": "Adjust house orientation",
+        "rotateLeftFull": "Rotate Left 45°",
+        "rotateLeftShort": "Rotate Left",
+        "rotateRightFull": "Rotate Right 45°",
+        "rotateRightShort": "Rotate Right",
+        "overlayOpacity": "Flying-star overlay opacity",
+        "taishuiSansha": "{year} Tai Sui & San Sha sectors",
+        "hide": "Hide",
+        "show": "Show",
+        "grid": "Nine-Palace Grid",
+        "reupload": "Reupload"
+      },
+      "labels": {
+        "taisuiPrefix": "Tai Sui: ",
+        "sanshaPrefix": "Three Sha: ",
+        "taisui": "Tai Sui",
+        "sansha": "Three Sha",
+        "suitablePrefix": "✅ Suitable:",
+        "avoidPrefix": "❌ Avoid:"
+      },
+      "items": {
+        "fishTank": "Fish tank",
+        "waterCup": "A cup of water",
+        "musicBox": "Music box",
+        "flowingWater": "Flowing water",
+        "blueCarpet": "Blue carpet",
+        "yellowItems": "Yellow items",
+        "brownItems": "Brown items",
+        "copperGourd": "Copper gourd",
+        "fiveEmperorsCoins": "Five Emperor coins",
+        "copperQilin": "Copper Qilin",
+        "copperPieces": "Copper pieces",
+        "metalSoundItems": "Metal sound items",
+        "redItems": "Red items",
+        "water": "Water",
+        "metalItems": "Metal items",
+        "plants": "Plants",
+        "groundBreaking": "Groundbreaking (earth works)",
+        "fan": "Fan",
+        "fourLuckyBamboo": "Four stalks of lucky bamboo",
+        "blueItems": "Blue items",
+        "sixWhiteStones": "Six white stones",
+        "goldenItems": "Gold items",
+        "whiteColor": "White",
+        "vinegarOpen": "Opened aged vinegar",
+        "greenItems": "Green items",
+        "nineRedEnvelopes": "Nine red envelopes",
+        "blackItems": "Black items"
+      },
+      "directions": {
+        "正东": "East",
+        "东南": "Southeast",
+        "正南": "South",
+        "西南": "Southwest",
+        "中央": "Center",
+        "正西": "West",
+        "东北": "Northeast",
+        "正北": "North",
+        "西北": "Northwest"
+      },
+      "upload": {
+        "title": "Upload Floor Plan · Professional Feng Shui Analysis",
+        "dragTip": "Drag image here or click to upload",
+        "supportedFormats": "Supports JPG, PNG, GIF formats",
+        "imageAlt": "Uploaded floor plan",
+        "steps": {
+          "1": "• Step 1: Click upload and choose a floor plan (JPG/PNG)",
+          "2": "• Step 2: Select the year on the left; flying-star sectors update automatically",
+          "3": "• Step 3: Use rotation buttons to align the overlay with your home's orientation",
+          "4": "• Step 4: Use color hints per room — green is auspicious; red needs caution",
+          "5": "• Finally: Adjust furniture and placements according to advice to improve feng shui"
+        }
+      },
+      "advice": {
+        "still": "⚠️ Keep still; avoid disturbance",
+        "noGroundwork": "⚠️ Avoid groundbreaking",
+        "taisuiTitle": "Tai Sui ({direction})",
+        "taisuiDesc": "Keep still; avoid renovation, digging or hammering. Place auspicious items to stabilize.",
+        "sanshaTitle": "Three Sha ({direction})",
+        "sanshaDesc": "Avoid sitting towards this direction; avoid earth works. Refrain from placing key furniture here.",
+        "yearTitle": "{year} Feng Shui Advice",
+        "templates": {
+          "fortune": {
+            "title": "Wealth hotspots",
+            "content": "If the main door or bedroom lies in {directions}, wealth luck is favorable this year."
+          },
+          "joy": {
+            "title": "Joyful events",
+            "content": "If the main door or bedroom is in {directions}, joyful events are likely — weddings, new baby, moving."
+          },
+          "health": {
+            "title": "Health caution",
+            "content": "If the main door or bedroom is in {directions}, take care of health; legal disputes and stomach issues are possible."
+          },
+          "finance": {
+            "title": "Financial prudence",
+            "content": "If the main door or bedroom is in {directions}, avoid high‑risk investments and keep a close eye on finances."
+          }
+        }
+      },
+      "info": {
+        "yearStarsTitle": "{year} Nine-Palace Flying Stars",
+        "detailsTitle": "Nine-Palace Flying Stars Details",
+        "directionSuffix": "sector",
+        "classificationTitle": "Auspiciousness Classification",
+        "goodStarsLabel": "Auspicious: One White, Six White, Eight White",
+        "badStarsLabel": "Inauspicious: Two Black, Three Jade, Five Yellow, Seven Red",
+        "neutralStarsLabel": "Neutral: Four Green, Nine Purple",
+        "yearKeyPositionsTitle": "{year} Key Sectors"
+      },
+      "stars": {
+        "attrPrefix": "Element: ",
+        "types": { "auspicious": "Auspicious", "inauspicious": "Inauspicious" },
+        "elements": {
+          "water": "Water",
+          "earth": "Earth",
+          "wood": "Wood",
+          "metal": "Metal",
+          "fire": "Fire"
+        },
+        "1": { "title": "One White Star", "desc": "Boosts career, reputation, relationships and wealth; use water features appropriately." },
+        "2": { "title": "Two Black Star", "desc": "Associated with illness and obstacles; keep the area quiet, avoid earth works; metal cures help." },
+        "3": { "title": "Three Jade Star", "desc": "Prone to disputes and legal issues; avoid renovations; apply calm wood elements sparingly." },
+        "4": { "title": "Four Green Star", "desc": "Supports study and creativity; ideal for children’s rooms and studies; gently enhance with wood." },
+        "5": { "title": "Five Yellow Star", "desc": "A major inauspicious star; avoid disturbance and earth works; apply strong remedies." },
+        "6": { "title": "Six White Star", "desc": "Benefits authority, travel and career; suitable for steady metal enhancements." },
+        "7": { "title": "Seven Red Star", "desc": "Indicates theft and accidents; reduce sharp metal and strengthen safety." },
+        "8": { "title": "Eight White Star", "desc": "The current wealth star; enhances prosperity; activate with earth elements." },
+        "9": { "title": "Nine Purple Star", "desc": "Brings celebrations and future luck; good for festive activities and ambience." }
+      }
+    },
+    "analysis": {
+      "seo": {
+        "title": "Professional Bazi Analysis - AI Fate Insight | Beidou Calendar",
+        "pageTitle": "Bazi Analysis",
+        "description": "Analyze Bazi (Four Pillars) with AI assistance: charting, five-element distribution, useful/taboo elements and fortune prediction. Accurate guidance based on traditional theory and modern models.",
+        "keywords": "bazi analysis, four pillars, useful elements, fortune prediction, AI metaphysics, charting"
+      },
+      "hero": {
+        "title": "Professional Bazi Analysis — AI Fate Insight"
+      },
+      "features": {
+        "chart": {
+          "title": "Bazi Chart",
+          "desc": "Accurately compute your chart and analyze five elements and pattern"
+        },
+        "analysis": {
+          "title": "Comprehensive Analysis",
+          "desc": "Multi-dimensional insights on personality, career, finance and love"
+        },
+        "advice": {
+          "title": "Professional Advice",
+          "desc": "Guidance based on metaphysics analysis for life decisions"
+        }
+      },
+      "content": {
+        "title": "📈 Analysis Contents",
+        "items": {
+          "basic": "Basic Analysis",
+          "elements": "Five-Element Distribution",
+          "aiPrediction": "Fortune Prediction",
+          "score": "Fortune Score"
+        }
+      },
+      "form": {
+        "basicInfo": "Basic Information",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "birthLabel": "Birth Date & Time",
+        "selectedTip": "Selected: {date} (Gregorian)",
+        "adjustHint": "Birth time selected; click input to adjust"
+      },
+      "config": {
+        "title": "Analysis Configuration"
+      },
+      "types": {
+        "title": "Analysis Types",
+        "basic": {
+          "title": "Basic Analysis",
+          "desc": "Bazi charting, five-element analysis, basic info"
+        },
+        "deity": {
+          "title": "Useful Elements Analysis",
+          "desc": "Useful/taboo elements analysis and pattern judgment"
+        },
+        "ai": {
+          "title": "Fortune Prediction",
+          "desc": "Fortune analysis, personality insights and life advice"
+        }
+      },
+      "scope": {
+        "title": "Select Analysis Scope",
+        "year": "Yearly",
+        "month": "Monthly",
+        "day": "Daily"
+      },
+      "actions": {
+        "start": "Start Analysis",
+        "loading": "Analyzing...",
+        "save": "Save Report",
+        "reset": "Re-analyze",
+        "chat": "Chat with Report"
+      },
+      "report": {
+        "title": "Bazi Analysis Report",
+        "timePrefix": "Analysis Time: ",
+        "typePrefix": "Analysis Type: ",
+        "baseAndDeityTitle": "Basic Analysis & Useful Elements",
+        "typeSuffix": "{type} Analysis",
+        "labels": {
+          "baseTitle": "Basic Information",
+          "gender": "Gender",
+          "baziInfo": "Bazi Chart",
+          "fiveElementsStats": "Five-Element Statistics",
+          "distribution": "Distribution",
+          "strongest": "Strongest Element",
+          "weakest": "Weakest Element",
+          "dayunInfo": "Current Luck Cycle (Dayun)",
+          "timeInfoTitle": "Year/Month/Day Info",
+          "flowYear": "Year",
+          "flowMonth": "Month",
+          "flowDay": "Day",
+          "deityTitle": "Useful Elements Analysis",
+          "pattern": "Pattern",
+          "usefulElements": "Useful Elements",
+          "tabooElements": "Taboo Elements",
+          "principle": "Element Selection Principles",
+          "pillarYear": "Year Pillar",
+          "pillarMonth": "Month Pillar",
+          "pillarDay": "Day Pillar",
+          "pillarHour": "Hour Pillar",
+          "emptyUseful": "No useful elements",
+          "emptyTaboo": "No taboo elements"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "desc": "This analysis covers {count} dimensions. Please refer to the results and adjust accordingly."
+      },
+      "overlay": {
+        "title": "Analyzing for you...",
+        "sub1": "First analysis may take longer; please wait patiently",
+        "sub2": "If no response for a while, click retry"
+      },
+      "guide": {
+        "title": "Usage Guide",
+        "step1": { "title": "Fill Basic Info", "desc": "Enter gender, birth date and time accurately for precise results" },
+        "step2": { "title": "Choose Analysis Types", "desc": "Select basic analysis, useful elements or fortune prediction" },
+        "step3": { "title": "Set Analysis Scope", "desc": "For fortune prediction, choose yearly/monthly/daily scope" },
+        "step4": { "title": "Start Analysis", "desc": "Click to start and get a detailed report" }
+      },
+      "faq": {
+        "title": "FAQ",
+        "q1": { "title": "How accurate is Bazi analysis?", "answer": "Based on traditional theory with modern algorithms. Results are for reference; combine with personal effort and reality." },
+        "q2": { "title": "Does inaccurate birth time affect results?", "answer": "Yes. Accuracy directly impacts charting and analysis. Provide the most accurate time; best within 1 hour." },
+        "q3": { "title": "Difference between basic and useful elements analysis?", "answer": "Basic covers charting and five-element distribution; useful elements digs into pattern and useful/taboo; fortune prediction analyzes specific periods." },
+        "q4": { "title": "How to understand professional terms?", "answer": "We explain terms in plain language. Use 'Chat with Report' for detailed consultation." },
+        "q5": { "title": "Can I save the analysis report?", "answer": "Yes. Click 'Save Report' to export as an image for keeping and sharing." }
+      },
+      "modalLogin": {
+        "title": "Login Required",
+        "message": "Please login first to use this feature",
+        "confirm": "Go to Login",
+        "cancel": "Cancel"
+      },
+      "errors": {
+        "selectBirthTime": "Please select birth date and time",
+        "selectType": "Please select at least one analysis type",
+        "selectScopeForAI": "For fortune prediction, select at least one scope",
+        "allAPIsFailed": "All analysis APIs failed",
+        "analysisError": "An error occurred during analysis"
+      },
+      "share": { "downloadPrefix": "AnalysisReport_", "reportNamePrefix": "BaziAnalysis-" },
+      "typeLabels": {
+        "basic": "Basic Analysis",
+        "deity": "Useful Elements Analysis",
+        "ai": "Fortune Prediction"
+      },
+      "fields": {
+        "analysisType": "Analysis Type",
+        "analysisTime": "Analysis Time",
+        "analysisResult": "Analysis Result",
+        "genderMale": "Male",
+        "genderFemale": "Female",
+        "fiveElementsStats": "Five-Element Statistics",
+        "strongestElement": "Strongest Element",
+        "weakestElement": "Weakest Element",
+        "dayun": "Dayun",
+        "tiangan": "Heavenly Stem",
+        "dizhi": "Earthly Branch",
+        "wuxing": "Five Elements",
+        "liunian": "Lunar Year",
+        "liuyue": "Lunar Month",
+        "liuri": "Lunar Day",
+        "pattern": "Pattern",
+        "usefulElement": "Useful Element",
+        "tabooElement": "Taboo Element",
+        "principle": "Principle",
+        "conclusion": "Conclusion"
+      }
+    },
+    "almanac": {
+      "title": "📅 Today's Almanac · Daily Hexagram",
+      "yiji": {
+        "title": "Today's Auspicious/Avoid",
+        "yi": "Auspicious",
+        "ji": "Avoid",
+        "sampleYi": "Prayer, opening, signing, travel",
+        "sampleJi": "Groundbreaking, earth works, funeral"
+      },
+      "gua": {
+        "title": "Daily Hexagram",
+        "name": "Fellowship (Tong Ren)",
+        "desc": "Shared goals and unity. Smooth career with support from benefactors."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Reach us via:",
+      "qq": "QQ",
+      "email": "Email",
+      "twitter": "Twitter",
+      "xhs": "Xiaohongshu"
+    },
+    "knowledge": {
+      "title": "📚 Metaphysics Knowledge",
+      "items": {
+        "whatIsBazi": {
+          "title": "What is Bazi?",
+          "desc": "Bazi (Four Pillars) combines Heavenly Stems and Earthly Branches of birth year, month, day and hour to form eight characters for analyzing one’s life trajectory.",
+          "keywordsLabel": "Keywords：",
+          "keywords": "Free Bazi charting, birth bazi, Four Pillars"
+        },
+        "fiveElements": {
+          "title": "Five Elements Interactions",
+          "desc": "Metal, Wood, Water, Fire and Earth interact through generation and restraint — the core theory of our AI analysis.",
+          "keywordsLabel": "Keywords：",
+          "keywords": "Five-element analysis, generation/restraint, fundamentals"
+        },
+        "usefulElements": {
+          "title": "Useful and Taboo Elements",
+          "desc": "Useful elements are the most needed five elements in the chart; taboos are the least favorable. Accurate judgment is key to online fortune-telling.",
+          "keywordsLabel": "Keywords：",
+          "keywords": "Useful elements, taboos, AI prediction"
+        }
+      }
+    },
+    "steps": {
+      "title": "🚀 Unlock Your Destiny in 3 Steps",
+      "items": {
+        "register": {
+          "title": "Quick Sign-Up",
+          "descPrefix": "30 seconds",
+          "descSuffix": ", start your personalized AI metaphysics analysis"
+        },
+        "chart": {
+          "title": "Smart Bazi Charting",
+          "descPrefix": "Enter birth details to get professional",
+          "descSuffix": "and AI analysis"
+        },
+        "services": {
+          "title": "All-round Metaphysics Services",
+          "descSuffix": "all in one"
+        }
+      },
+      "links": {
+        "register": "Free Sign-Up",
+        "analysis": "Free Bazi Chart",
+        "chat": "Online Fortune",
+        "zodiac": "Zodiac Fortune",
+        "calendar": "Auspicious Date"
+      }
+    },
+    "testimonials": {
+      "title": "✨ Real User Stories",
+      "items": {
+        "1": {
+          "nameAbbr": "Z",
+          "nameFull": "Mr. Zhang",
+          "job": "Executive",
+          "quote": "AI chat is very useful. It analyzed my career fortune and offered sound advice — great for decision-making!"
+        },
+        "2": {
+          "nameAbbr": "L",
+          "nameFull": "Ms. Li",
+          "job": "Entrepreneur",
+          "quote": "Date selection is awesome! The opening day went smoothly; business is booming. Thanks for the recommendation!"
+        },
+        "3": {
+          "nameAbbr": "W",
+          "nameFull": "Mr. Wang",
+          "job": "Office Worker",
+          "quote": "Daily zodiac fortune is quite accurate. It helps me avoid troubles; I check it every day now!"
+        }
+      }
+    },
+    "faq": {
+      "title": "❓ Frequently Asked Questions (FAQ)",
+      "sections": {
+        "bazi": {
+          "title": "🎯 About Bazi Analysis",
+          "qa1": {
+            "q": "Q: Is the free Bazi chart accurate?",
+            "a": "A: Our AI charting system is based on classic metaphysics with modern algorithms and validated calculations."
+          },
+          "qa2": {
+            "q": "Q: What info is required for Bazi analysis?",
+            "a": "A: Provide accurate birth date/time and place; we'll generate a detailed report."
+          }
+        },
+        "calendar": {
+          "title": "📅 About Auspicious Date Recommendations",
+          "qa1": {
+            "q": "Q: What's the basis of date recommendations?",
+            "a": "A: We consider almanac auspicious/avoid, personal Bazi, and five-element compatibility to recommend the most suitable lucky days."
+          },
+          "qa2": {
+            "q": "Q: What events can be recommended?",
+            "a": "A: We support openings, weddings, moving, travel, signing and other important events."
+          }
+        },
+        "zodiac": {
+          "title": "🐲 About Zodiac Fortune",
+          "qa1": {
+            "q": "Q: How often is zodiac fortune updated?",
+            "a": "A: It updates daily with analysis and advice on career, finance, love and health."
+          },
+          "qa2": {
+            "q": "Q: How accurate is the zodiac fortune?",
+            "a": "A: Based on classic zodiac theory and modern statistics, combined with AI algorithms, it provides reference guidance."
+          }
+        },
+        "ai": {
+          "title": "🤖 About AI Metaphysics Q&A",
+          "qa1": {
+            "q": "Q: Is AI metaphysics analysis reliable?",
+            "a": "A: Our AI learned from classic texts and practical cases to provide professional analysis and life advice."
+          },
+          "qa2": {
+            "q": "Q: What types of questions are supported?",
+            "a": "A: We cover career, love/marriage, finance, health and study/exams."
+          }
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "menu": "Features",
+    "newAnalysis": "New Analysis",
+    "newChat": "New Chat",
+    "brand": "Beidou Calendar",
+    "logoAlt": "Beidou Calendar Logo",
+    "expand": "Expand Sidebar",
+    "collapse": "Collapse Sidebar",
+    "avatarAlt": "User Avatar",
+    "avatarAltDetailed": "User Avatar — Account Settings",
+    "user": {
+      "profile": "Profile",
+      "admin": "Admin Menu",
+      "logout": "Logout"
+    },
+    "nav": {
+      "home": "Home",
+      "calendar": "Calendar",
+      "aiChat": "Q&A",
+      "analysis": "Analysis",
+      "zodiac": "Zodiac",
+      "fengshui": "Feng Shui",
+      "exam": "Exam Fortune",
+      "knowledge": "Knowledge"
+    }
+  },
+  "exam": {
+    "seo": {
+      "title": "Exam Fortune Analysis - Beidou Calendar",
+      "pageTitle": "Exam Fortune",
+      "description": "Analyze exam fortune based on Bazi, offering professional timing advice and study guidance",
+      "keywords": "exam fortune,bazi analysis,exam timing,study advice,metaphysics"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "exam": "Exam Fortune",
+      "ariaLabel": "Breadcrumb"
+    },
+    "header": {
+      "title": "Exam Fortune Prediction - Study Fortune Analysis",
+      "alt": "Exam Fortune",
+      "intro": "Analyze your exam fortune via Bazi, providing professional timing advice and study guidance"
+    },
+    "features": {
+      "timing": {
+        "title": "Precise Timing Analysis",
+        "desc": "Find the best exam timing based on Bazi to improve success"
+      },
+      "score": {
+        "title": "Fortune Scoring",
+        "desc": "Quantified analysis with detailed pros and cons"
+      },
+      "advice": {
+        "title": "Professional Advice",
+        "desc": "Personalized exam strategies and points to note"
+      }
+    },
+    "form": {
+      "title": "Basic Info",
+      "birth": "Birth Time *",
+      "current": "Current Time *",
+      "gender": "Gender *",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "analysisType": "Analysis Type *",
+      "analysisTypeMonthly": "Monthly Analysis",
+      "analysisTypeYearly": "Yearly Analysis",
+      "submitAlt": "Start Analysis",
+      "submit": "Start Analysis",
+      "submitting": "Analyzing..."
+    },
+    "errors": {
+      "fillRequired": "Please fill in birth and current time",
+      "invalidDate": "Enter a valid date and time",
+      "birthAfterCurrent": "Birth time cannot be later than or equal to current time",
+      "serverFormat": "Server returned invalid data format",
+      "analyzeFailed": "Analysis failed. Please try again later"
+    },
+    "common": {
+      "unknown": "Unknown",
+      "unknownTime": "Unknown time",
+      "invalidTime": "Invalid time",
+      "scoreUnit": "pts",
+      "yearCount": "{count} years",
+      "monthCount": "{count} months",
+      "summaryNone": "No summary",
+      "pros": "Pros",
+      "cons": "Cons",
+      "advice": "Exam Advice",
+      "reminder": "Special Reminder"
+    },
+    "overview": {
+      "title": "Analysis Overview",
+      "analysisType": "Analysis Type",
+      "baseYear": "Base Year",
+      "analysisYear": "Analysis Year",
+      "analysisMonth": "Analysis Month",
+      "yearUnit": "year"
+    },
+    "gradeMap": {
+      "优秀": "Excellent",
+      "良好": "Good",
+      "一般": "Fair",
+      "较弱": "Weak",
+      "很弱": "Very Weak",
+      "未知": "Unknown"
+    },
+    "guide": {
+      "title": "Usage Guide",
+      "steps": {
+        "1": {
+          "title": "Fill Birth Info",
+          "desc": "Provide accurate birth date and time as the analysis basis"
+        },
+        "2": {
+          "title": "Set Exam Time",
+          "desc": "Enter your planned exam time or current time"
+        },
+        "3": {
+          "title": "Choose Analysis Type",
+          "desc": "Select monthly or yearly analysis for different time granularity"
+        },
+        "4": {
+          "title": "View Results",
+          "desc": "Get detailed fortune scores, advice and notes"
+        }
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "qa": {
+        "accuracyQ": "Q: How accurate is the exam fortune analysis?",
+        "accuracyA": "A: Based on classic Bazi theory with modern algorithms. Results are for reference; success still relies on preparation and effort.",
+        "birthTimeQ": "Q: Does inaccurate birth time affect results?",
+        "birthTimeA": "A: Yes. Birth time accuracy directly affects the chart and analysis. Please provide accurate time within ±2 hours.",
+        "diffQ": "Q: What's the difference between monthly and yearly analysis?",
+        "diffA": "A: Monthly analysis is more granular for short-term planning; yearly analysis shows overall trends for long-term planning.",
+        "badLuckQ": "Q: Can I still take exams when fortune is poor?",
+        "badLuckA": "A: Fortune is only one factor. With preparation, mindset adjustment and following advice, good results are still achievable.",
+        "improveQ": "Q: How to improve exam fortune?",
+        "improveA": "A: Follow the advice in results, adjust study methods, choose suitable timing, keep a good mindset and make practical strategies."
+      }
+    }
+  },
+  "locale": {
+    "zh": "中文",
+    "en": "English",
+    "switch": "Language"
+  },
+  "chat": {
+    "seo": {
+      "title": "AI Metaphysics Chat - Professional Bazi Fortune Consultation | Beidou Calendar",
+      "pageTitle": "AI Chat",
+      "description": "Chat with a professional AI metaphysics assistant for personalized Bazi analysis, fortune trends and date selection advice. Powered by a deep-learning metaphysics system, available 24/7. Supports voice and text.",
+      "keywords": "AI metaphysics chat, smart Bazi consultation, online fortune prediction, AI metaphysics assistant, smart date selection, Q&A, fortune consultation, online metaphysics advisor"
+    },
+    "topbar": {
+      "logoAlt": "Beidou Calendar Logo - AI Bazi Fortune Analysis Platform",
+      "title": "AI Metaphysics Q&A"
+    },
+    "welcome": {
+      "title": "Start Metaphysics Consultation",
+      "subtitle": "Professional answers to your concerns; explore life direction"
+    },
+    "loading": {
+      "analyzingDetailed": "Analyzing carefully for you..."
+    },
+    "avatarAlt": "AI Master Avatar - Professional Bazi Fortune Assistant",
+    "userAvatarAlt": "User Avatar",
+    "preview": {
+      "alt": "Image Preview"
+    },
+    "prompt": {
+      "report": "Analysis Report",
+      "history": "Chat History",
+      "userQuestion": "User Question"
+    },
+    "quick": {
+      "bazi": "Bazi Dialogue",
+      "exam": "Civil Service Exam",
+      "love": "Love Fortune",
+      "health": "Health Fortune",
+      "title": "Select Bazi Analysis Report",
+      "subtitle": "Choose a historical Bazi analysis report as chat context"
+    },
+    "input": {
+      "placeholder": "Type your question..."
+    },
+    "dialogs": {
+      "login": {
+        "title": "Login Required",
+        "message": "Please login first to use this feature",
+        "confirm": "Go to Login"
+      },
+      "noAnalysis": {
+        "title": "Notice",
+        "message": "You have not completed Bazi analysis yet. Please finish it first to use this feature.",
+        "confirm": "Go to Bazi Analysis"
+      },
+      "choose": "Choose"
+    },
+    "history": {
+      "title": "Choose Chat History",
+      "subtitle": "Select a previous conversation to enter"
+    },
+    "report": {
+      "select": {
+        "title": "Select a Bazi Analysis Report to Add",
+        "subtitle": "Choose a historical report as chat context"
+      },
+      "add": "Add",
+      "defaultName": "Analysis Report",
+      "unknown": "Unknown"
+    },
+    "messages": {
+      "user": "User",
+      "ai": "AI"
+    },
+    "errors": {
+      "unknown": "Sorry, an unknown error occurred. Please try again later.",
+      "tooManyRequests": "Too many requests. Please try again later.",
+      "serverUnavailable": "Server is temporarily unavailable. Please retry later.",
+      "requestFailed": "Request failed: {message}",
+      "aiServiceError": "AI service error: {message}",
+      "network": "Network connection failed. Please check and retry.",
+      "errorWithMessage": "Error: {message}"
+    },
+    "quickPrompts": {
+      "bazi": "Based on my Bazi analysis report, please interpret key information including Day Master, useful elements, preferences, and taboos.",
+      "exam": "Based on my Bazi report, analyze my fortune for civil service/exams, including suitable roles and exam timing.",
+      "love": "Based on my Bazi report, analyze my love fortune, including peach-blossom luck, marriage timing, and partner traits.",
+      "health": "Based on my Bazi report, analyze my health condition, including potential issues and wellness advice."
+    }
+  }
+  ,
+  "calendar": {
+    "seo": {
+      "title": "Smart Auspicious Date Calendar | Beidou Calendar",
+      "pageTitle": "Auspicious Calendar",
+      "description": "Professional auspicious date selection based on Bazi analysis. Supports wedding, opening, moving and more scenarios with personalized guidance.",
+      "keywords": "auspicious calendar, lucky day, smart date selection, bazi date, wedding date, opening date, moving date, lucky day query, date recommendation"
+    },
+    "title": "Smart Auspicious Date Calendar",
+    "unauthed": {
+      "title": "Explore Your Personal Fortune",
+      "subtitle": "Login to view your calendar and personalized date advice",
+      "tagline": "✨ Professional Bazi analysis • Daily guidance • Smart date selection"
+    },
+    "labels": {
+      "gregorian": "Gregorian",
+      "lunar": "Lunar",
+      "ganzhi": "Ganzhi",
+      "score": "Fortune Score",
+      "points": "pts",
+      "adviceTitle": "Today's Advice",
+      "avoidTitle": "Today's Avoid",
+      "emptyPrompt": "Please login and complete Bazi info to view details",
+      "choosePurpose": "Select Purpose",
+      "recommendButton": "Recommend Lucky Days",
+      "monthHeadingSuffix": " - Auspicious Calendar",
+      "luckyTag": "Lucky"
+    },
+    "purposes": {
+      "career": "Career",
+      "love": "Love",
+      "travel": "Travel",
+      "exam": "Exam",
+      "wealth": "Wealth"
+    },
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "scoreFields": {
+      "career": "Career",
+      "love": "Love",
+      "wealth": "Wealth",
+      "luck": "Benefactor",
+      "mood": "Mood",
+      "travel": "Travel",
+      "friend": "Friend",
+      "entertainment": "Entertainment"
+    },
+    "fallback": {
+      "overallDesc": "Please login to view fortune analysis",
+      "advice1": "Click the login button above to sign in",
+      "avoid1": "Personal fortune data is unavailable when not logged in"
+    },
+    "overall": {
+      "excellent": "Excellent fortune — bold progress and expansion",
+      "good": "Good fortune — seize opportunities and start new things",
+      "stable": "Stable fortune — proceed step by step",
+      "low": "Low fortune — observe and guard against risks",
+      "veryLow": "Lower fortune today — act cautiously and avoid major decisions"
+    },
+    "advice": {
+      "investSmall": "Suitable for small investments",
+      "grabOpportunity": "Actively seek performance opportunities",
+      "arrangeDate": "Plan a romantic date",
+      "planShortTrip": "Plan a short trip",
+      "visitBenefactor": "Visit benefactors for help",
+      "stayPositive": "Stay positive to face challenges"
+    },
+    "avoid": {
+      "highRiskInvest": "Avoid high-risk investments",
+      "conflictWithSuperior": "Avoid direct conflict with superiors",
+      "emotionalConflict": "Reduce emotional conflicts and avoid misunderstandings",
+      "longTrip": "Reschedule long trips",
+      "majorDecisions": "Avoid major decisions; prevent emotional choices"
+    },
+    "modal": {
+      "title": "Notice",
+      "goComplete": "Complete Profile",
+      "confirm": "Confirm",
+      "selectPurpose": "Please select a purpose first",
+      "recommendFail": "Failed to retrieve recommendations. Please retry later.",
+      "incompleteBazi": "Please complete your Bazi information in Profile first"
+    },
+    "month": {
+      "noLucky": "No lucky days ≥65 points for {label} this month. Try other purposes.",
+      "luckyListTitle": "Lucky days for {label} this month:"
+    },
+    "errors": {
+      "fetchFailed": "Failed to retrieve fortune data. Please try again later."
+    }
+  },
+  "zodiac": {
+    "breadcrumb": {
+      "title": "Zodiac Fortune",
+      "ariaLabel": "Breadcrumb"
+    },
+    "seo": {
+      "title": "Zodiac Fortune Analysis | Beidou Calendar",
+      "pageTitle": "Zodiac Fortune",
+      "description": "Daily zodiac fortune analysis for Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog and Pig. Provides scores and advice on career, finance, health and love.",
+      "keywords": "zodiac fortune, daily zodiac, animal sign analysis, earthly branches relation, lucky day"
+    },
+    "title": "Zodiac Fortune",
+    "loading": "Analyzing zodiac fortune...",
+    "overview": {
+      "title": "Today's Overview",
+      "refresh": "Refresh Data",
+      "share": "Share Zodiac Fortune",
+      "todayZodiacPrefix": "Today zodiac: "
+    },
+    "labels": {
+      "earthBranch": "Earthly branch: ",
+      "relation": "Relation: ",
+      "intensity": "Intensity:",
+      "todayEarthBranch": "Today's earthly branch: ",
+      "zodiacPrefix": "Zodiac: "
+    },
+    "names": {
+      "鼠": "Rat",
+      "牛": "Ox",
+      "虎": "Tiger",
+      "兔": "Rabbit",
+      "龙": "Dragon",
+      "蛇": "Snake",
+      "马": "Horse",
+      "羊": "Goat",
+      "猴": "Monkey",
+      "鸡": "Rooster",
+      "狗": "Dog",
+      "猪": "Pig"
+    },
+      "sections": {
+        "valueTaiSui": {
+          "title": "Tai Sui (Grand Duke, Dragon)",
+          "subtitle": "Benming Year fortune"
+        },
+        "xiangPo": {
+          "title": "Po (Break, Ox)",
+          "subtitle": "Average fortune"
+        },
+        "xiangHai": {
+          "title": "Hai (Harm, Tiger, Rabbit)",
+          "subtitle": "Mind interpersonal relationships"
+        },
+        "xiangChong": {
+          "title": "Chong (Conflict)",
+          "subtitle": "Prone to clashes"
+        },
+        "xiangXing": {
+          "title": "Xing (Punishment)",
+          "subtitle": "Act prudently"
+        },
+        "sanHe": {
+          "title": "Sanhe (Three Harmonies, Rat, Monkey)",
+          "subtitle": "Benefactors help"
+        },
+        "liuHe": {
+          "title": "Liuhe (Six Combinations, Rooster)",
+          "subtitle": "Excellent fortune"
+        },
+      "pingYun": {
+        "title": "Neutral (Snake, Horse, Goat, Dog, Pig)",
+        "subtitle": "Stable fortune"
+      }
+    },
+    "share": {
+      "title": "Zodiac Fortune — Daily Prediction",
+      "subtitle": "Daily analysis to grasp opportunities",
+      "downloadPrefix": "Zodiac_Fortune_"
+    },
+    "status": {
+      "三合": "Sanhe (Three Harmonies)",
+      "平运": "Neutral",
+      "值太岁": "Tai Sui (Grand Duke)",
+      "六合": "Liuhe (Six Combinations)",
+      "相破": "Po (Break)",
+      "相害": "Hai (Harm)",
+      "相冲": "Chong (Conflict)",
+      "相刑": "Xing (Punishment)",
+      "相合": "He (Compatibility)",
+      "default": "Average"
+    }
+    ,
+    "errors": {
+      "analyzeFailed": "Analysis failed. Please try again later.",
+      "refreshFailed": "Refresh failed. Please try again later.",
+      "shareFailed": "Failed to generate share image. Please retry."
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "email": "Email",
+    "backToLogin": "Back to Login"
+  },
+  "admin": {
+    "forgotPassword": {
+      "title": "Forgot Password - Beidou Calendar",
+      "desc": "Enter your registered email to receive a reset link",
+      "emailPlaceholder": "Email",
+      "submit": "Send Reset Email",
+      "backToLogin": "Back to Login",
+      "success": "If the email exists, a reset link has been sent.",
+      "emptyEmail": "Please enter your email",
+      "errorDefault": "Failed to send. Please try again."
+    }
+    ,
+    "passwordReset": {
+      "title": "Password Reset - Beidou Calendar",
+      "desc": "Please set a new password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "submit": "Reset Password",
+      "invalidLink": "Reset link invalid or expired. Please request again.",
+      "requireNewPassword": "Please enter a new password",
+      "requireConfirm": "Please confirm new password",
+      "mismatch": "Passwords do not match",
+      "success": "Password reset successful. Please return to login.",
+      "errorDefault": "Reset failed. Please try again."
+    }
+    ,
+    "login": {
+      "title": "User Login - Beidou Calendar",
+      "desc": "Welcome back, please enter your account info",
+      "usernameOrEmail": "Username or Email",
+      "password": "Password",
+      "submit": "Login",
+      "forgot": "Forgot Password?",
+      "register": "Sign Up",
+      "requireCredential": "Please enter username and password",
+      "errorDefault": "Login failed. Please retry"
+    }
+    ,
+    "profile": {
+      "headerTitle": "Profile Management - User Center",
+      "usernameLabel": "Username",
+      "usernameUnset": "Unset username",
+      "phoneLabel": "Phone",
+      "genderLabel": "Gender",
+      "genderOptions": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "birthLabel": "Birth Date & Time",
+      "idLabel": "User ID",
+      "createdAtLabel": "Registered At",
+      "updatedAtLabel": "Updated At",
+      "lastLoginLabel": "Last Login",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "statuses": {
+        "activeTrue": "Active",
+        "activeFalse": "Inactive",
+        "verifiedTrue": "Verified",
+        "verifiedFalse": "Unverified"
+      },
+      "errors": {
+        "fetchFailed": "Failed to fetch user info"
+      },
+      "messages": {
+        "saveSuccess": "Saved successfully!",
+        "saveFailed": "Save failed"
+      },
+      "validation": {
+        "phoneInvalid": "Please enter a valid phone number",
+        "yearRange": "Birth year must be between 1900 and 2100",
+        "monthRange": "Birth month must be between 1 and 12",
+        "dayRange": "Birth day must be between 1 and 31",
+        "timeFormat": "Birth time format should be HH:MM"
+      }
+    }
+    ,
+    "panel": {
+      "headerTitle": "Admin Console - User Management",
+      "stats": {
+        "totalUsers": "Total Registered Users",
+        "activeUsers": "Active Users (Login in 30 days)",
+        "activeRate": "Active Rate"
+      },
+      "noAccess": "No permission to access",
+      "actions": {
+        "export": "Export Users",
+        "import": "Import Users"
+      },
+      "filters": {
+        "roleAll": "All Roles",
+        "active": "Active Status",
+        "verified": "Verified Status",
+        "boolean": { "true": "Yes", "false": "No" }
+      },
+      "search": { "placeholder": "Search username/email..." },
+      "table": {
+        "title": "User List",
+        "columns": {
+          "index": "No.",
+          "username": "Username",
+          "email": "Email",
+          "role": "Role",
+          "active": "Active",
+          "verified": "Verified",
+          "createdAt": "Registered At",
+          "lastLogin": "Last Login",
+          "baziInfo": "Bazi Info",
+          "actions": "Actions"
+        }
+      },
+      "buttons": { "edit": "Edit", "delete": "Delete" },
+      "modal": {
+        "editTitle": "Edit User",
+        "deleteTitle": "Delete User",
+        "editMessage": "You can modify user attributes",
+        "deleteMessage": "Are you sure you want to delete this user?",
+        "confirmSave": "Save",
+        "confirmDelete": "Delete",
+        "cancel": "Cancel",
+        "deleteWarn": "This operation cannot be undone. Are you sure?"
+      },
+      "form": {
+        "role": "Role",
+        "active": "Active",
+        "verified": "Verified",
+        "gender": "Gender",
+        "genderOptions": { "male": "Male", "female": "Female" }
+      }
+    }
+    ,
+    "form": {
+      "birthYear": "Birth Year",
+      "birthMonth": "Birth Month",
+      "birthDay": "Birth Day",
+      "birthTime": "Birth Time"
+    }
+    ,
+    "placeholders": {
+      "birthYear": "1900-2100",
+      "birthMonth": "1-12",
+      "birthDay": "1-31",
+      "birthTime": "HH:MM"
+    }
+    ,
+    "messages": {
+      "updated": "Updated",
+      "saveFailed": "Save failed",
+      "deactivated": "Deleted",
+      "onlySuperAdmin": "Only super admin can delete users",
+      "deleteFailed": "Delete failed",
+      "exportSuccess": "Export succeeded",
+      "exportFailed": "Export failed",
+      "importSuccess": "Import succeeded",
+      "importFailed": "Import failed"
+    }
+  }
+
+}

@@ -2,18 +2,18 @@
   <div class="flex-1 p-1 sm:p-2 lg:p-4 bg-gray-50 dark:bg-gray-900 min-h-screen max-h-screen overflow-y-auto">
     <!-- SEO组件 -->
     <SEO 
-      title="中国传统风水布局分析 - 九宫飞星图在线专业测算 | 全国通用风水服务 | 北斗九号日历"
-      pageTitle="风水布局分析"
-      description="北斗九号日历提供专业的中国传统风水布局分析服务，适用全国各地。基于千年传统文化智慧，结合现代科学分析方法，提供九宫飞星图在线测算、户型风水评估、方位吉凶判断等专业服务。上传户型图，智能叠加九宫飞星方位，根据年份精准调整飞星排布，科学分析家居风水布局，助您趋吉避凶，改善运势，打造和谐宜居的生活环境。"
-      keywords="中国风水,传统风水,风水布局,九宫飞星,风水分析,户型风水,飞星排布,家居风水,风水测算,方位调整,在线风水,风水服务,全国通用,传统文化,风水大师,风水咨询,住宅风水,办公室风水,风水化解,吉凶方位,风水改运,玄学文化,易经风水,风水宝地"
+      :title="$t('fengshui.seo.title')"
+      :pageTitle="$t('fengshui.seo.pageTitle')"
+      :description="$t('fengshui.seo.description')"
+      :keywords="$t('fengshui.seo.keywords')"
     />
     
     <div class="max-w-7xl mx-auto h-full flex flex-col">
       <!-- 面包屑导航 -->
       <nav class="flex items-center space-x-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2 sm:mb-3" aria-label="面包屑导航">
-        <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">首页</a>
+        <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ $t('common.home') }}</a>
         <span class="text-gray-400">/</span>
-        <span class="text-gray-900 dark:text-gray-100 font-medium">风水布局分析</span>
+        <span class="text-gray-900 dark:text-gray-100 font-medium">{{ $t('pages.fengshui-fortune') }}</span>
       </nav>
       
       <!-- 页面标题 - 紧凑版 -->
@@ -21,8 +21,8 @@
         <div class="w-12 h-12 sm:w-16 sm:h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-2 border border-gray-100 dark:border-gray-700 shadow-sm">
           <img src="@/assets/fengshui.png" alt="风水布局" class="w-6 h-6 sm:w-8 sm:h-8" />
         </div>
-        <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">流年九宫飞星风水布局</h1>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hidden sm:block">基于千年传统文化智慧，上传户型图，智能叠加九宫飞星方位，科学精准分析家居风水布局，适用全国各地</p>
+        <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">{{ $t('fengshui.ui.titleLong') }}</h1>
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hidden sm:block">{{ $t('fengshui.ui.subtitle') }}</p>
       </div>
 
       <!-- 控制面板 - 紧凑版 -->
@@ -31,7 +31,7 @@
           <!-- 年份选择 -->
           <div>
             <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-              选择年份
+              {{ $t('fengshui.controls.yearLabel') }}
             </label>
             <select 
               v-model="selectedYear" 
@@ -39,7 +39,7 @@
               class="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
             >
               <option v-for="year in availableYears" :key="year" :value="year">
-                {{ year }}年
+                {{ year }}{{ $t('fengshui.controls.yearSuffix') }}
               </option>
             </select>
           </div>
@@ -47,7 +47,7 @@
           <!-- 方位调整 -->
           <div>
             <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-              房屋方位对应调整
+              {{ $t('fengshui.controls.orientationAdjust') }}
             </label>
             <div class="flex items-center space-x-2 sm:space-x-3">
               <Button 
@@ -68,8 +68,8 @@
                     'rotate-[-45deg]': isRotating && rotationDirection === 'left'
                   }"
                 />
-                <span class="hidden sm:inline">左转45°</span>
-                <span class="sm:hidden">左转</span>
+                <span class="hidden sm:inline">{{ $t('fengshui.controls.rotateLeftFull') }}</span>
+                <span class="sm:hidden">{{ $t('fengshui.controls.rotateLeftShort') }}</span>
               </Button>
               <Button 
                 size="sm" 
@@ -89,8 +89,8 @@
                     'rotate-[45deg]': isRotating && rotationDirection === 'right'
                   }"
                 />
-                <span class="hidden sm:inline">右转45°</span>
-                <span class="sm:hidden">右转</span>
+                <span class="hidden sm:inline">{{ $t('fengshui.controls.rotateRightFull') }}</span>
+                <span class="sm:hidden">{{ $t('fengshui.controls.rotateRightShort') }}</span>
               </Button>
             </div>
           </div>
@@ -98,7 +98,7 @@
           <!-- 透明度调整 -->
           <div class="sm:col-span-2 lg:col-span-1">
             <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-              飞星显示不透明度: {{ Math.round(overlayOpacity * 100) }}%
+              {{ $t('fengshui.controls.overlayOpacity') }}: {{ Math.round(overlayOpacity * 100) }}%
             </label>
             <input 
               v-model="overlayOpacity" 
@@ -113,16 +113,16 @@
           <!-- 太岁位和三煞位信息 -->
           <div class="sm:col-span-2 lg:col-span-1">
             <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-              {{ selectedYear }}年太岁三煞方位
+              {{ $t('fengshui.controls.taishuiSansha', { year: selectedYear }) }}
             </label>
             <div class="space-y-1">
               <div class="flex items-center space-x-2 text-xs sm:text-sm">
                 <div class="w-3 h-3 bg-yellow-500 rounded border border-yellow-600"></div>
-                <span class="text-gray-600 dark:text-gray-300">太岁位：{{ taiSuiDirection }}</span>
+            <span class="text-gray-600 dark:text-gray-300">{{ $t('fengshui.labels.taisuiPrefix') }}{{ $t('fengshui.directions.' + taiSuiDirection) }}</span>
               </div>
               <div class="flex items-center space-x-2 text-xs sm:text-sm">
                 <div class="w-3 h-3 bg-red-500 rounded border border-red-600"></div>
-                <span class="text-gray-600 dark:text-gray-300">三煞位：{{ sanShaDirection }}</span>
+            <span class="text-gray-600 dark:text-gray-300">{{ $t('fengshui.labels.sanshaPrefix') }}{{ $t('fengshui.directions.' + sanShaDirection) }}</span>
               </div>
             </div>
           </div>
@@ -133,7 +133,7 @@
       <div class="flex flex-col lg:grid lg:grid-cols-2 gap-2 sm:gap-3 lg:gap-4 flex-1 min-h-0">
         <!-- 图片上传区域 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 sm:p-3 lg:p-4 flex flex-col min-h-0">
-          <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">上传户型图 - 专业风水分析</h2>
+          <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">{{ $t('fengshui.upload.title') }}</h2>
           
           <!-- 上传区域 -->
           <div 
@@ -145,8 +145,8 @@
             @click="triggerFileInput"
           >
             <Upload class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-gray-400 mx-auto mb-2 sm:mb-3 lg:mb-4" />
-            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-1 sm:mb-2">拖拽图片到此处或点击上传</p>
-            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">支持 JPG、PNG、GIF 格式</p>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-1 sm:mb-2">{{ $t('fengshui.upload.dragTip') }}</p>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{{ $t('fengshui.upload.supportedFormats') }}</p>
             <input 
               ref="fileInput" 
               type="file" 
@@ -161,7 +161,7 @@
             <div class="relative inline-block min-w-[400px] min-h-[400px] flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
               <img 
                 :src="uploadedImage" 
-                alt="上传的户型图" 
+                :alt="$t('fengshui.upload.imageAlt')" 
                 class="w-full h-full min-w-[400px] min-h-[400px] rounded-lg shadow-md object-cover"
                 @load="onImageLoad"
               />
@@ -182,7 +182,7 @@
                   v-if="isRotating" 
                   class="absolute top-2 left-1/2 transform -translate-x-1/2 z-10 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium animate-pulse"
                 >
-                  {{ rotationDirection === 'left' ? '← 左转45°' : '→ 右转45°' }}
+                  {{ rotationDirection === 'left' ? '← ' + $t('fengshui.controls.rotateLeftFull') : '→ ' + $t('fengshui.controls.rotateRightFull') }}
                 </div>
                 
                 <div 
@@ -257,7 +257,7 @@
                         WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.8)'
                       }"
                     >
-                      {{ position.direction }}
+                      {{ $t('fengshui.directions.' + position.direction) }}
                       <!-- 方位文字流动效果 -->
                       <div 
                         v-if="isRotating"
@@ -271,10 +271,10 @@
 
                     <!-- 太岁位和三煞位标识 - 移到左上角 -->
                     <div v-if="isTaiSuiPosition(position.direction)" class="absolute top-0.5 left-0.5 sm:top-1 sm:left-1 text-yellow-100 font-bold text-[7px] xs:text-[8px] sm:text-[9px] bg-yellow-600/90 rounded px-0.5 sm:px-1 py-0.5 border border-yellow-300/80 backdrop-blur-sm shadow-lg z-10" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
-                      太岁
+                      {{ $t('fengshui.labels.taisui') }}
                     </div>
                     <div v-if="isSanShaPosition(position.direction)" class="absolute top-0.5 left-0.5 sm:top-1 sm:left-1 text-red-100 font-bold text-[7px] xs:text-[8px] sm:text-[9px] bg-red-600/90 rounded px-0.5 sm:px-1 py-0.5 border border-red-300/80 backdrop-blur-sm shadow-lg z-10" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
-                      三煞
+                      {{ $t('fengshui.labels.sansha') }}
                     </div>
 
                     <!-- 宜忌操作指导 -->
@@ -282,10 +282,10 @@
                       
                       <!-- 特殊注意事项 - 优化文案长度和显示效果 -->
                       <div v-if="isTaiSuiPosition(position.direction)" class="text-white text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-bold bg-orange-600/90 rounded px-1.5 sm:px-2 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-orange-400/50 min-h-[20px] sm:min-h-[24px] flex items-center justify-center leading-tight" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
-                        <span class="break-words text-center">⚠️ 宜静不宜动</span>
+        <span class="break-words text-center">{{ $t('fengshui.advice.still') }}</span>
                       </div>
                       <div v-if="isSanShaPosition(position.direction)" class="text-white text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-bold bg-orange-600/90 rounded px-1.5 sm:px-2 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-orange-400/50 min-h-[20px] sm:min-h-[24px] flex items-center justify-center leading-tight" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
-                        <span class="break-words text-center">⚠️ 不宜动土</span>
+        <span class="break-words text-center">{{ $t('fengshui.advice.noGroundwork') }}</span>
                       </div>
                       <div v-if="position.specialNote && !isTaiSuiPosition(position.direction) && !isSanShaPosition(position.direction)" class="text-white text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-bold bg-orange-600/90 rounded px-1.5 sm:px-2 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-orange-400/50 min-h-[20px] sm:min-h-[24px] flex items-center justify-center leading-tight" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
                         <span class="break-words text-center">⚠️ {{ position.specialNote }}</span>
@@ -293,21 +293,21 @@
                       
                       <!-- 宜放物品 -->
                       <div class="text-white bg-green-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-green-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
-                        <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">✅ 宜：</div>
+                        <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">{{ $t('fengshui.labels.suitablePrefix') }}</div>
                         <div class="text-[6px] xs:text-[7px] sm:text-[8px] md:text-[9px] leading-[1.2] font-medium break-words">
                           <span class="inline-block">
                             <!-- 小屏幕显示2个，中屏显示3个，大屏显示4个 -->
                             <span class="sm:hidden">
-                              {{ position.suitable.slice(0, 2).join('、') }}
-                              <span v-if="position.suitable.length > 2">等</span>
+                              {{ position.suitable.slice(0, 2).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.suitable.length > 2">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden sm:block lg:hidden">
-                              {{ position.suitable.slice(0, 3).join('、') }}
-                              <span v-if="position.suitable.length > 3">等</span>
+                              {{ position.suitable.slice(0, 3).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.suitable.length > 3">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden lg:block">
-                              {{ position.suitable.slice(0, 4).join('、') }}
-                              <span v-if="position.suitable.length > 4">等</span>
+                              {{ position.suitable.slice(0, 4).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.suitable.length > 4">{{ $t('common.etc') }}</span>
                             </span>
                           </span>
                         </div>
@@ -315,21 +315,21 @@
                       
                       <!-- 忌放物品 -->
                       <div class="text-white bg-red-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-red-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
-                        <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">❌ 忌：</div>
+                        <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">{{ $t('fengshui.labels.avoidPrefix') }}</div>
                         <div class="text-[6px] xs:text-[7px] sm:text-[8px] md:text-[9px] leading-[1.2] font-medium break-words">
                           <span class="inline-block">
                             <!-- 小屏幕显示2个，中屏显示3个，大屏显示4个 -->
                             <span class="sm:hidden">
-                              {{ position.avoid.slice(0, 2).join('、') }}
-                              <span v-if="position.avoid.length > 2">等</span>
+                              {{ position.avoid.slice(0, 2).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.avoid.length > 2">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden sm:block lg:hidden">
-                              {{ position.avoid.slice(0, 3).join('、') }}
-                              <span v-if="position.avoid.length > 3">等</span>
+                              {{ position.avoid.slice(0, 3).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.avoid.length > 3">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden lg:block">
-                              {{ position.avoid.slice(0, 4).join('、') }}
-                              <span v-if="position.avoid.length > 4">等</span>
+                              {{ position.avoid.slice(0, 4).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-if="position.avoid.length > 4">{{ $t('common.etc') }}</span>
                             </span>
                           </span>
                         </div>
@@ -358,7 +358,7 @@
                 @click="toggleOverlay"
                 class="flex-1 sm:flex-none min-h-[44px] sm:min-h-[40px] text-xs sm:text-sm px-4 py-2.5 sm:py-2 touch-manipulation"
               >
-                {{ showOverlay ? '隐藏' : '显示' }}九宫图
+                {{ showOverlay ? $t('home.fengshui.controls.hide') : $t('home.fengshui.controls.show') }}{{ $t('home.fengshui.controls.grid') }}
               </Button>
               <Button 
                 size="sm" 
@@ -366,27 +366,27 @@
                 @click="resetImage"
                 class="flex-1 sm:flex-none min-h-[44px] sm:min-h-[40px] text-xs sm:text-sm px-4 py-2.5 sm:py-2 touch-manipulation"
               >
-                重新上传
+                {{ $t('fengshui.controls.reupload') }}
               </Button>
             </div>
           </div>
 
           <!-- 使用说明 -->
           <div class="mt-3 sm:mt-4 lg:mt-6 p-2 sm:p-3 lg:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <h4 class="text-sm sm:text-base font-semibold text-blue-900 dark:text-blue-100 mb-1 sm:mb-2">简单四步，轻松看风水</h4>
+            <h4 class="text-sm sm:text-base font-semibold text-blue-900 dark:text-blue-100 mb-1 sm:mb-2">{{ $t('fengshui.upload.title') }}</h4>
             <ul class="text-xs sm:text-sm text-blue-800 dark:text-blue-200 space-y-0.5 sm:space-y-1">
-              <li>• 第一步：点击上传按钮，选择房屋平面图（支持JPG、PNG格式）</li>
-              <li>• 第二步：在左侧选择年份，系统自动显示当年的风水方位</li>
-              <li class="hidden sm:list-item">• 第三步：用旋转按钮调整方向，让图上的方位和实际房屋朝向一致</li>
-              <li class="hidden sm:list-item">• 第四步：查看每个房间的颜色提示，绿色代表好位置，红色需要注意</li>
-              <li class="hidden sm:list-item">• 最后：根据下方建议调整家居摆放，让家里风水更好</li>
+              <li>{{ $t('fengshui.upload.steps.1') }}</li>
+              <li>{{ $t('fengshui.upload.steps.2') }}</li>
+              <li class="hidden sm:list-item">{{ $t('fengshui.upload.steps.3') }}</li>
+              <li class="hidden sm:list-item">{{ $t('fengshui.upload.steps.4') }}</li>
+              <li class="hidden sm:list-item">{{ $t('fengshui.upload.steps.5') }}</li>
             </ul>
           </div>
         </div>
 
         <!-- 九宫飞星说明 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 sm:p-3 lg:p-4 flex flex-col min-h-0 overflow-y-auto">
-          <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">{{ selectedYear }}年九宫飞星</h2>
+          <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">{{ $t('fengshui.info.yearStarsTitle', { year: selectedYear }) }}</h2>
           
           <!-- 飞星图表 - 优化布局显示 -->
           <div class="grid grid-cols-3 grid-rows-3 gap-1 sm:gap-2 mb-3 sm:mb-4 w-full max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] mx-auto">
@@ -403,24 +403,24 @@
               
               <!-- 飞星名称 -->
               <div class="text-[9px] sm:text-xs lg:text-sm font-semibold mb-0.5 flex-shrink-0" :class="getStarTextColor(position.star)">
-                {{ position.name }}
+                {{ $t('fengshui.stars.' + position.star + '.title') }}
               </div>
               
               <!-- 五行属性 -->
               <div class="text-[7px] sm:text-[9px] lg:text-xs text-gray-500 dark:text-gray-400 mb-0.5 flex-shrink-0">
-                属{{ position.element }}
+                {{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.' + getElementKey(position.element)) }}
               </div>
               
               <!-- 方位 -->
               <div class="text-[7px] sm:text-[9px] lg:text-xs text-gray-600 dark:text-gray-300 mb-1 flex-shrink-0">
-                {{ position.direction }}
+                {{ $t('fengshui.directions.' + position.direction) }}
               </div>
               
               <!-- 完整作用描述 - 优化显示更多内容 -->
               <div class="text-[7px] sm:text-[9px] lg:text-[11px] font-medium leading-[1.2] flex-1 flex items-center justify-center min-h-0" :class="getStarTextColor(position.star)">
                 <div class="break-all text-center px-0.5 overflow-hidden w-full">
                   <div class="line-clamp-3 sm:line-clamp-4 lg:line-clamp-none">
-                    {{ position.effects }}
+                    {{ $t('fengshui.stars.' + position.star + '.desc') }}
                   </div>
                 </div>
               </div>
@@ -429,40 +429,40 @@
 
           <!-- 吉凶分类说明 -->
           <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
-            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">吉凶分类</h4>
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('fengshui.info.classificationTitle') }}</h4>
             <div class="grid grid-cols-1 gap-1 sm:gap-2 text-xs sm:text-sm">
               <div class="flex items-center space-x-1 sm:space-x-2">
                 <div class="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full flex-shrink-0"></div>
-                <span class="text-gray-600 dark:text-gray-300">吉星：一白、六白、八白</span>
+                <span class="text-gray-600 dark:text-gray-300">{{ $t('fengshui.info.goodStarsLabel') }}</span>
               </div>
               <div class="flex items-center space-x-1 sm:space-x-2">
                 <div class="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full flex-shrink-0"></div>
-                <span class="text-gray-600 dark:text-gray-300">凶星：二黑、三碧、五黄、七赤</span>
+                <span class="text-gray-600 dark:text-gray-300">{{ $t('fengshui.info.badStarsLabel') }}</span>
               </div>
               <div class="flex items-center space-x-1 sm:space-x-2">
                 <div class="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full flex-shrink-0"></div>
-                <span class="text-gray-600 dark:text-gray-300">中性：四绿、九紫</span>
+                <span class="text-gray-600 dark:text-gray-300">{{ $t('fengshui.info.neutralStarsLabel') }}</span>
               </div>
             </div>
           </div>
 
           <!-- 太岁位和三煞位风水建议 -->
           <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
-            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ selectedYear }}年风水要位</h4>
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('fengshui.info.yearKeyPositionsTitle', { year: selectedYear }) }}</h4>
             <div class="space-y-2 text-xs sm:text-sm">
               <div class="p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded border border-yellow-200 dark:border-yellow-800">
                 <div class="flex items-center space-x-2 mb-1">
                   <div class="w-3 h-3 bg-yellow-500 rounded border border-yellow-600"></div>
-                  <span class="font-semibold text-yellow-800 dark:text-yellow-200">太岁位（{{ taiSuiDirection }}）</span>
+                  <span class="font-semibold text-yellow-800 dark:text-yellow-200">{{ $t('fengshui.advice.taisuiTitle', { direction: $t('fengshui.directions.' + taiSuiDirection) }) }}</span>
                 </div>
-                <p class="text-yellow-700 dark:text-yellow-300 text-xs">宜静不宜动，不宜装修、挖掘、敲打。可放置吉祥物品镇宅。</p>
+        <p class="text-yellow-700 dark:text-yellow-300 text-xs">{{ $t('fengshui.info.taisuiDesc') }}</p>
               </div>
               <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800">
                 <div class="flex items-center space-x-2 mb-1">
                   <div class="w-3 h-3 bg-red-500 rounded border border-red-600"></div>
-                  <span class="font-semibold text-red-800 dark:text-red-200">三煞位（{{ sanShaDirection }}）</span>
+                  <span class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.advice.sanshaTitle', { direction: $t('fengshui.directions.' + sanShaDirection) }) }}</span>
                 </div>
-                <p class="text-red-700 dark:text-red-300 text-xs">不宜坐向此方，不宜动土。避免在此方位放置重要家具。</p>
+        <p class="text-red-700 dark:text-red-300 text-xs">{{ $t('fengshui.info.sanshaDesc') }}</p>
               </div>
             </div>
           </div>
@@ -480,7 +480,7 @@
           <div class="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 rounded-lg border border-orange-100 dark:border-orange-800">
             <h4 class="text-base sm:text-lg lg:text-xl font-bold text-orange-900 dark:text-orange-100 mb-3 sm:mb-4 flex items-center">
               <span class="text-xl sm:text-2xl mr-2">🎯</span>
-              {{ selectedYear }}年风水建议
+              {{ $t('fengshui.advice.yearTitle', { year: selectedYear }) }}
             </h4>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -493,13 +493,13 @@
               >
                 <div class="flex items-center mb-2">
                   <span class="text-lg mr-2">{{ advice.icon }}</span>
-                  <h5 class="font-semibold" :class="advice.titleColor">{{ advice.title }}</h5>
+                  <h5 class="font-semibold" :class="advice.titleColor">{{ $t('fengshui.advice.templates.' + advice.type + '.title') }}</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ advice.directions }}方位</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ advice.directions.split('、').map(d => $t('fengshui.directions.' + d)).join('、') }}{{ $t('fengshui.info.directionSuffix') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {{ advice.content }}
+                  {{ $t('fengshui.advice.templates.' + advice.type + '.content', { directions: advice.directions.split('、').map(d => $t('fengshui.directions.' + d)).join('、') }) }}
                 </p>
               </div>
             </div>
@@ -511,7 +511,7 @@
           <div class="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg border border-purple-100 dark:border-purple-800">
             <h4 class="text-base sm:text-lg lg:text-xl font-bold text-purple-900 dark:text-purple-100 mb-3 sm:mb-4 flex items-center">
               <span class="text-xl sm:text-2xl mr-2">✨</span>
-              九宫飞星详细说明
+              {{ $t('fengshui.info.detailsTitle') }}
             </h4>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -519,13 +519,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-green-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-green-600 dark:text-green-400 mr-2">1</span>
-                  <h5 class="font-semibold text-green-800 dark:text-green-200">一白星【吉星】</h5>
+                  <h5 class="font-semibold text-green-800 dark:text-green-200">{{ $t('fengshui.stars.1.title') }}【{{ $t('fengshui.stars.types.auspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属水</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.water') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  代表官升、名气、中状元、官运和财运。失令的时候，此星为桃花劫，破财损家，甚至性病、绝症，异乡流亡。
+                  {{ $t('fengshui.stars.1.desc') }}
                 </p>
               </div>
 
@@ -533,13 +533,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-red-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-red-600 dark:text-red-400 mr-2">2</span>
-                  <h5 class="font-semibold text-red-800 dark:text-red-200">二黑星【凶星】</h5>
+                  <h5 class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.stars.2.title') }}【{{ $t('fengshui.stars.types.inauspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属土</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.earth') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  二黑星代表病符。此星在得令的时候并非病符，代表位列尊崇，能成霸业。但此星失令的时候，是一极大凶星，破财损家，代表死亡绝症、破财横祸，与五黄星并列为最凶之星。此星亦代表招来阴灵。
+                  {{ $t('fengshui.stars.2.desc') }}
                 </p>
               </div>
 
@@ -547,13 +547,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-red-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-red-600 dark:text-red-400 mr-2">3</span>
-                  <h5 class="font-semibold text-red-800 dark:text-red-200">三碧星【凶星】</h5>
+                  <h5 class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.stars.3.title') }}【{{ $t('fengshui.stars.types.inauspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属木</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.wood') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  三碧星代表是非。此星在得令时代表因口材而成名，大利律师、法官急鬼才等职。但此星失令的时候，代表是非官非，破财招刑。
+                  {{ $t('fengshui.stars.3.desc') }}
                 </p>
               </div>
 
@@ -561,13 +561,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-green-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-green-600 dark:text-green-400 mr-2">4</span>
-                  <h5 class="font-semibold text-green-800 dark:text-green-200">四绿星【吉星】</h5>
+                  <h5 class="font-semibold text-green-800 dark:text-green-200">{{ $t('fengshui.stars.4.title') }}【{{ $t('fengshui.stars.types.auspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属木</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.wood') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  文曲星在得令的时代表文化艺术、才华、文思敏捷。但失令时为桃花劫星必招酒色之祸。
+                  {{ $t('fengshui.stars.4.desc') }}
                 </p>
               </div>
 
@@ -575,13 +575,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-red-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-red-600 dark:text-red-400 mr-2">5</span>
-                  <h5 class="font-semibold text-red-800 dark:text-red-200">五黄星【凶星】</h5>
+                  <h5 class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.stars.5.title') }}【{{ $t('fengshui.stars.types.inauspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属土</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.earth') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  廉贞星得令时代表位处中极、威崇无比，如皇帝之最尊最贵。但此星失令的时，称为五黄煞又名正关煞，代表死亡绝症、血光之灾，家破人亡。此星亦必招邪灵之物。
+                  {{ $t('fengshui.stars.5.desc') }}
                 </p>
               </div>
 
@@ -589,13 +589,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-green-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-green-600 dark:text-green-400 mr-2">6</span>
-                  <h5 class="font-semibold text-green-800 dark:text-green-200">六白星【吉星】</h5>
+                  <h5 class="font-semibold text-green-800 dark:text-green-200">{{ $t('fengshui.stars.6.title') }}【{{ $t('fengshui.stars.types.auspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属金</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.metal') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  六白是偏财星，与一白、八白合称三大财星。六白得令时丁财两旺，失令时，为失财星，可令倾家荡产。
+                  {{ $t('fengshui.stars.6.desc') }}
                 </p>
               </div>
 
@@ -603,13 +603,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-red-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-red-600 dark:text-red-400 mr-2">7</span>
-                  <h5 class="font-semibold text-red-800 dark:text-red-200">七赤星【凶星】</h5>
+                  <h5 class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.stars.7.title') }}【{{ $t('fengshui.stars.types.inauspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属金</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.metal') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  七赤星当运的时候，大利以口才工作的人，包括歌星、演说家、占卜家等，大利通讯传播。但七赤星退运时候，代表口舌是非，刀光剑影，世界大战。又代表火险、及身体上呼吸、肺部的毛病。
+                  {{ $t('fengshui.stars.7.desc') }}
                 </p>
               </div>
 
@@ -617,13 +617,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-green-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-green-600 dark:text-green-400 mr-2">8</span>
-                  <h5 class="font-semibold text-green-800 dark:text-green-200">八白星【吉星】</h5>
+                  <h5 class="font-semibold text-green-800 dark:text-green-200">{{ $t('fengshui.stars.8.title') }}【{{ $t('fengshui.stars.types.auspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属土</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.earth') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  八白星得令时为太白财星，能带来功名富贵。田宅科发，为九星中第一吉星。此星失令的时，为失财失义，瘟疫流行，失财于刹间。
+                  {{ $t('fengshui.stars.8.desc') }}
                 </p>
               </div>
 
@@ -631,13 +631,13 @@
               <div class="p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-green-500">
                 <div class="flex items-center mb-2">
                   <span class="text-lg font-bold text-green-600 dark:text-green-400 mr-2">9</span>
-                  <h5 class="font-semibold text-green-800 dark:text-green-200">九紫星【吉星】</h5>
+                  <h5 class="font-semibold text-green-800 dark:text-green-200">{{ $t('fengshui.stars.9.title') }}【{{ $t('fengshui.stars.types.auspicious') }}】</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">五行属火</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ $t('fengshui.stars.attrPrefix') }}{{ $t('fengshui.stars.elements.fire') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  九紫星当令时为一级喜庆星及爱情星，代表桃花人缘及天乙贵人，大利置业及建筑。但此星失令的时为桃花劫星，损丁破财，亦主火灾、爆炸、心脏病、眼疾、流血等。
+                  {{ $t('fengshui.stars.9.desc') }}
                 </p>
               </div>
             </div>
@@ -655,6 +655,16 @@ import { ref, computed, onMounted } from 'vue'
 import { Upload, RotateCw, RotateCcw } from 'lucide-vue-next'
 import SEO from '@/components/SEO.vue'
 import Button from '@/components/ui/Button.vue'
+
+// 五行元素键映射（用于 i18n 动态键）
+const elementKeyMap: Record<string, string> = {
+  '水': 'water',
+  '土': 'earth',
+  '木': 'wood',
+  '金': 'metal',
+  '火': 'fire'
+}
+const getElementKey = (el: string): string => elementKeyMap[el] || el
 
 // 响应式数据
 const selectedYear = ref(2025)
@@ -711,72 +721,72 @@ const getStarInfo = (star: number) => {
       element: '水', 
       effects: '偏财投资、桃花运、官运、财运', 
       meaning: '贪狼',
-      suitable: ['鱼缸养鱼', '一杯水', '音乐盒', '流动的水', '蓝色地毯'],
-      avoid: ['黄色物品', '咖啡色物品']
+      suitable: ['fishTank', 'waterCup', 'musicBox', 'flowingWater', 'blueCarpet'],
+      avoid: ['yellowItems', 'brownItems']
     },
     2: { 
       name: '二黑星', 
       element: '土', 
       effects: '病符、疾病', 
       meaning: '病符',
-      suitable: ['铜葫芦', '五帝钱', '铜麒麟', '音乐盒', '铜片', '金属发声物件'],
-      avoid: ['动土', '鱼缸', '植物', '红色物件']
+      suitable: ['copperGourd', 'fiveEmperorsCoins', 'copperQilin', 'musicBox', 'copperPieces', 'metalSoundItems'],
+      avoid: ['groundBreaking', 'fishTank', 'plants', 'redItems']
     },
     3: { 
       name: '三碧星', 
       element: '木', 
       effects: '是非、争执', 
       meaning: '是非',
-      suitable: ['红色物件'],
-      avoid: ['水', '金属物件', '植物', '动土', '风扇']
+      suitable: ['redItems'],
+      avoid: ['water', 'metalItems', 'plants', 'groundBreaking', 'fan']
     },
     4: { 
       name: '四绿星', 
       element: '木', 
       effects: '文职、文曲、读书考试', 
       meaning: '文昌',
-      suitable: ['四棵富贵竹', '一杯水'],
-      avoid: ['金属物件', '铜麒麟']
+      suitable: ['fourLuckyBamboo', 'waterCup'],
+      avoid: ['metalItems', 'copperQilin']
     },
     5: { 
       name: '五黄星', 
       element: '土', 
       effects: '灾煞、凶星', 
       meaning: '五黄',
-      suitable: ['铜葫芦', '五帝钱', '音乐盒', '金属发声物件', '蓝色物品'],
-      avoid: ['动土', '鱼缸', '植物', '红色物件']
+      suitable: ['copperGourd', 'fiveEmperorsCoins', 'musicBox', 'metalSoundItems', 'blueItems'],
+      avoid: ['groundBreaking', 'fishTank', 'plants', 'redItems']
     },
     6: { 
       name: '六白星', 
       element: '金', 
       effects: '偏财、武职、变动', 
       meaning: '武曲',
-      suitable: ['黄色物品', '六颗白石', '一杯水'],
-      avoid: ['植物', '红色物件']
+      suitable: ['yellowItems', 'sixWhiteStones', 'waterCup'],
+      avoid: ['plants', 'redItems']
     },
     7: { 
       name: '七赤星', 
       element: '金', 
       effects: '破军、盗贼', 
       meaning: '破军',
-      suitable: ['一杯水', '开口陈醋'],
-      avoid: ['金色物件', '白色', '金属物件']
+      suitable: ['waterCup', 'vinegarOpen'],
+      avoid: ['goldenItems', 'whiteColor', 'metalItems']
     },
     8: { 
       name: '八白星', 
       element: '土', 
       effects: '正财运、名气提升', 
       meaning: '财星',
-      suitable: ['红色物品', '一杯水', '鱼缸养鱼'],
-      avoid: ['植物', '绿色物品']
+      suitable: ['redItems', 'waterCup', 'fishTank'],
+      avoid: ['plants', 'greenItems']
     },
     9: { 
       name: '九紫星', 
       element: '火', 
       effects: '喜庆、婚嫁添丁', 
       meaning: '喜庆',
-      suitable: ['植物', '红色物件', '九个利是封'],
-      avoid: ['黑色物品', '蓝色物品']
+      suitable: ['plants', 'redItems', 'nineRedEnvelopes'],
+      avoid: ['blackItems', 'blueItems']
     }
   }
   return starInfoMap[star] || { 
@@ -861,24 +871,24 @@ const calculateSanShaPositions = (year: number) => {
   // 三煞位规律 - 只标识主要方位（正方位）
   const sanShaRules: { [key: string]: { mainPosition: string, direction: string } } = {
     // 申子辰年三煞在南方，主要标识正南
-    '申': { mainPosition: '午', direction: '南方' },
-    '子': { mainPosition: '午', direction: '南方' },
-    '辰': { mainPosition: '午', direction: '南方' },
+    '申': { mainPosition: '午', direction: '正南' },
+    '子': { mainPosition: '午', direction: '正南' },
+    '辰': { mainPosition: '午', direction: '正南' },
     
     // 亥卯未年三煞在西方，主要标识正西
-    '亥': { mainPosition: '酉', direction: '西方' },
-    '卯': { mainPosition: '酉', direction: '西方' },
-    '未': { mainPosition: '酉', direction: '西方' },
+    '亥': { mainPosition: '酉', direction: '正西' },
+    '卯': { mainPosition: '酉', direction: '正西' },
+    '未': { mainPosition: '酉', direction: '正西' },
     
     // 寅午戌年三煞在北方，主要标识正北
-    '寅': { mainPosition: '子', direction: '北方' },
-    '午': { mainPosition: '子', direction: '北方' },
-    '戌': { mainPosition: '子', direction: '北方' },
+    '寅': { mainPosition: '子', direction: '正北' },
+    '午': { mainPosition: '子', direction: '正北' },
+    '戌': { mainPosition: '子', direction: '正北' },
     
     // 巳酉丑年三煞在东方，主要标识正东
-    '巳': { mainPosition: '卯', direction: '东方' },
-    '酉': { mainPosition: '卯', direction: '东方' },
-    '丑': { mainPosition: '卯', direction: '东方' }
+    '巳': { mainPosition: '卯', direction: '正东' },
+    '酉': { mainPosition: '卯', direction: '正东' },
+    '丑': { mainPosition: '卯', direction: '正东' }
   }
   
   return sanShaRules[branch] || { mainPosition: '', direction: '' }
@@ -1105,38 +1115,14 @@ const getStarMeaning = (star: number): string => {
 
 // 动态风水建议计算属性
 const dynamicFengShuiAdvice = computed(() => {
-  const advice = []
+  const advice: Array<{ type: 'fortune' | 'joy' | 'health' | 'finance'; icon: string; borderColor: string; titleColor: string; directions: string }> = []
   
-  // 定义建议模板
-  const adviceTemplates = {
-    fortune: {
-      icon: '💰',
-      title: '财运旺盛方位',
-      borderColor: 'border-green-500',
-      titleColor: 'text-green-800 dark:text-green-200',
-      content: '大门或睡房在{directions}的小伙伴，今年财运不错哟！'
-    },
-    joy: {
-      icon: '🎉',
-      title: '喜事连连',
-      borderColor: 'border-pink-500',
-      titleColor: 'text-pink-800 dark:text-pink-200',
-      content: '大门或睡房在{directions}的，今年家里容易有喜事哟，结婚或生小孩，搬新家！'
-    },
-    health: {
-      icon: '⚠️',
-      title: '健康注意',
-      borderColor: 'border-yellow-500',
-      titleColor: 'text-yellow-800 dark:text-yellow-200',
-      content: '大门或睡房在房屋{directions}的，要特别注意身体，容易生病哟。容易因为官司破财。要注意肠胃问题。'
-    },
-    finance: {
-      icon: '💸',
-      title: '财务谨慎',
-      borderColor: 'border-red-500',
-      titleColor: 'text-red-800 dark:text-red-200',
-      content: '大门或睡房在房屋{directions}的，今年要注意不要做太大的风险投资，容易有损失哟，也要注意财务情况，容易会有意外的损失。'
-    }
+  // 建议类型样式配置（文案在模板中通过 i18n 渲染）
+  const adviceTypes = {
+    fortune: { icon: '💰', borderColor: 'border-green-500', titleColor: 'text-green-800 dark:text-green-200' },
+    joy: { icon: '🎉', borderColor: 'border-pink-500', titleColor: 'text-pink-800 dark:text-pink-200' },
+    health: { icon: '⚠️', borderColor: 'border-yellow-500', titleColor: 'text-yellow-800 dark:text-yellow-200' },
+    finance: { icon: '💸', borderColor: 'border-red-500', titleColor: 'text-red-800 dark:text-red-200' }
   }
   
   // 收集各类型飞星的方位
@@ -1170,39 +1156,23 @@ const dynamicFengShuiAdvice = computed(() => {
   
   // 生成建议
   if (fortuneDirections.length > 0) {
-    const template = adviceTemplates.fortune
-    advice.push({
-      ...template,
-      directions: fortuneDirections.join('、'),
-      content: template.content.replace('{directions}', fortuneDirections.join('、'))
-    })
+    const tplt = adviceTypes.fortune
+    advice.push({ type: 'fortune', ...tplt, directions: fortuneDirections.join('、') })
   }
   
   if (joyDirections.length > 0) {
-    const template = adviceTemplates.joy
-    advice.push({
-      ...template,
-      directions: joyDirections.join('、'),
-      content: template.content.replace('{directions}', joyDirections.join('、'))
-    })
+    const tplt = adviceTypes.joy
+    advice.push({ type: 'joy', ...tplt, directions: joyDirections.join('、') })
   }
   
   if (healthDirections.length > 0) {
-    const template = adviceTemplates.health
-    advice.push({
-      ...template,
-      directions: healthDirections.join('、'),
-      content: template.content.replace('{directions}', healthDirections.join('、'))
-    })
+    const tplt = adviceTypes.health
+    advice.push({ type: 'health', ...tplt, directions: healthDirections.join('、') })
   }
   
   if (financeDirections.length > 0) {
-    const template = adviceTemplates.finance
-    advice.push({
-      ...template,
-      directions: financeDirections.join('、'),
-      content: template.content.replace('{directions}', financeDirections.join('、'))
-    })
+    const tplt = adviceTypes.finance
+    advice.push({ type: 'finance', ...tplt, directions: financeDirections.join('、') })
   }
   
   return advice
@@ -1256,6 +1226,7 @@ onMounted(() => {
 /* 文字行数限制 */
 .line-clamp-2 {
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1263,6 +1234,7 @@ onMounted(() => {
 
 .line-clamp-3 {
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1270,6 +1242,7 @@ onMounted(() => {
 
 .line-clamp-4 {
   display: -webkit-box;
+  line-clamp: 4;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1277,6 +1250,7 @@ onMounted(() => {
 
 .line-clamp-none {
   display: block;
+  line-clamp: unset;
   -webkit-line-clamp: unset;
   -webkit-box-orient: unset;
   overflow: visible;

@@ -5,14 +5,14 @@
     <button
       class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
       @click="toggleSidebar"
-      aria-label="展开侧边栏"
+      :aria-label="t('sidebar.expand')"
     >
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     
     <!-- Logo -->
     <div class="w-10 h-10 flex items-center justify-center">
-      <img src="@/assets/logo.png" alt="北斗九号日历Logo" class="w-8 h-8 object-contain" />
+      <img src="@/assets/logo.png" :alt="t('sidebar.logoAlt')" class="w-8 h-8 object-contain" />
     </div>
     
     <!-- 新建对话和分析按钮 -->
@@ -20,14 +20,14 @@
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#b67fda] text-white hover:bg-[#a06cc7] transition-colors"
         @click="handleNewChat"
-        title="新建对话"
+        :title="t('sidebar.newChat')"
       >
         <Plus class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] transition-colors"
         @click="handleNewAnalysis"
-        title="新建分析"
+        :title="t('sidebar.newAnalysis')"
       >
         <Star class="w-5 h-5" />
       </button>
@@ -39,71 +39,71 @@
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'home' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoHome"
-        title="首页"
+        :title="t('sidebar.nav.home')"
       >
-        <img :src="homeIcon" alt="首页" class="w-5 h-5" />
+        <img :src="homeIcon" :alt="t('sidebar.nav.home')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'calendar' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoCalendar"
-        title="个人运历"
+        :title="t('sidebar.nav.calendar')"
       >
-        <img :src="calendarIcon" alt="个人运历" class="w-5 h-5" />
+        <img :src="calendarIcon" :alt="t('sidebar.nav.calendar')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'ai-chat' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoAIChat"
-        title="命理问答"
+        :title="t('sidebar.nav.aiChat')"
       >
-        <img :src="chatIcon" alt="命理问答" class="w-5 h-5" />
+        <img :src="chatIcon" :alt="t('sidebar.nav.aiChat')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'analysis' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoAnalysis"
-        title="八字分析"
+        :title="t('sidebar.nav.analysis')"
       >
-        <img :src="analysisIcon" alt="八字分析" class="w-5 h-5" />
+        <img :src="analysisIcon" :alt="t('sidebar.nav.analysis')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'zodiac-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoZodiacFortune"
-        title="生肖运势"
+        :title="t('sidebar.nav.zodiac')"
       >
-        <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5" />
+        <img :src="dragonIcon" :alt="t('sidebar.nav.zodiac')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'exam-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoExamFortune"
-        title="考运测算"
+        :title="t('sidebar.nav.exam')"
       >
-        <img :src="graduationIcon" alt="考运测算" class="w-5 h-5" />
+        <img :src="graduationIcon" :alt="t('sidebar.nav.exam')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
         :class="activeTab === 'fengshui-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
         @click="handleGoFengShuiFortune"
-        title="流年风水"
+        :title="t('sidebar.nav.fengshui')"
       >
-        <img :src="fengshuiIcon" alt="流年风水" class="w-5 h-5" />
+        <img :src="fengshuiIcon" :alt="t('sidebar.nav.fengshui')" class="w-5 h-5" />
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-[#0b3289] hover:bg-[#e6eaf6]"
         @click="handleGoBlog"
-        title="命理知识"
+        :title="t('sidebar.nav.knowledge')"
       >
-        <img :src="blogIcon" alt="命理知识" class="w-5 h-5" />
+        <img :src="blogIcon" :alt="t('sidebar.nav.knowledge')" class="w-5 h-5" />
       </button>
     </div>
     
     <!-- 用户头像 -->
     <div class="mt-auto">
       <template v-if="userStore.user">
-        <img :src="defaultAvatar" class="w-8 h-8 rounded-full border object-cover bg-gray-200 dark:bg-gray-700" alt="用户头像" />
+        <img :src="defaultAvatar" class="w-8 h-8 rounded-full border object-cover bg-gray-200 dark:bg-gray-700" :alt="t('sidebar.avatarAlt')" />
       </template>
       <template v-else>
         <button class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700" @click="router.push('/login')">
@@ -120,14 +120,14 @@
       <div class="p-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
-            <img src="@/assets/logo.png" alt="北斗九号日历Logo - 专业AI智能命理预测服务" class="w-8 h-8 object-contain" />
-            <span class="font-medium text-gray-900 dark:text-gray-100">北斗九号日历</span>
+            <img src="@/assets/logo.png" :alt="t('sidebar.logoAlt')" class="w-8 h-8 object-contain" />
+            <span class="font-medium text-gray-900 dark:text-gray-100">{{ t('sidebar.brand') }}</span>
           </div>
           <!-- 折叠按钮 -->
           <button
             class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
             @click="toggleSidebar"
-            aria-label="收起侧边栏"
+            :aria-label="t('sidebar.collapse')"
           >
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
@@ -142,7 +142,7 @@
             @click="handleNewChat"
           >
             <Plus class="w-5 h-5 opacity-80 text-white" />
-            对话自己八字
+            {{ t('common.startChatCTA') }}
           </Button>
           <!-- 新建分析 次按钮 薰衣草色线框 -->
           <Button
@@ -150,12 +150,12 @@
             @click="handleNewAnalysis"
           >
             <Star class="w-5 h-5 opacity-80 text-[#b67fda]" />
-            获取八字报告
+            {{ t('common.startAnalysisButton') }}
           </Button>
         </div>
         <!-- 功能菜单 Claude 风格 -->
         <div class="px-4 py-2 mt-2 flex flex-col gap-2">
-          <div class="text-xs text-gray-500 dark:text-gray-300 mb-2">功能菜单</div>
+          <div class="text-xs text-gray-500 dark:text-gray-300 mb-2">{{ t('sidebar.menu') }}</div>
           <!-- 两列并排按钮布局 -->
           <nav class="grid grid-cols-2 gap-2">
             <Button
@@ -165,8 +165,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoHome"
             >
-              <img :src="homeIcon" alt="首页" class="w-5 h-5 opacity-80" />
-              首页
+              <img :src="homeIcon" :alt="t('sidebar.nav.home')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.home') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -175,8 +175,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoCalendar"
             >
-              <img :src="calendarIcon" alt="个人运历" class="w-5 h-5 opacity-80" />
-              个人运历
+              <img :src="calendarIcon" :alt="t('sidebar.nav.calendar')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.calendar') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -185,8 +185,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAIChat"
             >
-              <img :src="chatIcon" alt="命理问答" class="w-5 h-5 opacity-80" />
-              对话八字
+              <img :src="chatIcon" :alt="t('sidebar.nav.aiChat')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.aiChat') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -195,8 +195,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoAnalysis"
             >
-              <img :src="analysisIcon" alt="八字分析" class="w-5 h-5 opacity-80" />
-              运势分析
+              <img :src="analysisIcon" :alt="t('sidebar.nav.analysis')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.analysis') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -205,8 +205,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoZodiacFortune"
             >
-              <img :src="dragonIcon" alt="生肖运势" class="w-5 h-5 opacity-80" />
-              生肖运势
+              <img :src="dragonIcon" :alt="t('sidebar.nav.zodiac')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.zodiac') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -215,8 +215,8 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoExamFortune"
             >
-              <img :src="graduationIcon" alt="考运测算" class="w-5 h-5 opacity-80" />
-              考试运势
+              <img :src="graduationIcon" :alt="t('sidebar.nav.exam')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.exam') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
@@ -225,16 +225,16 @@
                 : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoFengShuiFortune"
             >
-              <img :src="fengshuiIcon" alt="风水布局" class="w-5 h-5 opacity-80" />
-              风水布局
+              <img :src="fengshuiIcon" :alt="t('sidebar.nav.fengshui')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.fengshui') }}
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
               @click="handleGoBlog"
             >
-              <img :src="blogIcon" alt="命理知识" class="w-5 h-5 opacity-80" />
-              命理知识
+              <img :src="blogIcon" :alt="t('sidebar.nav.knowledge')" class="w-5 h-5 opacity-80" />
+              {{ t('sidebar.nav.knowledge') }}
             </Button>
           </nav>
         </div>
@@ -254,7 +254,7 @@
         <div class="flex items-center justify-start gap-3">
           <template v-if="userStore.user">
             <div class="relative flex items-center gap-2">
-              <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" alt="用户头像 - 个人账户设置与资料管理" @click="showDropdown = !showDropdown" />
+              <img :src="defaultAvatar" class="w-9 h-9 rounded-full border object-cover bg-gray-200 dark:bg-gray-700 cursor-pointer" :alt="t('sidebar.avatarAltDetailed')" @click="showDropdown = !showDropdown" />
               <span class="ml-2 text-base text-gray-900 dark:text-gray-100 font-medium truncate max-w-[120px]">{{ userStore.user.username || userStore.user.email }}</span>
               <transition name="fade">
                 <div v-if="showDropdown" class="absolute left-0 bottom-12 z-50 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-2">
@@ -262,17 +262,17 @@
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                     @click="handleGoProfile"
                   >
-                    个人信息管理
+                    {{ t('sidebar.user.profile') }}
                   </button>
                   <button
                     v-if="userStore.user && (userStore.user.role === 'admin' || userStore.user.role === 'superadmin')"
                     class="w-full text-left px-4 py-2 text-sm text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-700"
                     @click="handleGoAdmin"
                   >
-                    管理员菜单
+                    {{ t('sidebar.user.admin') }}
                   </button>
                   <div class="border-t my-1 border-gray-100 dark:border-gray-700"></div>
-                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" @click="handleLogout(); showDropdown = false">退出登录</button>
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" @click="handleLogout(); showDropdown = false">{{ t('sidebar.user.logout') }}</button>
                 </div>
               </transition>
             </div>
@@ -282,6 +282,7 @@
               <User class="w-5 h-5 text-gray-500 dark:text-gray-300" />
             </Button>
           </template>
+          <!-- Locale Switcher moved to App.vue top-right -->
         </div>
       </div>
     </div>
@@ -298,7 +299,9 @@ import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
 import { useSidebar } from '@/composables/useSidebar'
 import { computed, onMounted, ref, nextTick } from 'vue'
+import { useLocale } from '@/composables/useLocale'
 import { trackFeatureUse } from '@/lib/analytics'
+import * as I18n from 'vue-i18n'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'
 import homeIcon from '@/assets/home.png'
@@ -317,6 +320,10 @@ interface SidebarProps {
 }
 
 defineProps<SidebarProps>()
+
+const { currentLocale, setLocale } = useLocale()
+const { useI18n } = I18n as any
+const { t } = useI18n()
 
 const chatStore = useChatStore()
 const router = useRouter()
