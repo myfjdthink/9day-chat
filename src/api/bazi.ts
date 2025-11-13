@@ -8,6 +8,7 @@ import {
   type ProviderType,
   type ModelType
 } from './config'
+import { API_ENDPOINTS } from './config'
 
 // 根据API文档更新八字分析参数类型
 interface BaziAnalysisParams {
@@ -283,6 +284,42 @@ export async function fetchFortuneAnalysis(params: {
     return res.data
   })
 } 
+
+export async function analyzeTenYearsSingle(params: {
+  birth_datetime: string
+  current_datetime: string
+  gender: '男' | '女'
+  provider?: string
+  model_name?: string
+}): Promise<any> {
+  const { provider: defaultProvider, model: defaultModel } = getDefaultModelConfig()
+  const requestParams = {
+    ...params,
+    provider: params.provider || defaultProvider,
+    model_name: params.model_name || defaultModel
+  }
+  return retryRequest(async () => {
+    try {
+      const res = await request.post(API_ENDPOINTS.TEN_YEARS_SINGLE, requestParams, {
+        headers: { accept: 'application/json' }
+      })
+      return res.data
+    } catch (error: any) {
+      if (error.response?.status === 500) {
+        const minimal = {
+          birth_datetime: params.birth_datetime,
+          current_datetime: params.current_datetime,
+          gender: params.gender
+        }
+        const res2 = await request.post(API_ENDPOINTS.TEN_YEARS_SINGLE, minimal, {
+          headers: { accept: 'application/json' }
+        })
+        return res2.data
+      }
+      throw error
+    }
+  })
+}
 
 /**
  * 生肖运势分析参数

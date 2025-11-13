@@ -74,15 +74,20 @@
       })();
     </script> -->
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ND28SNRGXB"></script>
+    <!-- Google Analytics 4 (仅生产环境加载) -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      // 调试：本地/预发开启
-      const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
-      gtag('js', new Date());
-      gtag('config', 'G-ND28SNRGXB', { debug_mode: isLocal });
+      (function(){
+        const isLocal = ['localhost','127.0.0.1'].includes(location.hostname)
+        if (isLocal) return
+        window.dataLayer = window.dataLayer || []
+        function gtag(){ dataLayer.push(arguments) }
+        const s = document.createElement('script')
+        s.async = true
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-ND28SNRGXB'
+        document.head.appendChild(s)
+        gtag('js', new Date())
+        gtag('config', 'G-ND28SNRGXB', { debug_mode: false })
+      })()
     </script>
     
     <!-- 结构化数据 - 网站信息 -->

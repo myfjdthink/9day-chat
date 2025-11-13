@@ -95,6 +95,9 @@
     "chat": {
       "carryHint": "This question will carry to the chat page for a consistent experience"
     },
+    "tenYears": {
+      "cta": "Get 10-Year Fortune Analysis"
+    },
     "calendar": {
       "scenarios": {
         "title": "🎯 Scenarios",
@@ -335,7 +338,8 @@
         "ai": {
           "title": "Fortune Prediction",
           "desc": "Fortune analysis, personality insights and life advice"
-        }
+        },
+        "tenYears": { "title": "Ten-Year Fortune" }
       },
       "scope": {
         "title": "Select Analysis Scope",
@@ -348,7 +352,8 @@
         "loading": "Analyzing...",
         "save": "Save Report",
         "reset": "Re-analyze",
-        "chat": "Chat with Report"
+        "chat": "Chat with Report",
+        "tenYears": "10-Year Fortune"
       },
       "report": {
         "title": "Bazi Analysis Report",
@@ -591,6 +596,11 @@
           }
         }
       }
+    }
+  },
+  "analysis": {
+    "flowTen": {
+      "yearLabel": "Annual"
     }
   },
   "sidebar": {

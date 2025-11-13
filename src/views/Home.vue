@@ -65,11 +65,15 @@
                   <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">{{ t('home.input.birth.hint') }}</p>
                 </div>
 
-                <!-- 开始分析按钮 -->
-                <div class="pt-2 pb-2">
+                <!-- 开始分析与十年运势按钮 -->
+                <div class="pt-2 pb-2 flex flex-wrap gap-3">
                   <Button size="lg" variant="default" :disabled="isAnalyzing" @click="handleStartAnalysisHome">
                     <Star class="w-5 h-5 mr-2" />
                     {{ isAnalyzing ? t('common.loading.analyzing') : t('common.startAnalysisButton') }}
+                  </Button>
+                  <Button size="lg" variant="default" :disabled="isAnalyzing" @click="handleStartTenYearsHome">
+                    <Star class="w-5 h-5 mr-2" />
+                    {{ t('home.tenYears.cta') }}
                   </Button>
                 </div>
               </CardContent>
@@ -565,6 +569,13 @@ const handleStartAnalysisHome = async () => {
   if (!birthDateTime.value) { alert('请选择出生日期时间'); return }
   isAnalyzing.value = true
   await router.push({ path: '/analysis', query: { gender: gender.value, birth: birthDateTime.value, auto: '1' } })
+  setTimeout(() => { isAnalyzing.value = false }, 800)
+}
+
+const handleStartTenYearsHome = async () => {
+  if (!birthDateTime.value) { alert('请选择出生日期时间'); return }
+  isAnalyzing.value = true
+  await router.push({ path: '/analysis', query: { gender: gender.value, birth: birthDateTime.value, auto10y: '1' } })
   setTimeout(() => { isAnalyzing.value = false }, 800)
 }
 

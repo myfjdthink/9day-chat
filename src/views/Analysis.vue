@@ -184,7 +184,7 @@
       </div>
 
       <!-- Start Analysis Button -->
-      <div v-if="!analysisResult" class="mt-8 flex justify-center">
+      <div v-if="!analysisResult" class="mt-8 flex justify-center space-x-4">
         <Button
           size="lg"
           variant="default"
@@ -193,6 +193,15 @@
         >
           <Star class="w-5 h-5 mr-2" />
           {{ isAnalyzing ? t('home.analysis.actions.loading') : t('home.analysis.actions.start') }}
+        </Button>
+        <Button
+          size="lg"
+          variant="default"
+          :disabled="isTenYearsAnalyzing"
+          @click="handleTenYearsAnalysis"
+        >
+          <Star class="w-5 h-5 mr-2" />
+          {{ isTenYearsAnalyzing ? t('home.analysis.actions.loading') : t('home.analysis.actions.tenYears') }}
         </Button>
       </div>
 
@@ -265,6 +274,31 @@
                   <!-- 用神分析不单独显示，只在基础分析中组合显示 -->
                   
                   <!-- 其他分析类型 - 保持原有markdown格式 -->
+                  <div v-else-if="type === '流年十年' && rawDayunData" class="space-y-4">
+                    <div class="flex items-center justify-between">
+                      <div class="px-3 py-1 text-xs rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300">
+                        {{ getFlowTenRangeLabel() }}
+                      </div>
+                    </div>
+                    <div class="relative pl-6">
+                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-200 dark:bg-emerald-900 rounded"></div>
+                      <div class="space-y-4">
+                        <div
+                          v-for="[y, desc] in getSortedFlowTen()"
+                          :key="y"
+                          class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm"
+                        >
+                          <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                              <span class="inline-flex items-center px-2 py-0.5 text-xs rounded bg-emerald-50 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300">{{ y }}</span>
+                          <span class="text-xs text-emerald-600 dark:text-emerald-300">{{ t('analysis.flowTen.yearLabel') }}</span>
+                            </div>
+                          </div>
+                          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ desc }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div v-else-if="type !== '用神分析'" class="prose max-w-none dark:prose-invert prose-sm">
                     <div v-html="formatMarkdown(content as string)" class="leading-relaxed"></div>
                   </div>
@@ -323,7 +357,7 @@
       </div>
     </div>
     <!-- 全局分析中遮罩 -->
-    <div v-if="isAnalyzing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+    <div v-if="isAnalyzing || isTenYearsAnalyzing" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
       <div class="flex flex-col items-center">
         <svg class="animate-spin h-10 w-10 text-green-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -475,7 +509,7 @@ import { marked } from 'marked'
 import html2canvas from 'html2canvas'
 
 // API
-import { analyzeBazi, analyzeBase, analyzeYongshen, ANALYSIS_PARTS } from '@/api/bazi'
+import { analyzeBazi, analyzeBase, analyzeYongshen, ANALYSIS_PARTS, analyzeTenYearsSingle } from '@/api/bazi'
 import { PROVIDERS, MODELS } from '@/api/config'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
@@ -498,6 +532,7 @@ const getLocalizedTypeName = (type: string): string => {
   if (type.includes('基础分析')) return t('analysis.types.basic.title')
   if (type.includes('用神分析')) return t('analysis.types.deity.title')
   if (type.includes('运势预测')) return t('analysis.types.ai.title')
+  if (type.includes('流年十年')) return t('analysis.types.tenYears.title')
   if (type.includes('八字排盘')) return t('analysis.types.basic.title')
   if (type.includes('五行')) return t('analysis.types.basic.title')
   if (type.includes('格局')) return t('analysis.types.deity.title')
@@ -521,6 +556,7 @@ interface AnalysisScope {
 const gender = ref<'男' | '女'>('男')
 const birthDateTime = ref<string>('1983-12-11T08:00')
 const isAnalyzing = ref<boolean>(false)
+const isTenYearsAnalyzing = ref<boolean>(false)
 type AnalysisResultData = {
   analysisType: string
   analysisTime: string
@@ -637,8 +673,8 @@ const handleStartAnalysis = async (): Promise<void> => {
 
   try {
     isAnalyzing.value = true
-    const birthDateTimeBeijing = dayjs(birthDateTime.value).tz('Asia/Shanghai').format()
-    const currentDateTimeBeijing = dayjs().tz('Asia/Shanghai').format()
+    const birthDateTimeBeijing = dayjs(birthDateTime.value).tz('Asia/Shanghai').format('YYYY-MM-DDTHH:mm:ss')
+    const currentDateTimeBeijing = dayjs().tz('Asia/Shanghai').format('YYYY-MM-DDTHH:mm:ss')
     
     // 合并所有分析结果
     const allResults: Record<string, string> = {}
@@ -819,6 +855,84 @@ const handleResetAnalysis = () => {
   analysisResult.value = null
 }
 
+const handleTenYearsAnalysis = async (): Promise<void> => {
+  if (!birthDateTime.value) {
+    alert(t('home.analysis.errors.selectBirthTime'))
+    return
+  }
+  try {
+    isTenYearsAnalyzing.value = true
+    const birthDateTimeBeijing = dayjs(birthDateTime.value).tz('Asia/Shanghai').format('YYYY-MM-DDTHH:mm:ss')
+    const currentDateTimeBeijing = dayjs().tz('Asia/Shanghai').format('YYYY-MM-DDTHH:mm:ss')
+    const allResults: Record<string, string> = {}
+    const selectedTypes: string[] = []
+    const res: any = await analyzeTenYearsSingle({
+      birth_datetime: birthDateTimeBeijing,
+      current_datetime: currentDateTimeBeijing,
+      gender: gender.value
+    })
+    const typeFromServer = res?.data?.分析类型
+    const timeFromServer = res?.data?.分析时间
+    const flowTen = res?.data?.分析结果?.流年十年
+    if (flowTen && typeof flowTen === 'object') {
+      const years = Object.keys(flowTen).sort()
+      const md = years.map(y => `### ${y}\n${flowTen[y]}\n`).join('\n')
+      allResults['流年十年'] = md
+      selectedTypes.push(getLocalizedTypeName(typeFromServer || '流年十年'))
+      analysisResult.value = {
+        analysisType: getLocalizedTypeName(typeFromServer || '流年十年'),
+        analysisTime: timeFromServer || dayjs().tz('Asia/Shanghai').format(),
+        analysisResult: allResults
+      }
+      rawDayunData.value = flowTen
+    } else {
+      let content = ''
+      if (typeof res === 'string') content = res
+      else if (typeof res?.data === 'string') content = res.data
+      else if (typeof res?.message === 'string') content = res.message
+      else content = JSON.stringify(res?.data ?? res)
+      allResults['流年十年'] = content
+      selectedTypes.push('十年大运')
+      analysisResult.value = {
+        analysisType: selectedTypes.join('、'),
+        analysisTime: dayjs().tz('Asia/Shanghai').format(),
+        analysisResult: allResults
+      }
+    }
+    const dt = dayjs(birthDateTime.value).tz('Asia/Shanghai')
+    const markdownReport = Object.entries(allResults)
+      .map(([type, c]) => `### ${type}\n${c}\n`)
+      .join('\n')
+    const params = {
+      client_analysis_id: `client_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+      birth_year: dt.year(),
+      birth_month: dt.month() + 1,
+      birth_day: dt.date(),
+      birth_time: dt.format('HH:mm'),
+      gender: (gender.value === '男' ? 'male' : 'female') as 'male' | 'female',
+      analysis_type: selectedTypes.join(','),
+      notes: markdownReport,
+      display_name: '',
+      user_nickname: userStore.user?.username || '',
+      analysis_results: allResults,
+      summary: {},
+      settings: {},
+      extra_metadata: {}
+    }
+    await baziStore.addAnalysis(params)
+    await trySaveUserBaziInfo()
+    const latest = baziStore.sortedAnalyses[0]
+    if (latest) {
+      router.push({ path: '/analysis', query: { analysisId: latest.id } })
+    }
+  } catch (error: any) {
+    const serverMsg = error?.response?.data?.message || error?.response?.data?.detail
+    alert(serverMsg || error?.message || '分析过程中出现错误')
+  } finally {
+    isTenYearsAnalyzing.value = false
+  }
+}
+
 // 对话报告按钮逻辑
 const handleChatWithReport = async () => {
   if (!analysisResult.value) return
@@ -845,11 +959,12 @@ const router = useRouter()
 
 // 从首页路由参数自动填充并触发分析
 watch(
-  () => [route.query.birth, route.query.gender, route.query.auto],
-  async ([birth, genderParam, auto]) => {
+  () => [route.query.birth, route.query.gender, route.query.auto, route.query.auto10y],
+  async ([birth, genderParam, auto, auto10y]) => {
     const bd = typeof birth === 'string' ? birth : ''
     const gd = typeof genderParam === 'string' ? genderParam : ''
     const needAuto = auto === '1'
+    const needAutoTenYears = auto10y === '1'
     if (bd) birthDateTime.value = bd
     if (gd === '男' || gd === '女') gender.value = gd
     if (needAuto) {
@@ -861,6 +976,9 @@ watch(
       await nextTick()
       await handleStartAnalysis()
       router.replace({ path: route.path, query: { ...route.query, auto: undefined } })
+    } else if (needAutoTenYears) {
+      await nextTick()
+      await handleTenYearsAnalysis()
     }
   },
   { immediate: true }
@@ -1187,6 +1305,22 @@ const hasBaseAndYongshenData = () => {
 const rawBaseData = ref<any>(null)
 const rawYongshenData = ref<any>(null)
 const rawDayunData = ref<any>(null)
+
+const getSortedFlowTen = () => {
+  if (!rawDayunData.value) return [] as Array<[string, string]>
+  return Object.keys(rawDayunData.value)
+    .sort()
+    .map((y) => [y, (rawDayunData.value as Record<string, string>)[y]])
+}
+
+const getFlowTenRangeLabel = () => {
+  const list = getSortedFlowTen()
+  if (!list.length) return ''
+  const nums = list.map(([y]) => parseInt(y.match(/\d{4}/)?.[0] || y))
+  const min = Math.min(...nums)
+  const max = Math.max(...nums)
+  return `${min}-${max}`
+}
 
 // 将markdown格式的基础分析数据转换为结构化数据
 const getStructuredBaseData = (content: string) => {

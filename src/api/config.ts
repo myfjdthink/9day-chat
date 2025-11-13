@@ -28,6 +28,7 @@ export const API_ENDPOINTS = {
   // 八字分析
   BAZI_ANALYSIS: '/bazi/ai',
   BAZI_FORTUNE: '/bazi/fortune',
+  TEN_YEARS_SINGLE: '/bazi/ai/10years_single',
   // 生肖运势
   ZODIAC_FORTUNE: '/bazi/zodiac-fortune',
   // 用户管理
