@@ -291,7 +291,7 @@
                           <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center gap-2">
                               <span class="inline-flex items-center px-2 py-0.5 text-xs rounded bg-emerald-50 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300">{{ y }}</span>
-                          <span class="text-xs text-emerald-600 dark:text-emerald-300">{{ t('analysis.flowTen.yearLabel') }}</span>
+                              <span class="text-xs text-emerald-600 dark:text-emerald-300">{{ t('home.analysis.flowTen.yearLabel') }}</span>
                             </div>
                           </div>
                           <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ desc }}</p>

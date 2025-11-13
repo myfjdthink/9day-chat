@@ -322,6 +322,7 @@
         "tenYears": { "title": "流年十年" }
       },
       "scope": { "title": "选择分析范围", "year": "流年", "month": "流月", "day": "流日" },
+      "flowTen": { "yearLabel": "流年" },
       "actions": {
         "start": "开始分析",
         "loading": "分析中...",
@@ -564,11 +565,6 @@
           }
         }
       }
-    }
-  },
-  "analysis": {
-    "flowTen": {
-      "yearLabel": "流年"
     }
   },
   "sidebar": {

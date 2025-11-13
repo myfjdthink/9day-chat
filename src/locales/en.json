@@ -347,6 +347,7 @@
         "month": "Monthly",
         "day": "Daily"
       },
+      "flowTen": { "yearLabel": "Annual" },
       "actions": {
         "start": "Start Analysis",
         "loading": "Analyzing...",
@@ -596,11 +597,6 @@
           }
         }
       }
-    }
-  },
-  "analysis": {
-    "flowTen": {
-      "yearLabel": "Annual"
     }
   },
   "sidebar": {
