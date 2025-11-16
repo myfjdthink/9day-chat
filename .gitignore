@@ -92,3 +92,5 @@ build/
 *.build
 # Ignore local reference files
 参考/
+
+/.trae/
