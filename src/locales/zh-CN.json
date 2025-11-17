@@ -172,7 +172,7 @@
       "items": {
         "fishTank": "鱼缸养鱼",
         "waterCup": "一杯水",
-        "musicBox": "音乐盒",
+        "musicBox": "铜芯音乐盒",
         "flowingWater": "流动的水",
         "blueCarpet": "蓝色地毯",
         "yellowItems": "黄色物品",
@@ -223,8 +223,8 @@
         }
       },
       "advice": {
-        "still": "⚠️ 宜静不宜动",
-        "noGroundwork": "⚠️ 不宜动土",
+        "still": "⚠️ 宜静不宜动，不宜装修、挖掘、敲打，不宜摆放鱼缸等流动的物件。",
+        "noGroundwork": "⚠️ 不宜动土，不宜装修、挖掘、敲打。",
         "taisuiTitle": "太岁位（{direction}）",
         "taisuiDesc": "宜静不宜动，不宜装修、挖掘、敲打。可放置吉祥物品镇宅。",
         "sanshaTitle": "三煞位（{direction}）",

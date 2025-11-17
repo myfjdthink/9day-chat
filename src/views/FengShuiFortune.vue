@@ -292,21 +292,27 @@
                       </div>
                       
                       <!-- 宜放物品 -->
-                      <div class="text-white bg-green-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-green-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
+                      <div v-if="!isTaiSuiPosition(position.direction) && !isSanShaPosition(position.direction)" class="text-white bg-green-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-green-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
                         <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">{{ $t('fengshui.labels.suitablePrefix') }}</div>
                         <div class="text-[6px] xs:text-[7px] sm:text-[8px] md:text-[9px] leading-[1.2] font-medium break-words">
                           <span class="inline-block">
                             <!-- 小屏幕显示2个，中屏显示3个，大屏显示4个 -->
                             <span class="sm:hidden">
-                              {{ position.suitable.slice(0, 2).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.suitable.slice(0, 2)" :key="'s2-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(2, position.suitable.length) - 1">、</span>
+                              </span>
                               <span v-if="position.suitable.length > 2">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden sm:block lg:hidden">
-                              {{ position.suitable.slice(0, 3).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.suitable.slice(0, 3)" :key="'s3-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(3, position.suitable.length) - 1">、</span>
+                              </span>
                               <span v-if="position.suitable.length > 3">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden lg:block">
-                              {{ position.suitable.slice(0, 4).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.suitable.slice(0, 4)" :key="'s4-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(4, position.suitable.length) - 1">、</span>
+                              </span>
                               <span v-if="position.suitable.length > 4">{{ $t('common.etc') }}</span>
                             </span>
                           </span>
@@ -314,21 +320,27 @@
                       </div>
                       
                       <!-- 忌放物品 -->
-                      <div class="text-white bg-red-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-red-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
+                      <div v-if="!isTaiSuiPosition(position.direction) && !isSanShaPosition(position.direction)" class="text-white bg-red-600/90 rounded px-1 sm:px-1.5 py-1 sm:py-1.5 backdrop-blur-sm shadow-lg border border-red-400/50 min-h-[32px] sm:min-h-[36px] flex flex-col justify-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.9);">
                         <div class="font-bold text-[7px] xs:text-[8px] sm:text-[9px] md:text-[10px] mb-0.5">{{ $t('fengshui.labels.avoidPrefix') }}</div>
                         <div class="text-[6px] xs:text-[7px] sm:text-[8px] md:text-[9px] leading-[1.2] font-medium break-words">
                           <span class="inline-block">
                             <!-- 小屏幕显示2个，中屏显示3个，大屏显示4个 -->
                             <span class="sm:hidden">
-                              {{ position.avoid.slice(0, 2).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.avoid.slice(0, 2)" :key="'a2-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(2, position.avoid.length) - 1">、</span>
+                              </span>
                               <span v-if="position.avoid.length > 2">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden sm:block lg:hidden">
-                              {{ position.avoid.slice(0, 3).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.avoid.slice(0, 3)" :key="'a3-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(3, position.avoid.length) - 1">、</span>
+                              </span>
                               <span v-if="position.avoid.length > 3">{{ $t('common.etc') }}</span>
                             </span>
                             <span class="hidden lg:block">
-                              {{ position.avoid.slice(0, 4).map(i => $t('fengshui.items.' + i)).join('、') }}
+                              <span v-for="(item, idx) in position.avoid.slice(0, 4)" :key="'a4-' + item">
+                                {{ $t('fengshui.items.' + item) }}<span v-if="idx < Math.min(4, position.avoid.length) - 1">、</span>
+                              </span>
                               <span v-if="position.avoid.length > 4">{{ $t('common.etc') }}</span>
                             </span>
                           </span>
@@ -496,10 +508,10 @@
                   <h5 class="font-semibold" :class="advice.titleColor">{{ $t('fengshui.advice.templates.' + advice.type + '.title') }}</h5>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">
-                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ advice.directions.split('、').map(d => $t('fengshui.directions.' + d)).join('、') }}{{ $t('fengshui.info.directionSuffix') }}</span>
+                  <span class="font-medium text-blue-600 dark:text-blue-400">{{ advice.directionsLocalized }}{{ $t('fengshui.info.directionSuffix') }}</span>
                 </p>
                 <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {{ $t('fengshui.advice.templates.' + advice.type + '.content', { directions: advice.directions.split('、').map(d => $t('fengshui.directions.' + d)).join('、') }) }}
+                  {{ $t('fengshui.advice.templates.' + advice.type + '.content', { directions: advice.directionsLocalized }) }}
                 </p>
               </div>
             </div>
@@ -651,7 +663,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance } from 'vue'
 import { Upload, RotateCw, RotateCcw } from 'lucide-vue-next'
 import SEO from '@/components/SEO.vue'
 import Button from '@/components/ui/Button.vue'
@@ -665,6 +677,10 @@ const elementKeyMap: Record<string, string> = {
   '火': 'fire'
 }
 const getElementKey = (el: string): string => elementKeyMap[el] || el
+
+const instance = getCurrentInstance()
+const formatItems = (items: string[], limit: number): string => items.slice(0, limit).map((k: string) => (instance?.proxy as any).$t('fengshui.items.' + k)).join('、')
+const formatDirections = (directions: string): string => directions.split('、').map((d: string) => (instance?.proxy as any).$t('fengshui.directions.' + d)).join('、')
 
 // 响应式数据
 const selectedYear = ref(2025)
@@ -1115,7 +1131,7 @@ const getStarMeaning = (star: number): string => {
 
 // 动态风水建议计算属性
 const dynamicFengShuiAdvice = computed(() => {
-  const advice: Array<{ type: 'fortune' | 'joy' | 'health' | 'finance'; icon: string; borderColor: string; titleColor: string; directions: string }> = []
+  const advice: Array<{ type: 'fortune' | 'joy' | 'health' | 'finance'; icon: string; borderColor: string; titleColor: string; directions: string; directionsLocalized: string }> = []
   
   // 建议类型样式配置（文案在模板中通过 i18n 渲染）
   const adviceTypes = {
@@ -1133,6 +1149,7 @@ const dynamicFengShuiAdvice = computed(() => {
   
   // 遍历当前年份的飞星排布
   flyingStarPositions.value.forEach(position => {
+    if (isTaiSuiPosition(position.direction) || isSanShaPosition(position.direction)) return
     if (position.direction === '中央') return // 跳过中央位置
     
     switch (position.star) {
@@ -1157,22 +1174,26 @@ const dynamicFengShuiAdvice = computed(() => {
   // 生成建议
   if (fortuneDirections.length > 0) {
     const tplt = adviceTypes.fortune
-    advice.push({ type: 'fortune', ...tplt, directions: fortuneDirections.join('、') })
+    const dirs = fortuneDirections.join('、')
+    advice.push({ type: 'fortune', ...tplt, directions: dirs, directionsLocalized: formatDirections(dirs) })
   }
   
   if (joyDirections.length > 0) {
     const tplt = adviceTypes.joy
-    advice.push({ type: 'joy', ...tplt, directions: joyDirections.join('、') })
+    const dirs = joyDirections.join('、')
+    advice.push({ type: 'joy', ...tplt, directions: dirs, directionsLocalized: formatDirections(dirs) })
   }
   
   if (healthDirections.length > 0) {
     const tplt = adviceTypes.health
-    advice.push({ type: 'health', ...tplt, directions: healthDirections.join('、') })
+    const dirs = healthDirections.join('、')
+    advice.push({ type: 'health', ...tplt, directions: dirs, directionsLocalized: formatDirections(dirs) })
   }
   
   if (financeDirections.length > 0) {
     const tplt = adviceTypes.finance
-    advice.push({ type: 'finance', ...tplt, directions: financeDirections.join('、') })
+    const dirs = financeDirections.join('、')
+    advice.push({ type: 'finance', ...tplt, directions: dirs, directionsLocalized: formatDirections(dirs) })
   }
   
   return advice
