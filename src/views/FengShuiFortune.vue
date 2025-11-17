@@ -467,14 +467,14 @@
                   <div class="w-3 h-3 bg-yellow-500 rounded border border-yellow-600"></div>
                   <span class="font-semibold text-yellow-800 dark:text-yellow-200">{{ $t('fengshui.advice.taisuiTitle', { direction: $t('fengshui.directions.' + taiSuiDirection) }) }}</span>
                 </div>
-        <p class="text-yellow-700 dark:text-yellow-300 text-xs">{{ $t('fengshui.info.taisuiDesc') }}</p>
+                <p class="text-yellow-700 dark:text-yellow-300 text-xs">{{ $t('fengshui.advice.taisuiDesc') }}</p>
               </div>
               <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800">
                 <div class="flex items-center space-x-2 mb-1">
                   <div class="w-3 h-3 bg-red-500 rounded border border-red-600"></div>
                   <span class="font-semibold text-red-800 dark:text-red-200">{{ $t('fengshui.advice.sanshaTitle', { direction: $t('fengshui.directions.' + sanShaDirection) }) }}</span>
                 </div>
-        <p class="text-red-700 dark:text-red-300 text-xs">{{ $t('fengshui.info.sanshaDesc') }}</p>
+                <p class="text-red-700 dark:text-red-300 text-xs">{{ $t('fengshui.advice.sanshaDesc') }}</p>
               </div>
             </div>
           </div>
