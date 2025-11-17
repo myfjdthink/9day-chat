@@ -21,7 +21,7 @@ interface SEOProps {
 const defaultTitle = '北斗九号日历 - 专业AI八字运势分析平台 | 智能命理预测服务'
 const defaultDescription = '北斗九号日历提供专业的AI八字运势分析、智能择日推荐、生肖运势查询等服务。基于传统命理学理论，结合现代AI技术，为用户提供精准的运势预测、人生指导和决策建议。支持在线八字排盘、用神分析、流年运势等功能。'
 const defaultKeywords = '八字分析,AI智能命理,择日推荐,生肖运势,命理预测,八字排盘,用神分析,流年运势,黄道吉日,运势分析,命理咨询,在线算命'
-const defaultImage = 'https://www.9day.tech/logo.png'
+const defaultImage = 'https://www.9day.tech/favicon.png'
 const defaultUrl = 'https://www.9day.tech/'
 const defaultType = 'website'
 
