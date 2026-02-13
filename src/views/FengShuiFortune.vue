@@ -683,7 +683,7 @@ const formatItems = (items: string[], limit: number): string => items.slice(0, l
 const formatDirections = (directions: string): string => directions.split('、').map((d: string) => (instance?.proxy as any).$t('fengshui.directions.' + d)).join('、')
 
 // 响应式数据
-const selectedYear = ref(2025)
+const selectedYear = ref(2026)
 const uploadedImage = ref<string | null>(null)
 const showOverlay = ref(true)
 const overlayOpacity = ref(0.7)
