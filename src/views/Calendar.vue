@@ -20,12 +20,12 @@
             <div class="flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-8 mb-8">
               <img 
                 src="/src/assets/好运日历.jpg" 
-                alt="好运日历" 
+                :alt="$t('calendar.unauthed.imageAltLucky')" 
                 class="w-80 h-52 sm:w-96 sm:h-64 object-cover rounded-lg shadow-lg"
               />
               <img 
                 src="/src/assets/择日.jpg" 
-                alt="择日" 
+                :alt="$t('calendar.unauthed.imageAltAuspicious')" 
                 class="w-80 h-52 sm:w-96 sm:h-64 object-cover rounded-lg shadow-lg"
               />
             </div>
@@ -120,7 +120,7 @@
                   <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ $t('calendar.labels.score') }}</h4>
                   <div class="flex items-center space-x-1">
                     <span class="text-xl font-bold text-purple-600 dark:text-purple-400">{{ fortuneData.overallScore }}</span>
-                    <span class="text-xs text-gray-600 dark:text-gray-400">分</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-400">{{ $t('calendar.labels.points') }}</span>
                   </div>
                 </div>
 
@@ -272,14 +272,13 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import Button from '@/components/ui/Button.vue'
-import Card from '@/components/ui/Card.vue'
 import Modal from '@/components/ui/Modal.vue'
 import { useUserStore } from '@/stores/user'
 import SEO from '@/components/SEO.vue'
 import { fetchFortuneAnalysis, analyzeFortuneRange } from '@/api/bazi'
 import { useRouter } from 'vue-router'
 // @ts-ignore
-import { Lunar, Solar } from 'lunar-javascript'
+import { Solar } from 'lunar-javascript'
 import { i18n } from '@/i18n'
 
 // 事项类型（国际化）
@@ -317,7 +316,6 @@ const weekDays = computed(() => [
 
 const calendarDays = computed(() => {
   const firstDay = currentMonth.value.startOf('month')
-  const lastDay = currentMonth.value.endOf('month')
   const start = firstDay.subtract(firstDay.day(), 'day')
   const days = []
   let d = start
@@ -332,10 +330,7 @@ const calendarDays = computed(() => {
   return days
 })
 const currentMonthLabel = computed(() => {
-  const locale = i18n.global.locale.value
-  return locale === 'zh-CN'
-    ? currentMonth.value.format('YYYY年M月')
-    : currentMonth.value.format('MMMM YYYY')
+  return currentMonth.value.format(i18n.global.t('calendar.dateFormats.monthLabel') as string)
 })
 
 // 选中日期的详细信息
@@ -345,9 +340,17 @@ const selectedDateInfo = computed(() => {
   const lunar = solar.getLunar()
   
   return {
-    solar: date.format('YYYY年M月D日 dddd'),
-    lunar: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
-    ganzhi: `${lunar.getYearInGanZhi()}年 ${lunar.getMonthInGanZhi()}月 ${lunar.getDayInGanZhi()}日`
+    solar: date.format(i18n.global.t('calendar.dateFormats.solar') as string),
+    lunar: i18n.global.t('calendar.dateFormats.lunar', {
+      year: lunar.getYearInChinese(),
+      month: lunar.getMonthInChinese(),
+      day: lunar.getDayInChinese()
+    }) as string,
+    ganzhi: i18n.global.t('calendar.dateFormats.ganzhi', {
+      year: lunar.getYearInGanZhi(),
+      month: lunar.getMonthInGanZhi(),
+      day: lunar.getDayInGanZhi()
+    }) as string
   }
 })
 
@@ -436,16 +439,12 @@ function getBaziParams(date: string): {
   gender: '男' | '女'
   analysis_parts: never[]
 } | null {
-  console.log('=== getBaziParams 调试 ===')
   const user = userStore.user
-  console.log('用户信息:', user)
   
   const requiredFields = ['birth_year', 'birth_month', 'birth_day', 'birth_time', 'gender']
   const missingFields = requiredFields.filter(field => !user?.[field as keyof typeof user])
   
   if (!user || missingFields.length > 0) {
-    console.log('缺少必要字段:', missingFields)
-    console.log('用户对象存在:', !!user)
     return null
   }
   
@@ -461,25 +460,12 @@ function getBaziParams(date: string): {
     analysis_parts: []
   }
   
-  console.log('八字参数构建完成:', params)
   return params
 }
 
 // 获取单日运势（调用后端API）
 async function fetchFortune(date: string) {
-  console.log('=== fetchFortune 开始调试 ===')
-  console.log('1. 检查用户token:', userStore.token ? '存在' : '不存在')
-  console.log('2. token值:', userStore.token)
-  console.log('3. 用户登录状态:', userStore.isLoggedIn)
-  console.log('4. 用户信息完整性:', userStore.user ? '用户信息存在' : '用户信息为空')
-  console.log('5. 用户详细信息:', userStore.user)
-  console.log('6. localStorage token:', localStorage.getItem('access_token'))
-  console.log('🔍 开始获取运势数据:', { date, token: !!userStore.token, user: userStore.user, isLoggedIn: userStore.isLoggedIn })
-  
   if (!userStore.isLoggedIn) {
-    console.log('❌ 用户未登录或token已过期')
-    console.log('提示：请先登录以获取运势数据')
-    // 显示友好的提示信息
     fortuneData.value = {
       overallScore: 0,
       overallDesc: i18n.global.t('calendar.fallback.overallDesc'),
@@ -497,45 +483,26 @@ async function fetchFortune(date: string) {
     return;
   }
   
-  console.log('✅ 用户已登录，开始准备API请求')
-  
-  console.log('✅ 用户已登录，token存在')
-  console.log('3. 检查用户信息:', userStore.user)
-  
   const params = getBaziParams(date)
-  console.log('4. 八字参数:', params)
   if (!params) {
-    console.log('❌ 八字信息不完整:', userStore.user)
-    console.log('八字信息不完整，退出函数')
     modalMsg.value = i18n.global.t('calendar.modal.incompleteBazi');
     showModal.value = true;
     fortuneData.value = null;
     return;
   }
   
-  console.log('✅ 八字信息完整，准备调用API:', params)
-  
   const requestBody = {
     birth_datetime: params.birth_datetime,
     current_datetime: params.current_datetime,
     gender: params.gender
   }
-  console.log('5. API请求参数:', requestBody)
-  
   // params.gender 已经是 '男' | '女' 类型，无需断言
   try {
-    // 调用后端API获取运势数据
-    console.log('📡 调用fetchFortuneAnalysis API...')
-    console.log('6. 开始发送API请求...')
     const res = await fetchFortuneAnalysis(requestBody)
-    
-    console.log('📡 API响应:', res)
-    console.log('7. API响应结果:', res)
-    
+
     if (res.success && res.data?.data) {
       const d = res.data.data
-      console.log('✅ 运势数据获取成功:', d)
-      
+
       // 只取页面需要的字段
       const values = [
         d.career, d.love, d.wealth, d.luck, d.mood, d.travel, d.friend, d.entertainment
@@ -549,39 +516,21 @@ async function fetchFortune(date: string) {
         advice: generateAdvice(d),
         avoid: generateAvoid(d)
       }
-      
-      console.log('✅ 运势数据处理完成:', fortuneData.value)
-      console.log('8. 运势数据设置成功:', fortuneData.value)
     } else {
-      console.log('❌ API返回失败:', res)
-      console.error('获取运势失败:', res.message)
-      console.log('9. 失败响应详情:', res)
+      console.error(res)
       fortuneData.value = null
       modalMsg.value = res.message || i18n.global.t('calendar.errors.fetchFailed')
       showModal.value = true
     }
   } catch (e: any) {
-    console.error('❌ API调用异常:', e)
-    console.error('获取运势出错:', e)
-    console.log('10. 错误详情:', {
-      message: e.message,
-      status: e.status,
-      statusText: e.statusText,
-      data: e.data
-    })
+    console.error(e)
     fortuneData.value = null
     modalMsg.value = i18n.global.t('calendar.errors.fetchFailed')
     showModal.value = true
-  } finally {
-    console.log('=== fetchFortune 调试结束 ===')
   }
 }
 // 择日推荐 - 使用新的fortune_range API
 async function handleRecommend() {
-  console.log('=== handleRecommend 开始调试 ===')
-  console.log('1. 用户点击择日推荐按钮')
-  console.log('2. 当前选择的事项:', selectedPurpose.value)
-  
   if (!selectedPurpose.value) {
     modalMsg.value = i18n.global.t('calendar.modal.selectPurpose')
     modalType.value = 'info'
@@ -589,12 +538,8 @@ async function handleRecommend() {
     return
   }
   
-  console.log('3. 获取八字参数...')
   const params = getBaziParams(todayStr)
-  console.log('4. 八字参数:', params)
-  
   if (!params) {
-    console.log('八字信息不完整，退出函数')
     modalMsg.value = i18n.global.t('calendar.modal.incompleteBazi');
     modalType.value = 'incomplete';
     showModal.value = true;
@@ -602,30 +547,25 @@ async function handleRecommend() {
   }
   
   isRecommending.value = true // 开始loading
-  console.log('5. 开始择日推荐流程...')
-  
+
   try {
     // 获取当前显示月份的数据
     const monthKey = currentMonth.value.format('YYYY-MM')
-    console.log('6. 当前月份:', monthKey)
-    
+
     // 检查缓存
     if (monthlyFortuneCache.value[monthKey]) {
-      console.log('7. 使用缓存数据')
       processMonthlyData(monthlyFortuneCache.value[monthKey])
     } else {
-      console.log('8. 获取新数据')
       await fetchMonthlyFortune(monthKey, params)
     }
-    
+
   } catch (e) {
-    console.error('14. 择日推荐过程出错:', e)
+    console.error(e)
     modalMsg.value = i18n.global.t('calendar.modal.recommendFail')
     modalType.value = 'info';
     showModal.value = true;
   } finally {
     isRecommending.value = false // 结束loading
-    console.log('=== handleRecommend 调试结束 ===')
   }
 }
 
@@ -634,8 +574,6 @@ async function fetchMonthlyFortune(monthKey: string, params: any) {
   const startDate = currentMonth.value.startOf('month').format('YYYY-MM-DD')
   const endDate = currentMonth.value.endOf('month').format('YYYY-MM-DD')
   
-  console.log('9. 请求月度数据:', { startDate, endDate })
-  
   const requestBody = {
     birth_datetime: params.birth_datetime.replace(' ', 'T'),
     start_date: startDate,
@@ -643,29 +581,24 @@ async function fetchMonthlyFortune(monthKey: string, params: any) {
     gender: params.gender
   }
   
-  console.log('10. 请求参数:', requestBody)
-  
   try {
     // 调用新的fortune_range API
     const data = await analyzeFortuneRange(requestBody)
-    console.log('11. API响应:', data)
-    
+
     // 缓存数据
     monthlyFortuneCache.value[monthKey] = data
-    
+
     // 处理数据
     processMonthlyData(data)
-    
+
   } catch (error) {
-    console.error('获取月度运势数据失败:', error)
+    console.error(error)
     throw error
   }
 }
 
 // 处理月度数据
 function processMonthlyData(data: any) {
-  console.log('12. 处理月度数据:', data)
-  
   // 清空之前的数据
   fortuneScores.value = {}
   recommendedDays.value = []
@@ -691,9 +624,6 @@ function processMonthlyData(data: any) {
       }
     })
   }
-  
-  console.log('13. 处理完成，吉日:', recommendedDays.value)
-  console.log('14. 分数数据:', fortuneScores.value)
   
   // 显示结果
   const luckyDays = recommendedDays.value
@@ -758,10 +688,6 @@ function handleGoProfile() {
   router.push('/profile')
 }
 
-function goLogin() {
-  router.push('/login')
-}
-
 function goToLogin() {
   router.push('/login')
 }
@@ -772,90 +698,48 @@ function goToRegister() {
 
 // 页面初始化
 async function initPage() {
-  console.log('=== initPage 开始调试 ===')
-  console.log('🚀 页面初始化，开始获取运势数据')
-  console.log('1. 当前用户token:', userStore.token ? '存在' : '不存在')
-  console.log('2. 当前用户信息:', userStore.user)
-  console.log('3. localStorage token:', localStorage.getItem('access_token'))
-  
   // 如果localStorage有token但store没有，尝试初始化用户状态
   const localToken = localStorage.getItem('access_token')
   if (localToken && !userStore.token) {
-    console.log('4. 发现localStorage有token但store未初始化，尝试初始化用户状态')
     try {
       userStore.init()
-      console.log('5. 用户状态初始化完成:', {
-        isLoggedIn: userStore.isLoggedIn,
-        token: userStore.token,
-        user: userStore.user
-      })
-      
       // 如果token有效但用户信息为空，获取用户信息
       if (userStore.token && !userStore.user) {
-        console.log('5.1. 获取用户信息...')
         await userStore.fetchUser()
-        console.log('5.2. 用户信息获取完成:', userStore.user)
       }
     } catch (error) {
-      console.error('6. 用户状态初始化失败:', error)
+      console.error(error)
     }
   }
   
   // 确保用户信息已加载
   if (userStore.token && !userStore.user) {
-    console.log('🔄 用户已登录但信息未加载，正在获取用户信息...')
-    console.log('7. 开始获取用户信息...')
     await userStore.fetchUser()
-    console.log('8. 用户信息获取完成:', userStore.user)
   }
   
-  console.log('9. 开始获取运势数据，选中日期:', selectedDate.value)
   await fetchFortune(selectedDate.value)
-  console.log('=== initPage 调试结束 ===')
 }
 
 // 监听选中日期变化
 watch(selectedDate, (newDate) => {
-  console.log('=== watch selectedDate 开始调试 ===')
-  console.log('📅 选中日期变化:', newDate)
-  console.log('1. 新选中的日期:', newDate)
   fetchFortune(newDate)
-  console.log('=== watch selectedDate 调试结束 ===')
 })
 
 // 页面挂载时初始化
 onMounted(async () => {
-  console.log('=== onMounted 开始调试 ===')
-  console.log('页面已挂载，开始初始化...')
-  
-  // 检查localStorage中的token
-  const localToken = localStorage.getItem('access_token')
-  console.log('localStorage中的token:', localToken ? '存在' : '不存在')
-  if (localToken) {
-    console.log('localStorage token值:', localToken.substring(0, 20) + '...')
-  }
-  
   // 初始化用户store
-  console.log('初始化用户store...')
   userStore.init()
-  console.log('用户store初始化完成，token:', userStore.token ? '存在' : '不存在')
-  
+
   if (userStore.token) {
-    console.log('发现token，获取用户信息...')
     try {
       await userStore.fetchUser()
-      console.log('用户信息获取完成，开始初始化页面')
     } catch (error) {
-      console.error('获取用户信息失败:', error)
+      console.error(error)
     }
-  } else {
-    console.log('未发现token，直接初始化页面')
   }
   
   // 等待用户信息加载完成后再初始化页面
   await initPage()
-  
-  console.log('=== onMounted 调试结束 ===')
 })
 </script>
 

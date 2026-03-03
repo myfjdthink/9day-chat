@@ -10,7 +10,7 @@
     
     <div class="max-w-6xl mx-auto">
       <!-- 面包屑导航 -->
-      <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4" aria-label="面包屑导航">
+      <nav class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-4" :aria-label="t('home.breadcrumb.ariaLabel')">
         <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ t('common.home') }}</a>
         <span class="text-gray-400">/</span>
         <span class="text-gray-900 dark:text-gray-100 font-medium">{{ t('home.breadcrumb.platform') }}</span>
@@ -355,7 +355,7 @@
                 <span class="text-white font-bold text-lg">3</span>
               </div>
               <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ t('home.steps.items.services.title') }}</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300"><a href="/chat" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.chat') }}</a>问答、<a href="/zodiac-fortune" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.zodiac') }}</a>、<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.calendar') }}</a>{{ t('home.steps.items.services.descSuffix') }}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300"><a href="/chat" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.chat') }}</a>{{ t('home.steps.items.services.chatSeparator') }}<a href="/zodiac-fortune" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.zodiac') }}</a>{{ t('home.steps.items.services.zodiacSeparator') }}<a href="/calendar" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('home.steps.links.calendar') }}</a>{{ t('home.steps.items.services.descSuffix') }}</p>
             </div>
           </div>
         </div>
@@ -566,14 +566,14 @@ const birthDateTime = ref<string>('1999-09-09T09:09')
 const isAnalyzing = ref(false)
 const formatDateTime = (dt: string): string => dayjs(dt).format('YYYY-MM-DD HH:mm:ss')
 const handleStartAnalysisHome = async () => {
-  if (!birthDateTime.value) { alert('请选择出生日期时间'); return }
+  if (!birthDateTime.value) { alert(t('home.alerts.missingBirth')); return }
   isAnalyzing.value = true
   await router.push({ path: '/analysis', query: { gender: gender.value, birth: birthDateTime.value, auto: '1' } })
   setTimeout(() => { isAnalyzing.value = false }, 800)
 }
 
 const handleStartTenYearsHome = async () => {
-  if (!birthDateTime.value) { alert('请选择出生日期时间'); return }
+  if (!birthDateTime.value) { alert(t('home.alerts.missingBirth')); return }
   isAnalyzing.value = true
   await router.push({ path: '/analysis', query: { gender: gender.value, birth: birthDateTime.value, auto10y: '1' } })
   setTimeout(() => { isAnalyzing.value = false }, 800)
@@ -584,9 +584,9 @@ const handleStartTenYearsHome = async () => {
    const qq = '3960688438'
    navigator.clipboard.writeText(qq).then(() => {
      // 简单提示，实际项目可用 ElMessage 或自定义弹窗
-     alert('QQ号码已复制到剪贴板：' + qq)
+    alert(t('home.alerts.qqCopied', { qq }))
    }).catch(() => {
-     alert('复制失败，请手动复制：' + qq)
+    alert(t('home.alerts.qqCopyFailed', { qq }))
    })
  }
 </script>

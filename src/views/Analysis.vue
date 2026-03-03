@@ -470,7 +470,7 @@ interface ExtendedHTMLElement extends HTMLElement {
 
 // 注册observe-visibility指令
 const vObserveVisibility: ObjectDirective<ExtendedHTMLElement> = {
-  mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<(isVisible: boolean) => void>) => {
+  mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<(visible: boolean) => void>) => {
     const observer = useIntersectionObserver(el, ([{ isIntersecting }]) => {
       binding.value(isIntersecting)
     })
@@ -482,7 +482,6 @@ const vObserveVisibility: ObjectDirective<ExtendedHTMLElement> = {
     }
   }
 }
-import type { Ref } from 'vue'
 import type { BaziAnalysis } from '@/api/bazi'
 
 // UI Components - 异步加载非关键组件
@@ -497,7 +496,6 @@ const SEO = defineAsyncComponent(() => import('@/components/SEO.vue'))
 // 分析结果展示组件 - 改为同步导入以避免渲染延迟
 import BaziDisplay from '@/components/BaziDisplay.vue'
 import YongshenDisplay from '@/components/YongshenDisplay.vue'
-import DayunDisplay from '@/components/DayunDisplay.vue'
 
 // 按需导入图标
 import { User, Settings, Calendar as CalendarIcon, Star, Download, RefreshCw, MessageSquare, BarChart3, Lightbulb } from 'lucide-vue-next'
@@ -512,7 +510,6 @@ import html2canvas from 'html2canvas'
 
 // API
 import { analyzeBazi, analyzeBase, analyzeYongshen, ANALYSIS_PARTS, analyzeTenYearsSingle } from '@/api/bazi'
-import { PROVIDERS, MODELS } from '@/api/config'
 // 引入 Pinia store
 import { useChatStore } from '@/stores/chat'
 import { useUserStore } from '@/stores/user'
@@ -820,10 +817,10 @@ const handleStartAnalysis = async (): Promise<void> => {
         router.push({ path: '/analysis', query: { analysisId: latest.id } })
       }
     } else {
-      throw new Error('所有分析接口都失败了')
+      throw new Error(t('analysis.errors.allAPIsFailed'))
     }
   } catch (error: any) {
-    alert(error.message || '分析过程中出现错误')
+    alert(error.message || t('analysis.errors.analysisError'))
   } finally {
     isAnalyzing.value = false
   }
@@ -844,7 +841,7 @@ const handleSaveReport = async () => {
   const imgData = canvas.toDataURL('image/png')
   const a = document.createElement('a')
   a.href = imgData
-  a.download = `分析报告_${formatDateTime(analysisResult.value.analysisTime)}.png`
+  a.download = `${t('analysis.share.downloadPrefix')}${formatDateTime(analysisResult.value.analysisTime)}.png`
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
@@ -894,7 +891,7 @@ const handleTenYearsAnalysis = async (): Promise<void> => {
       else if (typeof res?.message === 'string') content = res.message
       else content = JSON.stringify(res?.data ?? res)
       allResults['流年十年'] = content
-      selectedTypes.push('十年大运')
+      selectedTypes.push(t('analysis.actions.tenYears'))
       analysisResult.value = {
         analysisType: selectedTypes.join('、'),
         analysisTime: dayjs().tz('Asia/Shanghai').format(),
@@ -929,7 +926,7 @@ const handleTenYearsAnalysis = async (): Promise<void> => {
     }
   } catch (error: any) {
     const serverMsg = error?.response?.data?.message || error?.response?.data?.detail
-    alert(serverMsg || error?.message || '分析过程中出现错误')
+    alert(serverMsg || error?.message || t('analysis.errors.analysisError'))
   } finally {
     isTenYearsAnalyzing.value = false
   }
@@ -946,7 +943,7 @@ const handleChatWithReport = async () => {
   // 整理分析报告为纯文本
   const reportText = Object.entries(analysisResult.value.analysisResult)
     .map(([type, content]) => `【${type}】\n${content}\n`).join('\n')
-  const reportName = `八字分析-${formatDateTime(analysisResult.value.analysisTime)}`
+  const reportName = `${t('analysis.share.reportNamePrefix')}${formatDateTime(analysisResult.value.analysisTime)}`
   // 新建一条对话记录，并等待返回后端 UUID
   const newChatId = await chatStore.createConversation()
   // 跳转到/chat并带上reportContext和name参数，Chat.vue会自动插入气泡
@@ -1062,8 +1059,7 @@ async function trySaveUserBaziInfo() {
     await userStore.fetchUser() // 刷新用户信息
     hasSavedUserBazi = true
   } catch (e) {
-    // 可加日志
-    console.warn('自动保存用户八字信息失败', e)
+    console.warn(e)
   }
 }
 
@@ -1076,7 +1072,7 @@ const selectedAnalysisId = ref<string | null>(null)
 // 监听 analyses 和 analysisId，数据和 id 任一变化都尝试展示历史
 watch(
   [analyses, () => route.query.analysisId],
-  ([list, id]) => {
+  ([, id]) => {
     if (id) {
       showAnalysisFromHistory(id as string)
     } else {
@@ -1103,26 +1099,19 @@ watch(
           visibleSections[type] = false
         }
       })
-      console.log('Watch triggered - visibleSections updated:', visibleSections)
     }
   }
 )
 
 // 展示历史分析
 function showAnalysisFromHistory(id: string) {
-  console.log('showAnalysisFromHistory called with id:', id)
   // 统一转字符串对比，兼容 id/client_analysis_id
   const record = analyses.value.find(r => String(r.id) === String(id) || String((r as any).client_analysis_id) === String(id))
   if (record) {
-    console.log('Found analysis record:', record)
     let resultObj = {}
     // 优先兼容 analysis_results 字段
     const analysisResultField = (record as any).analysis_results || (record as any).analysis_result
     // 调试日志，便于排查数据结构
-    console.log('历史分析记录', record)
-    console.log('analysis_results:', (record as any).analysis_results)
-    console.log('analysis_result:', (record as any).analysis_result)
-    console.log('notes:', record.notes)
     if (analysisResultField && Object.keys(analysisResultField).length > 0) {
       resultObj = analysisResultField
     } else if (record.notes) {
@@ -1145,12 +1134,8 @@ function showAnalysisFromHistory(id: string) {
       Object.keys(resultObj).forEach(key => {
         visibleSections[key] = true
       })
-      
-      console.log('Analysis result set:', analysisResult.value)
-      console.log('Visible sections initialized:', visibleSections)
     })
   } else {
-    console.log('Analysis record not found for id:', id)
     analysisResult.value = null
   }
 }
@@ -1165,13 +1150,6 @@ function parseResultText(text: string) {
     if (key && value) result[key] = value
   }
   return result
-}
-
-// 直接点击历史分析项时，强制刷新内容
-function handleSelectAnalysis(id: string) {
-  showAnalysisFromHistory(id)
-  selectedAnalysisId.value = id
-  // 如需同步到 URL，可加：router.replace({ query: { ...route.query, analysisId: id } })
 }
 
 const showLoginModal = ref(false)
@@ -1333,7 +1311,6 @@ const getStructuredBaseData = (content: string) => {
   
   // 否则从markdown内容中解析（兼容历史数据）
   try {
-    const lines = content.split('\n')
     const result: any = {
       性别: '男',
       八字信息: {},
@@ -1427,7 +1404,7 @@ const getStructuredBaseData = (content: string) => {
     
     return result
   } catch (error) {
-    console.error('解析基础分析数据失败:', error)
+    console.error(error)
     return null
   }
 }
@@ -1487,7 +1464,7 @@ const getStructuredYongshenData = (content: string) => {
     
     return result
   } catch (error) {
-    console.error('解析用神分析数据失败:', error)
+    console.error(error)
     return null
   }
 }

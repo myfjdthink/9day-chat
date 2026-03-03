@@ -145,7 +145,7 @@
                 <div class="w-14 h-14 mx-auto mb-1 flex items-center justify-center">
                   <ZodiacIcon :zodiac="zodiac" class="w-10 h-10" />
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ zodiac }}</h3>
+                <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ t('zodiac.names.' + zodiac) }}</h3>
               </div>
             </div>
 
@@ -310,18 +310,12 @@ const formatDate = (dateTimeStr: string) => {
 
 // 地支到生肖的映射
 const getZodiacFromEarthBranch = (earthBranch: string) => {
-  const mappingZh: Record<string, string> = {
+  const mapping: Record<string, string> = {
     '子': '鼠', '丑': '牛', '寅': '虎', '卯': '兔', '辰': '龙', '巳': '蛇',
     '午': '马', '未': '羊', '申': '猴', '酉': '鸡', '戌': '狗', '亥': '猪'
   }
-  const mappingEn: Record<string, string> = {
-    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon', '巳': 'Snake',
-    '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster', '戌': 'Dog', '亥': 'Pig'
-  }
-  const currentLocale = (locale.value || 'zh-CN') as string
-  const isEnglish = currentLocale.toLowerCase().startsWith('en')
-  const map = isEnglish ? mappingEn : mappingZh
-  return map[earthBranch] || earthBranch
+  const zodiacKey = mapping[earthBranch]
+  return zodiacKey ? (t(`zodiac.names.${zodiacKey}`) as string) : earthBranch
 }
 
 // 定义运势数据结构类型
@@ -368,57 +362,17 @@ const parsedFortuneSections = computed(() => {
   
   // 根据新API格式解析运势分析文本
   const sectionPatterns = [
-    { 
-      type: '值太岁', 
-      title: '值太岁（龙）', 
-      subtitle: '本命年运势',
-      pattern: /值太岁（龙）：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '相破', 
-      title: '相破（牛）', 
-      subtitle: '运势平平',
-      pattern: /相破（牛）：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '相害', 
-      title: '相害（虎、兔）', 
-      subtitle: '需注意人际关系',
-      pattern: /相害（虎、兔）：\n- 虎：(.+?)\n- 兔：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '相冲', 
-      title: '相冲', 
-      subtitle: '易有冲突',
-      pattern: /相冲（(.+?)）：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '相刑', 
-      title: '相刑', 
-      subtitle: '需谨慎行事',
-      pattern: /相刑（(.+?)）：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '三合', 
-      title: '三合（鼠、猴）', 
-      subtitle: '贵人相助',
-      pattern: /三合（鼠、猴）：\n- 鼠：(.+?)\n- 猴：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '六合', 
-      title: '六合（鸡）', 
-      subtitle: '运势极佳',
-      pattern: /六合（鸡）：(.+?)(?=\n\n|$)/ 
-    },
-    { 
-      type: '平运', 
-      title: '平运（蛇、马、羊、狗、猪）', 
-      subtitle: '运势平稳',
-      pattern: /平运（蛇、马、羊、狗、猪）：\n- 蛇：(.+?)\n- 马：(.+?)\n- 羊：(.+?)\n- 狗：(.+?)\n- 猪：(.+?)(?=\n\n|$)/ 
-    }
+    { type: '值太岁', pattern: /值太岁（龙）：(.+?)(?=\n\n|$)/ },
+    { type: '相破', pattern: /相破（牛）：(.+?)(?=\n\n|$)/ },
+    { type: '相害', pattern: /相害（虎、兔）：\n- 虎：(.+?)\n- 兔：(.+?)(?=\n\n|$)/ },
+    { type: '相冲', pattern: /相冲（(.+?)）：(.+?)(?=\n\n|$)/ },
+    { type: '相刑', pattern: /相刑（(.+?)）：(.+?)(?=\n\n|$)/ },
+    { type: '三合', pattern: /三合（鼠、猴）：\n- 鼠：(.+?)\n- 猴：(.+?)(?=\n\n|$)/ },
+    { type: '六合', pattern: /六合（鸡）：(.+?)(?=\n\n|$)/ },
+    { type: '平运', pattern: /平运（蛇、马、羊、狗、猪）：\n- 蛇：(.+?)\n- 马：(.+?)\n- 羊：(.+?)\n- 狗：(.+?)\n- 猪：(.+?)(?=\n\n|$)/ }
   ]
   
-  sectionPatterns.forEach(({ type, title, subtitle, pattern }) => {
+  sectionPatterns.forEach(({ type, pattern }) => {
     const match = text.match(pattern)
     if (match) {
       const fortunes: ZodiacFortune[] = []
@@ -458,7 +412,12 @@ const parsedFortuneSections = computed(() => {
       }
       
       if (fortunes.length > 0) {
-        sections.push({ type, title, subtitle, fortunes })
+        sections.push({
+          type,
+          title: getSectionTitle(type),
+          subtitle: getSectionSubtitle(type),
+          fortunes
+        })
       }
     }
   })
@@ -637,7 +596,7 @@ const shareFortune = async () => {
     link.click()
     
   } catch (err) {
-    console.error('生成分享图片失败:', err)
+    console.error(err)
     error.value = t('zodiac.shareFailed') as string
   } finally {
     // 隐藏分享容器
@@ -662,11 +621,11 @@ const analyzeFortune = async () => {
     
     // 根据响应消息判断是否使用了缓存
     if (response.message.includes('缓存')) {
-      cacheStatus.value = { type: 'cache', message: '使用缓存数据，点击刷新按钮获取最新数据' }
+      cacheStatus.value = { type: 'cache', message: t('zodiac.cache.used') as string }
     }
   } catch (err) {
     error.value = err instanceof Error ? err.message : (t('zodiac.analyzeFailed') as string)
-    console.error('生肖运势分析失败:', err)
+    console.error(err)
   } finally {
     loading.value = false
   }
@@ -681,10 +640,10 @@ const refreshFortune = async () => {
   try {
     const response = await analyzeZodiacFortune({}, true) // 强制刷新，获取全部生肖
     fortuneData.value = response.data
-    cacheStatus.value = { type: 'fresh', message: '已强制刷新，获取最新数据' }
+    cacheStatus.value = { type: 'fresh', message: t('zodiac.cache.refreshed') as string }
   } catch (err) {
     error.value = err instanceof Error ? err.message : (t('zodiac.refreshFailed') as string)
-    console.error('强制刷新生肖运势失败:', err)
+    console.error(err)
   } finally {
     loading.value = false
   }

@@ -302,7 +302,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import type { Message as APIMessage } from '@/api/chat'
-import { Moon, Plus } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import { chat, ChatAPIError } from '@/api/chat'
@@ -323,7 +322,6 @@ import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
 import * as vueI18n from 'vue-i18n'
 
-const props = defineProps<{ conversationId?: string | null }>()
 const { useI18n } = vueI18n as any
 const { t, locale } = useI18n()
 
@@ -336,7 +334,9 @@ const md = new MarkdownIt({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return hljs.highlight(str, { language: lang }).value
-      } catch (__) {}
+      } catch (__) {
+        return ''
+      }
     }
     return '' // 使用普通的代码块
   }
@@ -346,10 +346,6 @@ const chatStore = useChatStore()
 const userStore = useUserStore()
 const baziStore = useBaziStore()
 const analyses = computed(() => baziStore.sortedAnalyses)
-
-// 调试：打印当前消息列表，检查 sender_type 字段
-console.log('当前消息列表：', chatStore.currentMessages)
-const displayName = computed(() => userStore.user ? (userStore.user.username || userStore.user.email) : '')
 
 // 扩展消息类型，支持'report'
 type ChatMessage = StoreMessage & { role: 'user' | 'assistant' | 'report' }
@@ -516,11 +512,6 @@ const addReportToContext = (record: any) => {
   // 插入“report”类型消息
   insertReportMessage(reportName, reportText)
   showReportDialog.value = false
-}
-
-// 加号按钮点击事件，直接弹出弹窗，不做登录校验
-const handleAddReportClick = () => {
-  showReportDialog.value = true
 }
 
 // 对话历史弹窗相关逻辑
@@ -708,17 +699,6 @@ const handleNoAnalysisConfirm = () => {
 
 const handleNoAnalysisCancel = () => {
   showNoAnalysisDialog.value = false
-}
-
-// 获取动作类型的中文名称
-const getActionTypeName = (actionType: string) => {
-  switch (actionType) {
-    case 'bazi': return t('chat.quick.bazi')
-    case 'exam': return t('chat.quick.exam')
-    case 'love': return t('chat.quick.love')
-    case 'health': return t('chat.quick.health')
-    default: return ''
-  }
 }
 
 // 处理用户选择八字分析报告后的快速动作

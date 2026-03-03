@@ -10,7 +10,7 @@
     
     <div class="max-w-7xl mx-auto h-full flex flex-col">
       <!-- 面包屑导航 -->
-      <nav class="flex items-center space-x-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2 sm:mb-3" aria-label="面包屑导航">
+      <nav class="flex items-center space-x-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2 sm:mb-3" :aria-label="$t('common.breadcrumb.ariaLabel')">
         <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ $t('common.home') }}</a>
         <span class="text-gray-400">/</span>
         <span class="text-gray-900 dark:text-gray-100 font-medium">{{ $t('pages.fengshui-fortune') }}</span>
@@ -19,7 +19,7 @@
       <!-- 页面标题 - 紧凑版 -->
       <div class="text-center mb-3 sm:mb-4">
         <div class="w-12 h-12 sm:w-16 sm:h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-2 border border-gray-100 dark:border-gray-700 shadow-sm">
-          <img src="@/assets/fengshui.png" alt="风水布局" class="w-6 h-6 sm:w-8 sm:h-8" />
+          <img src="@/assets/fengshui.png" :alt="$t('fengshui.ui.iconAlt')" class="w-6 h-6 sm:w-8 sm:h-8" />
         </div>
         <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">{{ $t('fengshui.ui.titleLong') }}</h1>
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hidden sm:block">{{ $t('fengshui.ui.subtitle') }}</p>
