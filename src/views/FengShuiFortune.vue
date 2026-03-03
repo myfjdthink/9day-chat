@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 p-1 sm:p-2 lg:p-4 bg-gray-50 dark:bg-gray-900 min-h-screen max-h-screen overflow-y-auto">
+  <div class="flex-1 p-1 sm:p-2 lg:p-4 bg-gray-50 dark:bg-gray-900 min-h-dvh overflow-y-auto">
     <!-- SEO组件 -->
     <SEO 
       :title="$t('fengshui.seo.title')"

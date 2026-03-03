@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900">
+  <div class="flex-1 p-4 sm:p-6 md:p-8 bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
       :title="t('home.seo.title')"

@@ -1,6 +1,6 @@
 <template>
   <!-- 收起状态的缩小菜单 -->
-  <div v-if="!sidebarOpen" class="collapsed-sidebar fixed left-0 top-0 z-40 w-16 min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 gap-3">
+  <div v-if="!sidebarOpen && !isMobile" class="collapsed-sidebar fixed left-0 top-0 z-40 w-16 min-h-dvh bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 gap-3">
     <!-- 展开按钮 -->
     <button
       class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -113,9 +113,20 @@
     </div>
   </div>
   
-  <!-- 展开状态的完整侧边栏 -->
+  <div
+    v-if="sidebarOpen && isMobile"
+    class="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px]"
+    @click="closeSidebar"
+  ></div>
+
   <transition name="sidebar-slide">
-    <div v-show="sidebarOpen" class="sidebar-wrapper fixed left-0 top-0 z-40 w-64 max-w-xs min-h-screen bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col" @touchstart.stop @click.stop>
+    <div
+      v-show="sidebarOpen"
+      class="sidebar-wrapper fixed left-0 top-0 z-50 min-h-dvh bg-[#f4f2fa] dark:bg-[#181a22] border-r border-gray-200 dark:border-gray-700 flex flex-col"
+      :class="isMobile ? 'w-[84vw] max-w-xs' : 'w-64 max-w-xs'"
+      @touchstart.stop
+      @click.stop
+    >
       <!-- Header -->
       <div class="p-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
@@ -290,7 +301,7 @@
 </template>
 
 <script setup lang="ts">
-import { User, Plus, Star, Settings, Moon } from 'lucide-vue-next'
+import { User, Plus, Star } from 'lucide-vue-next'
 import Button from './ui/Button.vue'
 import HistoryPanel from './HistoryPanel.vue'
 import { useChatStore } from '@/stores/chat'
@@ -299,7 +310,6 @@ import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
 import { useSidebar } from '@/composables/useSidebar'
 import { computed, onMounted, ref, nextTick } from 'vue'
-import { useLocale } from '@/composables/useLocale'
 import { trackFeatureUse } from '@/lib/analytics'
 import * as I18n from 'vue-i18n'
 import boyAvatar from '@/assets/boy.png'
@@ -321,7 +331,6 @@ interface SidebarProps {
 
 defineProps<SidebarProps>()
 
-const { currentLocale, setLocale } = useLocale()
 const { useI18n } = I18n as any
 const { t } = useI18n()
 
@@ -329,7 +338,7 @@ const chatStore = useChatStore()
 const router = useRouter()
 const userStore = useUserStore()
 const baziStore = useBaziStore()
-const { sidebarOpen, toggleSidebar, initSidebar } = useSidebar()
+const { sidebarOpen, isMobile, toggleSidebar, closeSidebar, initSidebar } = useSidebar()
 
 const emit = defineEmits<{
   'set-active-tab': [tab: string]
@@ -344,6 +353,7 @@ const handleNewChat = () => {
   chatStore.createConversation()
   emit('set-active-tab', 'ai-chat')
   router.push('/chat')
+  closeSidebarOnMobile()
 }
 
 // 历史记录事件处理
@@ -351,6 +361,7 @@ const handleSelectChat = (id: string) => {
   chatStore.selectConversation(id)
   emit('set-active-tab', 'ai-chat')
   emit('select-chat', id)
+  closeSidebarOnMobile()
 }
 
 const handleDeleteChat = (id: string) => {
@@ -362,6 +373,7 @@ const handleSelectAnalysis = (id: string) => {
   // 跳转到分析页并带上analysisId参数，只做一次跳转，避免tab和路由竞态
   router.push({ path: '/analysis', query: { analysisId: id } })
   emit('select-analysis', id)
+  closeSidebarOnMobile()
 }
 
 const handleDeleteAnalysis = async (id: string) => {
@@ -369,30 +381,9 @@ const handleDeleteAnalysis = async (id: string) => {
   emit('delete-analysis', id)
 }
 
-// 用户显示名，优先用户名，无则邮箱
-const displayName = computed(() => {
-  if (userStore.user) {
-    return userStore.user.username || userStore.user.email
-  }
-  return ''
-})
-
 const handleLogout = () => {
   userStore.logout()
   router.push('/login')
-}
-
-const isDark = ref(false)
-
-const toggleDark = () => {
-  isDark.value = !isDark.value
-  if (isDark.value) {
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
-  }
 }
 
 const defaultAvatar = computed(() => 
@@ -424,62 +415,68 @@ onMounted(() => {
   if (userStore.token) {
     userStore.fetchUser()
   }
-  // 初始化暗黑模式
-  const theme = localStorage.getItem('theme')
-  if (theme === 'dark') {
-    isDark.value = true
-    document.documentElement.classList.add('dark')
-  } else {
-    isDark.value = false
-    document.documentElement.classList.remove('dark')
-  }
   // 新增：无论在哪个tab，侧边栏挂载时都初始化对话和分析历史，保证两个区块都能显示
   chatStore.initializeStore()
   baziStore.initializeStore()
 })
 
+const closeSidebarOnMobile = () => {
+  if (isMobile.value) {
+    closeSidebar()
+  }
+}
+
 const handleNewAnalysis = () => {
   emit('set-active-tab', 'analysis')
   router.push('/analysis')
+  closeSidebarOnMobile()
 }
 const handleGoHome = () => {
   trackFeatureUse('navigation_home', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'home')
   router.push('/')
+  closeSidebarOnMobile()
 }
 const handleGoAIChat = () => {
   trackFeatureUse('navigation_ai_chat', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'ai-chat')
   router.push('/chat')
+  closeSidebarOnMobile()
 }
 const handleGoAnalysis = () => {
   trackFeatureUse('navigation_analysis', { action: 'click', surface: 'sidebar' })
   emit('set-active-tab', 'analysis')
   router.push('/analysis')
+  closeSidebarOnMobile()
 }
 
 const handleGoCalendar = () => {
   emit('set-active-tab', 'calendar')
   router.push('/calendar')
+  closeSidebarOnMobile()
 }
 
 const handleGoZodiacFortune = () => {
   emit('set-active-tab', 'zodiac-fortune')
   router.push('/zodiac-fortune')
+  closeSidebarOnMobile()
 }
 
 const handleGoBlog = () => {
   window.open('https://blog.9day.tech/', '_blank')
+  closeSidebarOnMobile()
 }
 
 const handleGoExamFortune = () => {
   emit('set-active-tab', 'exam-fortune')
   router.push('/exam-fortune')
+  closeSidebarOnMobile()
 }
 
 const handleGoFengShuiFortune = () => {
   emit('set-active-tab', 'fengshui-fortune')
   router.push('/fengshui-fortune')
+  closeSidebarOnMobile()
 }
 </script>
 

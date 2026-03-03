@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900 relative">
+  <div class="flex-1 p-4 sm:p-6 md:p-8 bg-gray-50 dark:bg-gray-900 relative">
     <!-- SEO组件 -->
     <SEO 
       :title="t('home.analysis.seo.title')"
@@ -10,11 +10,11 @@
     
     <div class="max-w-6xl mx-auto">
       <!-- 页面主标题 -->
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">{{ t('home.analysis.hero.title') }}</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">{{ t('home.analysis.hero.title') }}</h1>
       
       <!-- 功能介绍卡片 -->
-      <div v-if="!analysisResult" class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-if="!analysisResult" class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 md:p-6 mb-6 md:mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div class="text-center">
             <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
               <User class="w-6 h-6 text-white" />
@@ -40,9 +40,9 @@
       </div>
 
       <!-- 输入部分 -->
-      <div v-if="!analysisResult" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div v-if="!analysisResult" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
         <!-- Basic Information -->
-        <div class="space-y-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-6">
+        <div class="space-y-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-4 md:p-6">
           <div class="flex items-center space-x-2 mb-6">
             <User class="w-5 h-5 text-green-500" />
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ t('home.analysis.form.basicInfo') }}</h2>
@@ -96,7 +96,7 @@
         </div>
 
         <!-- Analysis Configuration -->
-        <div class="space-y-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-6">
+        <div class="space-y-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-4 md:p-6">
           <div class="flex items-center space-x-2 mb-6">
             <Settings class="w-5 h-5 text-green-500" />
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ t('home.analysis.config.title') }}</h2>
@@ -184,10 +184,11 @@
       </div>
 
       <!-- Start Analysis Button -->
-      <div v-if="!analysisResult" class="mt-8 flex justify-center space-x-4">
+      <div v-if="!analysisResult" class="mt-6 md:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
         <Button
           size="lg"
           variant="default"
+          class="w-full sm:w-auto"
           :disabled="isAnalyzing"
           @click="handleStartAnalysis"
         >
@@ -197,6 +198,7 @@
         <Button
           size="lg"
           variant="default"
+          class="w-full sm:w-auto"
           :disabled="isTenYearsAnalyzing"
           @click="handleTenYearsAnalysis"
         >
@@ -206,9 +208,9 @@
       </div>
 
       <!-- Analysis Results -->
-      <div v-if="analysisResult" class="mt-12 space-y-8">
+      <div v-if="analysisResult" class="mt-8 md:mt-12 space-y-6 md:space-y-8">
         <!-- 报告内容区域，支持滚动 -->
-        <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-h-[90vh] overflow-y-auto">
+        <div ref="reportRef" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 md:p-6 max-h-[75dvh] md:max-h-[90vh] overflow-y-auto">
           <div class="mb-6">
             <h2 class="text-2xl font-bold mb-2 dark:text-gray-100">{{ t('home.analysis.report.title') }}</h2>
             <!-- 分析时间和类型 -->

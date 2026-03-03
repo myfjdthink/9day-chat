@@ -1,9 +1,9 @@
 <template>
-  <div class="flex-1 p-8 bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+  <div class="flex-1 p-4 sm:p-6 md:p-8 bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
       <div class="text-center mb-6">
         <img src="@/assets/logo.png" alt="Logo" class="w-16 h-16 mx-auto mb-4" />
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('admin.login.title') }}</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('admin.login.title') }}</h1>
         <p class="text-gray-500 dark:text-gray-300">{{ t('admin.login.desc') }}</p>
       </div>
       <form @submit.prevent="handleLogin">

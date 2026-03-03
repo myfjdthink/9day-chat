@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="flex-1 flex flex-col h-full min-h-0 bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO 
       :title="t('chat.seo.title')"
@@ -9,11 +9,11 @@
     />
     
     <!-- Top Bar -->
-    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 md:px-6 md:py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <img src="@/assets/logo.png" :alt="t('chat.topbar.logoAlt')" class="w-5 h-5 object-contain" />
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ t('chat.topbar.title') }}</h1>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100">{{ t('chat.topbar.title') }}</h1>
         </div>
         <!-- 移除重复的暗黑模式按钮 -->
       </div>
@@ -35,8 +35,8 @@
       </div>
 
       <!-- Messages -->
-      <div v-else ref="messageContainer" class="flex-1 overflow-y-auto p-6 scroll-smooth">
-        <div class="max-w-4xl mx-auto space-y-6">
+      <div v-else ref="messageContainer" class="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth">
+        <div class="max-w-4xl mx-auto space-y-4 md:space-y-6">
           <div 
             v-for="message in chatStore.currentMessages as unknown as ChatMessage[]" 
             :key="message.id" 
@@ -55,7 +55,7 @@
                 <img :src="aiAvatar" :alt="t('chat.avatarAlt')" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
               </div>
               <div
-                class="max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
+                class="max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
                 @click="showReportPanel = !showReportPanel"
               >
                 <div class="font-semibold flex items-center">
@@ -80,7 +80,7 @@
               <!-- 消息气泡，根据 sender_type 区分左右样式 -->
               <div
                 :class="[
-                  'max-w-[70%] px-4 py-2 rounded-lg overflow-hidden',
+                  'max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-lg overflow-hidden',
                   message.sender_type === 'user'
                     ? 'border border-[#b67fda] text-[#b67fda] bg-white dark:bg-gray-800 dark:text-[#b67fda] rounded-tr-none'
                     : message.error
@@ -115,7 +115,7 @@
                 class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800"
               />
             </div>
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 max-w-[70%] px-4 py-2 rounded-lg rounded-tl-none">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-lg rounded-tl-none">
               <div class="flex items-center space-x-2">
                 <div class="flex space-x-1">
                   <div class="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
@@ -135,15 +135,15 @@
       </div>
 
       <!-- Input Area (Fixed at bottom) -->
-      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 w-full">
+      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:p-4 w-full">
         <div class="max-w-4xl mx-auto">
           <!-- 快速按钮区域 -->
-          <div class="mb-3 flex flex-wrap gap-2">
+          <div class="mb-3 flex gap-2 overflow-x-auto whitespace-nowrap pb-1">
             <Button
               type="button"
               size="sm"
               variant="outline"
-              class="flex items-center space-x-1 text-xs"
+              class="flex items-center space-x-1 text-xs flex-shrink-0"
               :disabled="chatStore.isLoading"
               @click="handleQuickAction('bazi')"
             >
@@ -154,7 +154,7 @@
               type="button"
               size="sm"
               variant="outline"
-              class="flex items-center space-x-1 text-xs"
+              class="flex items-center space-x-1 text-xs flex-shrink-0"
               :disabled="chatStore.isLoading"
               @click="handleQuickAction('exam')"
             >
@@ -165,7 +165,7 @@
               type="button"
               size="sm"
               variant="outline"
-              class="flex items-center space-x-1 text-xs"
+              class="flex items-center space-x-1 text-xs flex-shrink-0"
               :disabled="chatStore.isLoading"
               @click="handleQuickAction('love')"
             >
@@ -176,7 +176,7 @@
               type="button"
               size="sm"
               variant="outline"
-              class="flex items-center space-x-1 text-xs"
+              class="flex items-center space-x-1 text-xs flex-shrink-0"
               :disabled="chatStore.isLoading"
               @click="handleQuickAction('health')"
             >
@@ -185,7 +185,7 @@
             </Button>
           </div>
           
-          <form @submit.prevent="handleSubmit" class="flex space-x-2 items-center">
+          <form @submit.prevent="handleSubmit" class="flex gap-2 items-center">
             <Input
               v-model="input"
               ref="inputRef"
@@ -204,10 +204,10 @@
       </div>
     </div>
     <!-- 选择分析报告弹窗（美化样式，参考 PasswordReset.vue） -->
-    <div v-if="showReportDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-        <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.report.select.title') }}</h3>
+    <div v-if="showReportDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div class="w-full max-w-md mx-auto max-h-[85dvh] overflow-y-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+        <div class="text-center mb-4 sm:mb-6">
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.report.select.title') }}</h3>
           <p class="text-gray-500 dark:text-gray-300">{{ t('chat.report.select.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
@@ -231,10 +231,10 @@
       </div>
     </div>
     <!-- 对话历史弹窗（美化样式，参考 PasswordReset.vue） -->
-    <div v-if="showHistoryDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-        <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.history.title') }}</h3>
+    <div v-if="showHistoryDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div class="w-full max-w-md mx-auto max-h-[85dvh] overflow-y-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+        <div class="text-center mb-4 sm:mb-6">
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.history.title') }}</h3>
           <p class="text-gray-500 dark:text-gray-300">{{ t('chat.history.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
@@ -270,10 +270,10 @@
       :onCancel="handleNoAnalysisCancel"
     />
     <!-- 快速动作选择弹窗 -->
-    <div v-if="showQuickActionDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div class="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-        <div class="text-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.quick.title') }}</h3>
+    <div v-if="showQuickActionDialog" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div class="w-full max-w-md mx-auto max-h-[85dvh] overflow-y-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+        <div class="text-center mb-4 sm:mb-6">
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ t('chat.quick.title') }}</h3>
           <p class="text-gray-500 dark:text-gray-300">{{ t('chat.quick.subtitle') }}</p>
         </div>
         <div class="max-h-64 overflow-y-auto space-y-2 mb-4 px-1">
@@ -315,7 +315,7 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import { useUserStore } from '@/stores/user'
 import { useBaziStore } from '@/stores/bazi'
-import { defineProps, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import Modal from '@/components/ui/Modal.vue'
 import boyAvatar from '@/assets/boy.png'
 import girlAvatar from '@/assets/girl.png'

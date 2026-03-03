@@ -9,11 +9,11 @@
     />
     
     <!-- 页面主标题 -->
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center pt-6">{{ $t('calendar.title') }}</h1>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 md:mb-6 text-center pt-4 md:pt-6">{{ $t('calendar.title') }}</h1>
     
     <!-- 未登录提示 -->
     <div v-if="!userStore.isLoggedIn" class="flex flex-col items-center justify-center min-h-[60vh] p-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-4xl w-full text-center">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-8 max-w-4xl w-full text-center">
         <div class="mb-6">
           <!-- 展示图片 -->
           <div class="mb-6">
@@ -46,22 +46,22 @@
     </div>
 
     <!-- 已登录内容 -->
-    <div v-else class="p-4">
+    <div v-else class="p-3 md:p-4">
       <!-- 功能区，响应式布局 -->
       <div class="w-full h-full">
         <!-- 右侧整体区域 -->
         <div class="w-full h-full bg-white dark:bg-gray-800">
-          <div class="flex h-full gap-6">
+          <div class="flex flex-col xl:flex-row h-full gap-4 xl:gap-6">
             <!-- 左侧区域：小日历和运势信息 -->
-            <div class="w-80 flex flex-col">
+            <div class="w-full xl:w-80 flex flex-col">
               <!-- 小日历 -->
               <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-2 mb-4">
                 <div class="flex items-center justify-between mb-2">
-                  <Button variant="ghost" size="sm" @click="changeMonth(-1)" class="h-6 w-6 p-0">‹</Button>
+                  <Button variant="ghost" size="sm" @click="changeMonth(-1)" class="h-10 w-10 p-0 md:h-6 md:w-6">‹</Button>
                   <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">
                     {{ currentMonthLabel }}
                   </h3>
-                  <Button variant="ghost" size="sm" @click="changeMonth(1)" class="h-6 w-6 p-0">›</Button>
+                  <Button variant="ghost" size="sm" @click="changeMonth(1)" class="h-10 w-10 p-0 md:h-6 md:w-6">›</Button>
                 </div>
                 
                 <!-- 小日历网格 -->
@@ -172,7 +172,7 @@
                       v-for="item in purposes"
                       :key="item.key"
                       :variant="selectedPurpose === item.key ? 'secondary' : 'outline'"
-                      class="text-xs h-7"
+                      class="text-xs h-9 md:h-7"
                       @click="selectPurpose(item.key)"
                     >
                       {{ item.label }}

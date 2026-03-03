@@ -1,15 +1,27 @@
 <template>
-  <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="flex h-dvh bg-gray-50 dark:bg-gray-900">
     <!-- SEO组件 -->
     <SEO />
     
     <!-- 右上角：暗黑/白天 + 语言切换 -->
-    <div class="fixed top-4 right-6 z-50 flex items-center gap-2">
+    <div class="fixed top-3 right-3 md:top-4 md:right-6 z-50 flex items-center gap-2">
+      <Button
+        v-if="isMobile && !sidebarOpen"
+        variant="ghost"
+        size="icon"
+        class="bg-white/80 backdrop-blur-sm border border-gray-200 dark:bg-gray-800/80 dark:border-gray-700"
+        @click="openSidebar"
+        aria-label="打开菜单"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </Button>
       <!-- 语言切换在左侧：与暗黑按钮一致的幽灵图标样式 -->
       <Button
         variant="ghost"
         size="sm"
-        class="h-9 px-3 flex items-center gap-2 hover:bg-gray-100/60 dark:hover:bg-gray-800/60"
+        class="h-10 md:h-9 px-3 flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-100/80 dark:bg-gray-800/80 dark:border-gray-700 dark:hover:bg-gray-700/80"
         @click="toggleLocale"
         :aria-label="$t('locale.switch')"
         :title="$t('locale.switch')"
@@ -19,7 +31,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zm7 10H5m7-8c2.5 0 4.5 3 4.5 8s-2 8-4.5 8-4.5-3-4.5-8 2-8 4.5-8z" />
         </svg>
         <!-- 当前语言文本，增强可识别性 -->
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-100">
+        <span class="hidden sm:inline text-sm font-medium text-gray-800 dark:text-gray-100">
           {{ currentLocale === 'zh-CN' ? $t('locale.zh') : $t('locale.en') }}
         </span>
       </Button>
@@ -27,6 +39,7 @@
       <Button
         variant="ghost"
         size="icon"
+        class="bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-100/80 dark:bg-gray-800/80 dark:border-gray-700 dark:hover:bg-gray-700/80"
         @click="toggleDark"
         aria-label="切换暗黑模式"
       >
@@ -55,10 +68,10 @@
       </template>
     </Sidebar>
     <main 
-      class="flex-1 transition-all duration-300"
+      class="flex-1 min-w-0 transition-all duration-300"
       :class="{
-        'ml-64': sidebarOpen,
-        'ml-16': !sidebarOpen
+        'md:ml-64': sidebarOpen,
+        'md:ml-16': !sidebarOpen
       }"
     >
       <router-view />
@@ -70,14 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
 import Button from './components/ui/Button.vue'
-import Chat from '@/views/Chat.vue'
-import Analysis from '@/views/Analysis.vue'
-import { useChatStore } from '@/stores/chat'
-import { useBaziStore } from '@/stores/bazi'
 import { useSidebar } from '@/composables/useSidebar'
 import { useLocale } from '@/composables/useLocale'
 import SEO from './components/SEO.vue'
@@ -88,9 +97,7 @@ import WishPool from './components/WishPool.vue'
 const router = useRouter()
 const route = useRoute()
 const activeTab = ref('home')
-const chatStore = useChatStore()
-const baziStore = useBaziStore()
-const { sidebarOpen, initSidebar } = useSidebar()
+const { sidebarOpen, isMobile, openSidebar, initSidebar } = useSidebar()
 
 // 全局唯一聚焦状态
 const selectedChatId = ref<string | null>(null)
@@ -150,8 +157,20 @@ onMounted(() => {
   // }
 })
 
+watch(
+  [isMobile, sidebarOpen],
+  ([mobile, open]) => {
+    document.body.style.overflow = mobile && open ? 'hidden' : ''
+  },
+  { immediate: true }
+)
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
+
 // 根据路由更新activeTab和推送新页面
-watch(() => route.path, (newPath) => {
+watch(() => route.path, () => {
   // 更新activeTab
   if (route.name) {
     activeTab.value = route.name as string

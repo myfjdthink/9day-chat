@@ -1,33 +1,53 @@
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-// 全局侧边栏状态管理
 const sidebarOpen = ref(true)
+const isMobile = ref(false)
+const MOBILE_BREAKPOINT = 768
 
 export function useSidebar() {
+  const getDesktopSidebarState = () => {
+    const savedState = localStorage.getItem('sidebarOpen')
+    return savedState !== null ? savedState === 'true' : true
+  }
+
+  const openSidebar = () => {
+    sidebarOpen.value = true
+  }
+
+  const closeSidebar = () => {
+    sidebarOpen.value = false
+  }
+
   const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value
-    // 保存折叠状态到本地存储
-    localStorage.setItem('sidebarOpen', sidebarOpen.value.toString())
+    if (!isMobile.value) {
+      localStorage.setItem('sidebarOpen', sidebarOpen.value.toString())
+    }
   }
 
   const initSidebar = () => {
-    // 从本地存储恢复折叠状态
-    const savedState = localStorage.getItem('sidebarOpen')
-    if (savedState !== null) {
-      sidebarOpen.value = savedState === 'true'
-    }
-    
-    // 监听窗口变化
-    const handleResize = () => {
-      // 移动端自动关闭侧边栏
-      if (window.innerWidth <= 640) {
+    const syncSidebarByViewport = () => {
+      const wasMobile = isMobile.value
+      isMobile.value = window.innerWidth < MOBILE_BREAKPOINT
+
+      if (isMobile.value) {
         sidebarOpen.value = false
+        return
+      }
+
+      if (wasMobile) {
+        sidebarOpen.value = getDesktopSidebarState()
       }
     }
-    
+
+    syncSidebarByViewport()
+
+    const handleResize = () => {
+      syncSidebarByViewport()
+    }
+
     window.addEventListener('resize', handleResize)
-    
-    // 返回清理函数
+
     return () => {
       window.removeEventListener('resize', handleResize)
     }
@@ -35,6 +55,9 @@ export function useSidebar() {
 
   return {
     sidebarOpen,
+    isMobile,
+    openSidebar,
+    closeSidebar,
     toggleSidebar,
     initSidebar
   }
