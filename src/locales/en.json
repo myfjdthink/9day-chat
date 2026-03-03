@@ -795,7 +795,8 @@
       "subtitle": "Pick a report to use as context"
     },
     "input": {
-      "placeholder": "Type your question and press Enter"
+      "placeholder": "Type your question and press Enter",
+      "placeholderWithReport": "Type your question based on report..."
     },
     "dialogs": {
       "login": {
@@ -820,6 +821,16 @@
         "subtitle": "Pick one to include as context"
       },
       "add": "Add",
+      "addButton": "Add Report",
+      "cardTitle": "Bazi Analysis Report",
+      "attachmentLabel": "Report Attached",
+      "removeAttachment": "Remove Report",
+      "defaultPrompt": "Please provide a detailed interpretation based on this Bazi analysis report.",
+      "addedSuccess": "Report added successfully!",
+      "addedReport": "Added Report",
+      "inputHint": "Please enter your question below, and I will answer based on this report.",
+      "expand": "Expand",
+      "collapse": "Collapse",
       "defaultName": "Analysis Report",
       "unknown": "Unknown"
     },

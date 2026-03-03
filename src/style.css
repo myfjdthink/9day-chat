@@ -118,3 +118,22 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/**
+ * 修复暗色模式下 datetime-local 输入框日历图标不可见的问题
+ * 浏览器原生日历选择器图标默认颜色在暗色背景下不可见
+ */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+  opacity: 0.7;
+}
+
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}

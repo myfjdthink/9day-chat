@@ -51,19 +51,30 @@
           >
             <!-- 分析报告消息 -->
             <template v-if="message.role === 'report'">
-              <div class="flex-shrink-0">
-                <img :src="aiAvatar" :alt="t('chat.avatarAlt')" class="w-8 h-8 rounded-full object-cover bg-white dark:bg-gray-800" />
-              </div>
-              <div
-                class="max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-[#b67fda] text-[#b67fda] dark:text-[#b67fda] rounded-tl-none cursor-pointer"
-                @click="showReportPanel = !showReportPanel"
-              >
-                <div class="font-semibold flex items-center">
-                  <span>{{ JSON.parse(message.content).name }}</span>
-                  <span class="ml-2 text-xs">{{ showReportPanel ? '▲' : '▼' }}</span>
-                </div>
-                <div v-if="showReportPanel" class="mt-2 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300">
-                  {{ JSON.parse(message.content).content }}
+              <div class="w-full">
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-2 border-purple-300 dark:border-purple-600 rounded-xl p-4 shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                        <FileText class="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <div class="font-bold text-purple-700 dark:text-purple-300">{{ t('chat.report.cardTitle') }}</div>
+                        <div class="text-sm text-purple-600 dark:text-purple-400">{{ JSON.parse(message.content).name }}</div>
+                      </div>
+                    </div>
+                    <button
+                      class="px-3 py-1 text-sm bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                      @click="showReportPanel = !showReportPanel"
+                    >
+                      {{ showReportPanel ? t('chat.report.collapse') : t('chat.report.expand') }}
+                    </button>
+                  </div>
+                  <div v-if="showReportPanel" class="mt-3 pt-3 border-t border-purple-200 dark:border-purple-700">
+                    <div class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line max-h-60 overflow-y-auto">
+                      {{ JSON.parse(message.content).content }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </template>
@@ -185,17 +196,52 @@
             </Button>
           </div>
           
+          <!-- 已添加的报告附件显示 -->
+          <div v-if="pendingReport" class="mb-2 p-2 bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-700 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FileText class="w-4 h-4 text-white" />
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs text-purple-600 dark:text-purple-400 font-medium">{{ t('chat.report.attachmentLabel') }}</div>
+                  <div class="text-sm text-purple-800 dark:text-purple-200 truncate">{{ pendingReport.name }}</div>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="p-1 hover:bg-purple-200 dark:hover:bg-purple-700 rounded transition-colors"
+                @click="removePendingReport"
+                :title="t('chat.report.removeAttachment')"
+              >
+                <X class="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              </button>
+            </div>
+          </div>
+          
           <form @submit.prevent="handleSubmit" class="flex gap-2 items-center">
+            <!-- 添加报告按钮 -->
+            <button
+              type="button"
+              class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              :class="{ 'border-purple-500 bg-purple-50 dark:bg-purple-900/30': pendingReport }"
+              @click="handleOpenReportDialog"
+              :disabled="chatStore.isLoading"
+              :title="t('chat.report.addButton')"
+            >
+              <Plus v-if="!pendingReport" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              <FileText v-else class="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </button>
             <Input
               v-model="input"
               ref="inputRef"
-              :placeholder="t('chat.input.placeholder')"
+              :placeholder="pendingReport ? t('chat.input.placeholderWithReport') : t('chat.input.placeholder')"
               class="flex-1"
             />
             <Button
               type="submit"
               variant="default"
-              :disabled="chatStore.isLoading || !input.trim()"
+              :disabled="chatStore.isLoading || (!input.trim() && !pendingReport)"
             >
               {{ t('common.send') }}
             </Button>
@@ -321,6 +367,7 @@ import girlAvatar from '@/assets/girl.png'
 import aiAvatar from '@/assets/9.png'
 import SEO from '@/components/SEO.vue'
 import * as vueI18n from 'vue-i18n'
+import { Plus, FileText, X } from 'lucide-vue-next'
 
 const { useI18n } = vueI18n as any
 const { t, locale } = useI18n()
@@ -355,6 +402,20 @@ const input = ref('')
 const inputRef = ref<any>(null)
 const messageContainer = ref<HTMLElement | null>(null)
 const previewImage = ref<string | null>(null)
+
+// 待发送的报告附件
+interface PendingReport {
+  name: string
+  content: string
+}
+const pendingReport = ref<PendingReport | null>(null)
+
+/**
+ * 移除待发送的报告附件
+ */
+const removePendingReport = () => {
+  pendingReport.value = null
+}
 
 // 展开分析报告相关逻辑
 const showReportPanel = ref(false)
@@ -475,6 +536,26 @@ const closePreview = () => {
 
 // 选择分析报告弹窗相关逻辑
 const showReportDialog = ref(false)
+
+/**
+ * 打开添加八字报告弹窗
+ */
+const handleOpenReportDialog = async () => {
+  // 检查登录状态
+  if (!userStore.user) {
+    showLoginModal.value = true
+    return
+  }
+  // 加载用户的八字分析历史
+  await baziStore.loadAnalysesFromBackend()
+  // 检查是否有分析记录
+  if (analyses.value.length === 0) {
+    showNoAnalysisDialog.value = true
+    return
+  }
+  showReportDialog.value = true
+}
+
 const formatDate = (date: Date) => {
   const d = new Date(date)
   return d.toLocaleString(locale.value, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
@@ -499,7 +580,7 @@ function safeReportName(record: any): string {
   const time = record.birth_time || t('chat.report.unknown')
   return `${type}（${year}-${month}-${day} ${time}）`
 }
-// 添加八字报告到对话上下文（role: 'report'，不进入20轮历史）
+// 添加八字报告到输入框附件（类似上传文件）
 const addReportToContext = (record: any) => {
   // 检查登录状态
   if (!userStore.user) {
@@ -509,9 +590,18 @@ const addReportToContext = (record: any) => {
   // 格式化报告内容
   const reportText = formatReportText(record)
   const reportName = safeReportName(record)
-  // 插入“report”类型消息
-  insertReportMessage(reportName, reportText)
+  
+  // 设置待发送的报告附件
+  pendingReport.value = {
+    name: reportName,
+    content: reportText
+  }
   showReportDialog.value = false
+  
+  // 聚焦输入框
+  nextTick(() => {
+    inputRef.value?.focus()
+  })
 }
 
 // 对话历史弹窗相关逻辑
@@ -537,10 +627,16 @@ const formatHistory = (historyArr: APIMessage[]) => {
 
 // 便捷的对话发送逻辑
 const handleSubmit = async () => {
-  if (!input.value.trim() || chatStore.isLoading) return
+  if ((!input.value.trim() && !pendingReport.value) || chatStore.isLoading) return
 
-  const userInput = input.value
+  const userInput = input.value.trim()
   input.value = ''
+
+  // 如果有待发送的报告，先插入报告消息
+  if (pendingReport.value) {
+    insertReportMessage(pendingReport.value.name, pendingReport.value.content)
+    pendingReport.value = null
+  }
 
   // 检查当前会话中最新的 report 类型消息，作为分析报告上下文
   const latestReportMsg = chatStore.currentMessages
@@ -556,18 +652,24 @@ const handleSubmit = async () => {
       content: msg.content
     }))
 
+  // 如果没有用户输入但有报告，使用默认提示
+  const finalUserInput = userInput || t('chat.report.defaultPrompt')
+
   if (reportContext) {
-    prompt = `【${t('chat.prompt.report')}】\n${reportContext}\n【${t('chat.prompt.history')}】\n${formatHistory(history)}\n【${t('chat.prompt.userQuestion')}】\n${userInput}`
+    prompt = `【${t('chat.prompt.report')}】\n${reportContext}\n【${t('chat.prompt.history')}】\n${formatHistory(history)}\n【${t('chat.prompt.userQuestion')}】\n${finalUserInput}`
   } else {
-    prompt = userInput
+    prompt = finalUserInput
   }
 
-  chatStore.addMessage({
-    role: 'user',
-    content: userInput,
-    message_type: 'text', // 新增
-    sender_type: 'user' // 新增
-  })
+  // 只有有用户输入时才添加用户消息
+  if (userInput) {
+    chatStore.addMessage({
+      role: 'user',
+      content: userInput,
+      message_type: 'text',
+      sender_type: 'user'
+    })
+  }
 
   chatStore.setLoading(true)
 
@@ -576,8 +678,8 @@ const handleSubmit = async () => {
     const aiResponse = await chat(
       prompt,
       SYSTEM_ROLES.FORTUNE_TELLER,
-      undefined, // provider
-      undefined, // modelName
+      undefined,
+      undefined,
       reportContext ? [] : history
     )
     
@@ -627,10 +729,18 @@ const handleSubmit = async () => {
 }
 
 // 初始化数据
-onMounted(() => {
+onMounted(async () => {
   chatStore.initializeExampleData()
   if (!chatStore.currentConversationId) {
     chatStore.createConversation()
+  }
+  // 如果用户已登录，加载八字分析历史
+  if (userStore.user) {
+    try {
+      await baziStore.loadAnalysesFromBackend()
+    } catch (e) {
+      console.warn('加载八字分析历史失败', e)
+    }
   }
   // 初始化后自动滚动到最新消息
   nextTick(() => {
@@ -672,6 +782,13 @@ const handleQuickAction = async (actionType: string) => {
   if (!userStore.user) {
     showLoginModal.value = true
     return
+  }
+
+  // 先加载八字分析历史
+  try {
+    await baziStore.loadAnalysesFromBackend()
+  } catch (e) {
+    console.warn('加载八字分析历史失败', e)
   }
 
   // 检查是否有八字分析历史

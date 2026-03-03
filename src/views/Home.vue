@@ -50,10 +50,7 @@
                   <label class="block text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {{ t('home.input.birth.label') }} <span class="text-red-500">*</span>
                   </label>
-                  <div class="relative">
-                    <Input type="datetime-local" v-model="birthDateTime" class="w-full" />
-                    <CalendarIcon class="absolute right-3 top-3 w-4 h-4 text-gray-400" />
-                  </div>
+                  <Input type="datetime-local" v-model="birthDateTime" class="w-full" />
                   <div class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-md">
                     <div class="flex items-center space-x-2">
                       <CalendarIcon class="w-4 h-4 text-green-600" />

@@ -763,7 +763,8 @@
       "subtitle": "选择一份历史报告作为上下文"
     },
     "input": {
-      "placeholder": "输入你的问题，回车发送"
+      "placeholder": "输入你的问题，回车发送",
+      "placeholderWithReport": "输入问题，基于报告解答..."
     },
     "dialogs": {
       "login": {
@@ -788,6 +789,16 @@
         "subtitle": "选择一份报告加入上下文"
       },
       "add": "添加",
+      "addButton": "添加报告",
+      "cardTitle": "八字分析报告",
+      "attachmentLabel": "已添加报告",
+      "removeAttachment": "移除报告",
+      "defaultPrompt": "请基于这份八字分析报告，为我详细解读。",
+      "addedSuccess": "报告已成功添加！",
+      "addedReport": "已添加报告",
+      "inputHint": "请在下方输入框输入您想咨询的问题，我将基于该报告为您详细解答。",
+      "expand": "展开查看",
+      "collapse": "收起",
       "defaultName": "分析报告",
       "unknown": "未知"
     },

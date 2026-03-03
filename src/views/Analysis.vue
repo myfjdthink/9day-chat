@@ -72,14 +72,11 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               {{ t('home.analysis.form.birthLabel') }} <span class="text-red-500">*</span>
             </label>
-            <div class="relative">
-              <Input
-                type="datetime-local"
-                v-model="birthDateTime"
-                class="w-full"
-              />
-              <CalendarIcon class="absolute right-3 top-3 w-4 h-4 text-gray-400" />
-            </div>
+            <Input
+              type="datetime-local"
+              v-model="birthDateTime"
+              class="w-full"
+            />
 
             <!-- Confirmation Message -->
             <div class="mt-3 p-3 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-md">

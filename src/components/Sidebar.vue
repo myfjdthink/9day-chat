@@ -37,7 +37,7 @@
     <div class="flex flex-col gap-2 mt-2">
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'home' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'home' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoHome"
         :title="t('sidebar.nav.home')"
       >
@@ -45,7 +45,7 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'calendar' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'calendar' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoCalendar"
         :title="t('sidebar.nav.calendar')"
       >
@@ -53,7 +53,7 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'ai-chat' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'ai-chat' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoAIChat"
         :title="t('sidebar.nav.aiChat')"
       >
@@ -61,7 +61,7 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'analysis' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'analysis' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoAnalysis"
         :title="t('sidebar.nav.analysis')"
       >
@@ -69,7 +69,7 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'zodiac-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'zodiac-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoZodiacFortune"
         :title="t('sidebar.nav.zodiac')"
       >
@@ -77,7 +77,7 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'exam-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'exam-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoExamFortune"
         :title="t('sidebar.nav.exam')"
       >
@@ -85,14 +85,14 @@
       </button>
       <button
         class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors"
-        :class="activeTab === 'fengshui-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6]'"
+        :class="activeTab === 'fengshui-fortune' ? 'bg-[#0b3289] text-white' : 'text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700'"
         @click="handleGoFengShuiFortune"
         :title="t('sidebar.nav.fengshui')"
       >
         <img :src="fengshuiIcon" :alt="t('sidebar.nav.fengshui')" class="w-5 h-5" />
       </button>
       <button
-        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-[#0b3289] hover:bg-[#e6eaf6]"
+        class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-[#0b3289] hover:bg-[#e6eaf6] dark:text-[#6b9bd1] dark:hover:bg-gray-700"
         @click="handleGoBlog"
         :title="t('sidebar.nav.knowledge')"
       >
@@ -173,7 +173,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'home'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoHome"
             >
               <img :src="homeIcon" :alt="t('sidebar.nav.home')" class="w-5 h-5 opacity-80" />
@@ -183,7 +183,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'calendar'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoCalendar"
             >
               <img :src="calendarIcon" :alt="t('sidebar.nav.calendar')" class="w-5 h-5 opacity-80" />
@@ -193,7 +193,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'ai-chat'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoAIChat"
             >
               <img :src="chatIcon" :alt="t('sidebar.nav.aiChat')" class="w-5 h-5 opacity-80" />
@@ -203,7 +203,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'analysis'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoAnalysis"
             >
               <img :src="analysisIcon" :alt="t('sidebar.nav.analysis')" class="w-5 h-5 opacity-80" />
@@ -213,7 +213,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'zodiac-fortune'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoZodiacFortune"
             >
               <img :src="dragonIcon" :alt="t('sidebar.nav.zodiac')" class="w-5 h-5 opacity-80" />
@@ -223,7 +223,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'exam-fortune'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoExamFortune"
             >
               <img :src="graduationIcon" :alt="t('sidebar.nav.exam')" class="w-5 h-5 opacity-80" />
@@ -233,7 +233,7 @@
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
               :class="activeTab === 'fengshui-fortune'
                 ? 'bg-[#0b3289] text-white border-[#0b3289] shadow hover:bg-[#1746b1] ring-2 ring-[#0b3289]/40 dark:bg-[#0b3289] dark:text-white dark:border-[#0b3289] dark:hover:bg-[#1746b1]'
-                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+                : 'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoFengShuiFortune"
             >
               <img :src="fengshuiIcon" :alt="t('sidebar.nav.fengshui')" class="w-5 h-5 opacity-80" />
@@ -241,7 +241,7 @@
             </Button>
             <Button
               class="w-full h-10 flex items-center gap-2 rounded-lg transition-all border"
-              :class="'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#0b3289] dark:border-[#0b3289] dark:hover:bg-gray-700 dark:hover:border-[#1746b1]'"
+              :class="'bg-transparent text-[#0b3289] border-[#0b3289] hover:bg-[#e6eaf6] hover:border-[#1746b1] dark:bg-transparent dark:text-[#6b9bd1] dark:border-[#4a7ab8] dark:hover:bg-gray-700 dark:hover:border-[#6b9bd1]'"
               @click="handleGoBlog"
             >
               <img :src="blogIcon" :alt="t('sidebar.nav.knowledge')" class="w-5 h-5 opacity-80" />
