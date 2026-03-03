@@ -679,7 +679,6 @@ const elementKeyMap: Record<string, string> = {
 const getElementKey = (el: string): string => elementKeyMap[el] || el
 
 const instance = getCurrentInstance()
-const formatItems = (items: string[], limit: number): string => items.slice(0, limit).map((k: string) => (instance?.proxy as any).$t('fengshui.items.' + k)).join('、')
 const formatDirections = (directions: string): string => directions.split('、').map((d: string) => (instance?.proxy as any).$t('fengshui.directions.' + d)).join('、')
 
 // 响应式数据
@@ -1112,21 +1111,6 @@ const getStarTextColor = (star: number): string => {
   if (goodStars.includes(star)) return 'text-green-600 dark:text-green-400'
   if (badStars.includes(star)) return 'text-red-600 dark:text-red-400'
   return 'text-gray-600 dark:text-gray-400'
-}
-
-const getStarMeaning = (star: number): string => {
-  const meanings: { [key: number]: string } = {
-    1: '贪狼',
-    2: '病符',
-    3: '是非',
-    4: '文昌',
-    5: '五黄',
-    6: '武曲',
-    7: '破军',
-    8: '财星',
-    9: '喜庆'
-  }
-  return meanings[star] || ''
 }
 
 // 动态风水建议计算属性

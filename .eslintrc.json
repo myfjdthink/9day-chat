@@ -23,6 +23,14 @@
     "no-debugger": "warn",
     "vue/multi-word-component-names": "off"
   },
+  "overrides": [
+    {
+      "files": ["**/*.d.ts"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     "dist",
     "node_modules"

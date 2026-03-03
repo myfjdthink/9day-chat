@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import type { BaziAnalysis } from '@/api/bazi'
 import {
   getBaziAnalyses,
-  getBaziAnalysis,
   createBaziAnalysis,
   updateBaziAnalysis,
   deleteBaziAnalysis,

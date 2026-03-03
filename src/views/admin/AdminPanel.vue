@@ -238,12 +238,15 @@ async function fetchAllUsers() {
   const all: any[] = []
   let skip = 0
   const limit = 100
-  while (true) {
+  let hasMore = true
+  while (hasMore) {
     const res = await request.get(`/users?skip=${skip}&limit=${limit}`)
     const list = res.data || []
     all.push(...list)
-    if (list.length < limit) break
-    skip += limit
+    hasMore = list.length === limit
+    if (hasMore) {
+      skip += limit
+    }
   }
   users.value = all
 }

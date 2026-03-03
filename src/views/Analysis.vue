@@ -470,7 +470,7 @@ interface ExtendedHTMLElement extends HTMLElement {
 
 // 注册observe-visibility指令
 const vObserveVisibility: ObjectDirective<ExtendedHTMLElement> = {
-  mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<(visible: boolean) => void>) => {
+  mounted: (el: ExtendedHTMLElement, binding: DirectiveBinding<any>) => {
     const observer = useIntersectionObserver(el, ([{ isIntersecting }]) => {
       binding.value(isIntersecting)
     })

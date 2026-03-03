@@ -519,7 +519,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { Home, MessageCircle, Star, User, Users, BarChart3, TrendingUp, ArrowRight, Calendar, Zap, Send, CalendarIcon } from 'lucide-vue-next'
+import { MessageCircle, Star, User, ArrowRight, Calendar, Zap, Send, CalendarIcon } from 'lucide-vue-next'
 import Button from '@/components/ui/Button.vue'
 // 采用自定义 textarea 实现更贴近 ChatGPT 的输入体验
 import Card from '@/components/ui/Card.vue'

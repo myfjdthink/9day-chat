@@ -1,5 +1,4 @@
 import requestMain from './request-main'
-import { API_CONFIG } from './config'
 
 // 考试运势分析请求参数
 export interface ExamFortuneRequest {

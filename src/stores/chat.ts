@@ -1,18 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Message as APIMessage } from '@/api/chat'
 import {
   createSession,
   getSessions,
-  getSessionDetail,
   deleteSession,
   createMessage,
   getMessages,
-  Session,
-  ChatMessage,
   updateSession
 } from '@/api/chat'
-import { trackFeatureUse, trackEvent } from '@/lib/analytics'
+import { trackFeatureUse } from '@/lib/analytics'
 
 // 消息接口，扩展以兼容后端字段
 export interface Message {
@@ -416,7 +412,9 @@ export const useChatStore = defineStore('chat', () => {
         conversation.messages = all
       }
       saveToStorage(STORAGE_KEYS.conversations, conversations.value)
-    } catch {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /**

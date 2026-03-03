@@ -202,12 +202,12 @@
         <!-- 分析结果 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           <!-- 月份分析结果 -->
-          <div 
-            v-if="fortuneData?.分析类型 === 'monthly' && fortuneData?.月份分析"
-            v-for="(monthData, month) in fortuneData.月份分析" 
-            :key="month"
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
-          >
+          <template v-if="fortuneData?.分析类型 === 'monthly' && fortuneData?.月份分析">
+            <div 
+              v-for="(monthData, month) in fortuneData.月份分析" 
+              :key="month"
+              class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+            >
             <!-- 月份标题 -->
             <div class="bg-[#b67fda] p-4">
               <h3 class="text-lg font-bold text-white flex items-center justify-between">
@@ -294,15 +294,16 @@
                  </div>
                </div>
             </div>
-          </div>
+            </div>
+          </template>
 
           <!-- 年份分析结果 -->
-          <div 
-            v-if="fortuneData?.分析类型 === 'yearly' && fortuneData?.年份分析"
-            v-for="(yearData, year) in fortuneData.年份分析" 
-            :key="year"
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
-          >
+          <template v-if="fortuneData?.分析类型 === 'yearly' && fortuneData?.年份分析">
+            <div 
+              v-for="(yearData, year) in fortuneData.年份分析" 
+              :key="year"
+              class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+            >
             <!-- 年份标题 -->
             <div class="bg-[#0b3289] p-4">
               <h3 class="text-lg font-bold text-white flex items-center justify-between">
@@ -389,7 +390,8 @@
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+          </template>
         </div>
       </div>
       
@@ -474,7 +476,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import * as vueI18n from 'vue-i18n'
-import { analyzeExamFortune, type ExamFortuneRequest, type ExamFortuneResponse, type MonthAnalysis, type YearAnalysis } from '@/api/exam'
+import { analyzeExamFortune, type ExamFortuneResponse } from '@/api/exam'
 import SEO from '@/components/SEO.vue'
 import { 
   Calendar, 
@@ -484,13 +486,7 @@ import {
   TrendingUp, 
   TrendingDown, 
   Lightbulb, 
-  AlertTriangle,
-  Clock,
-  User,
-  ChevronDown,
-  Star,
-  CheckCircle,
-  Target
+  AlertTriangle
 } from 'lucide-vue-next'
 
 // i18n

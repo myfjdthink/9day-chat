@@ -591,7 +591,7 @@ const shareFortune = async () => {
     
     // 转换为图片并下载
     const link = document.createElement('a')
-    link.download = `${t('zodiac.share.downloadPrefix')}${formatDateTime(fortuneData.value.分析时间).replace(/[\/\s:]/g, '_')}.png`
+    link.download = `${t('zodiac.share.downloadPrefix')}${formatDateTime(fortuneData.value.分析时间).replace(/[\s:/]/g, '_')}.png`
     link.href = canvas.toDataURL('image/png', 1.0) // 最高质量
     link.click()
     

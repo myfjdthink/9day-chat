@@ -4,9 +4,7 @@ import requestUser from './request-user'
 import { 
   PROVIDERS, 
   MODELS, 
-  getDefaultModelConfig,
-  type ProviderType,
-  type ModelType
+  getDefaultModelConfig
 } from './config'
 import { API_ENDPOINTS } from './config'
 

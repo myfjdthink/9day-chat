@@ -10,7 +10,7 @@ interface Props {
   iconClass?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   iconClass: 'text-gray-700'
 })
 

@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import Button from './Button.vue'
-const props = defineProps<{
+defineProps<{
   show: boolean
   title?: string
   message?: string

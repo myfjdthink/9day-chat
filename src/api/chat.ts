@@ -3,22 +3,13 @@
  * 对接 https://api.9day.tech/bazi/model/invoke 接口
  */
 
-import request from './request-main'
-import requestUser from './request-user'
 import axios from 'axios'
+import requestUser from './request-user'
 import { 
   API_CONFIG, 
-  API_ENDPOINTS, 
-  PROVIDERS, 
-  MODELS, 
-  SYSTEM_ROLES, 
-  DEFAULT_MODEL_CONFIG,
   ENV_CONFIG,
   REQUEST_CONFIG,
-  getDefaultModelConfig,
-  type ProviderType,
-  type ModelType,
-  type SystemRoleType
+  getDefaultModelConfig
 } from './config'
 
 // 请求和响应类型定义
@@ -48,13 +39,13 @@ export interface ChatResponse {
 
 // API 错误类
 export class ChatAPIError extends Error {
-  constructor(
-    message: string,
-    public statusCode?: number,
-    public response?: any
-  ) {
+  statusCode?: number
+  response?: any
+  constructor(message: string, statusCode?: number, response?: any) {
     super(message)
     this.name = 'ChatAPIError'
+    this.statusCode = statusCode
+    this.response = response
   }
 }
 

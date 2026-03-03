@@ -194,7 +194,4 @@ function getSyncStatus(chatId: string): 'synced' | 'pending' | 'failed' | 'confl
   return conv?.sync_status
 }
 
-const handleDeleteAnalysis = async (id: string) => {
-  await baziStore.removeAnalysis(id)
-}
 </script>

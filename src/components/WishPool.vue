@@ -192,9 +192,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { API_CONFIG, REQUEST_CONFIG, ENV_CONFIG } from '@/api/config'
+import { API_CONFIG, REQUEST_CONFIG } from '@/api/config'
 import axios from 'axios'
-import Modal from '@/components/ui/Modal.vue'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 
