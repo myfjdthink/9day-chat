@@ -1184,6 +1184,11 @@
         "activeRate": "Active Rate"
       },
       "noAccess": "No permission to access",
+      "states": {
+        "restoringSession": "Restoring admin session...",
+        "loadingUsers": "Loading user data...",
+        "empty": "No users match the current filters"
+      },
       "actions": {
         "export": "Export Users",
         "import": "Import Users"
@@ -1249,6 +1254,7 @@
       "saveFailed": "Save failed",
       "deactivated": "Deleted",
       "onlySuperAdmin": "Only super admin can delete users",
+      "loadFailed": "Failed to load user data",
       "deleteFailed": "Delete failed",
       "exportSuccess": "Export succeeded",
       "exportFailed": "Export failed",

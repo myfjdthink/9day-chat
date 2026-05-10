@@ -33,7 +33,16 @@
         </div>
       </div>
     </div>
-    <div v-if="!isAdmin" class="text-red-600 dark:text-red-400">{{ $t('admin.panel.noAccess') }}</div>
+    <div v-if="msg" class="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-800 dark:bg-green-950/40 dark:text-green-300">
+      {{ msg }}
+    </div>
+    <div v-if="error" class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300">
+      {{ error }}
+    </div>
+    <div v-if="isAuthLoading" class="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
+      {{ $t('admin.panel.states.restoringSession') }}
+    </div>
+    <div v-else-if="!isAdmin" class="text-red-600 dark:text-red-400">{{ $t('admin.panel.noAccess') }}</div>
     <div v-else>
       <!-- 导入导出按钮区 -->
       <div class="flex gap-2 mb-4">
@@ -66,7 +75,13 @@
         <input v-model="search" class="input flex-1 md:w-64" :placeholder="$t('admin.panel.search.placeholder')" />
       </div>
       <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{{ $t('admin.panel.table.title') }}</h3>
-      <table class="w-full text-sm border rounded overflow-hidden">
+      <div v-if="isUsersLoading" class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-8 text-center text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        {{ $t('admin.panel.states.loadingUsers') }}
+      </div>
+      <div v-else-if="hasLoadedUsers && filteredSortedUsers.length === 0" class="rounded-lg border border-dashed border-gray-300 px-4 py-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
+        {{ $t('admin.panel.states.empty') }}
+      </div>
+      <table v-else class="w-full text-sm border rounded overflow-hidden">
         <thead class="bg-gray-100 dark:bg-gray-800">
           <tr>
             <th class="p-2">{{ $t('admin.panel.table.columns.index') }}</th>
@@ -195,7 +210,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import request from '@/api/request-user'
 import { exportUsers, importUsers } from '@/api/user'
@@ -212,12 +227,20 @@ const editUserForm = ref<any>(null)
 
 const userStore = useUserStore()
 const users = ref<any[]>([])
+const hasLoadedUsers = ref(false)
+const isAuthLoading = ref(false)
+const isUsersLoading = ref(false)
 
 const isAdmin = computed(() => {
   const role = userStore.user?.role
   return role === 'admin' || role === 'superadmin'
 })
 
+/**
+ * 格式化后端返回的时间字段，空值时统一显示占位符。
+ * @param val 时间字符串
+ * @returns 适合表格展示的本地化时间文本
+ */
 function formatTime(val: string) {
   if (!val) return '-'
   return new Date(val).toLocaleString()
@@ -234,23 +257,88 @@ const activeRate = computed(() => totalUsers.value ? (activeUsers.value / totalU
 const activeRateStr = computed(() => totalUsers.value ? (activeRate.value * 100).toFixed(1) + '%' : '-')
 const activeRateColor = computed(() => activeRate.value >= 0.5 ? 'text-green-700 dark:text-green-200' : 'text-red-600 dark:text-red-400')
 
+/**
+ * 兼容不同分页响应结构，提取用户列表数组。
+ * @param payload 接口返回的 data 载荷
+ * @returns 用户数组
+ */
+function extractUsersFromResponse(payload: any) {
+  if (Array.isArray(payload)) return payload
+  if (Array.isArray(payload?.items)) return payload.items
+  if (Array.isArray(payload?.results)) return payload.results
+  if (Array.isArray(payload?.data)) return payload.data
+  return []
+}
+
+/**
+ * 在管理员页首次进入时补拉当前登录用户，避免直接访问路由时权限状态尚未恢复。
+ */
+async function ensureUserReady() {
+  userStore.init()
+
+  if (!userStore.token || userStore.user || isAuthLoading.value) {
+    return
+  }
+
+  isAuthLoading.value = true
+
+  try {
+    await userStore.fetchUser()
+  } finally {
+    isAuthLoading.value = false
+  }
+}
+
+/**
+ * 拉取全部用户列表，并兼容数组与分页对象两种响应结构。
+ */
 async function fetchAllUsers() {
+  if (!isAdmin.value || isUsersLoading.value) return
+
+  isUsersLoading.value = true
+  error.value = ''
+
   const all: any[] = []
   let skip = 0
   const limit = 100
   let hasMore = true
-  while (hasMore) {
-    const res = await request.get(`/users?skip=${skip}&limit=${limit}`)
-    const list = res.data || []
-    all.push(...list)
-    hasMore = list.length === limit
-    if (hasMore) {
-      skip += limit
+
+  try {
+    while (hasMore) {
+      const res = await request.get(`/users?skip=${skip}&limit=${limit}`)
+      const list = extractUsersFromResponse(res.data)
+      const total = Number(res.data?.total ?? res.data?.count ?? NaN)
+
+      all.push(...list)
+
+      if (!list.length) {
+        hasMore = false
+      } else if (!Number.isNaN(total)) {
+        skip += list.length
+        hasMore = all.length < total
+      } else {
+        hasMore = list.length === limit
+        if (hasMore) {
+          skip += limit
+        }
+      }
     }
+
+    users.value = all
+    hasLoadedUsers.value = true
+  } catch (e: any) {
+    users.value = []
+    hasLoadedUsers.value = true
+    error.value = e?.response?.data?.message || e?.response?.data?.detail || e?.message || i18n.global.t('admin.messages.loadFailed')
+  } finally {
+    isUsersLoading.value = false
   }
-  users.value = all
 }
 
+/**
+ * 打开用户编辑弹窗并同步表单初始值。
+ * @param user 当前选中的用户
+ */
 function editUser(user: any) {
   editUserObj.value = user
   editUserForm.value = { ...user }
@@ -258,12 +346,19 @@ function editUser(user: any) {
   showUserModal.value = true
 }
 
+/**
+ * 打开用户删除确认弹窗。
+ * @param user 当前选中的用户
+ */
 function confirmDeleteUser(user: any) {
   editUserObj.value = user
   userModalMode.value = 'delete'
   showUserModal.value = true
 }
 
+/**
+ * 保存管理员对用户资料的修改。
+ */
 async function handleUserSave() {
   if (!editUserObj.value || !editUserForm.value) return
   try {
@@ -277,6 +372,9 @@ async function handleUserSave() {
   }
 }
 
+/**
+ * 删除当前选中的用户，并在成功后刷新列表。
+ */
 async function handleUserDelete() {
   if (!editUserObj.value) return
   try {
@@ -328,6 +426,10 @@ const filteredSortedUsers = computed(() => {
   return arr
 })
 
+/**
+ * 切换表格排序字段与顺序。
+ * @param field 需要排序的字段名
+ */
 function sortBy(field: string) {
   if (sortField.value === field) {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
@@ -343,6 +445,9 @@ const msg = ref('')
 const error = ref('')
 
 // 导出用户数据
+/**
+ * 导出管理员可见的用户数据并触发浏览器下载。
+ */
 async function handleExport() {
   isLoading.value = true
   msg.value = ''
@@ -368,6 +473,10 @@ async function handleExport() {
 }
 
 // 导入用户数据
+/**
+ * 导入用户数据文件，并在成功后重新拉取列表。
+ * @param e 文件选择事件
+ */
 async function handleImport(e: Event) {
   const files = (e.target as HTMLInputElement).files
   if (!files || files.length === 0) return
@@ -388,6 +497,11 @@ async function handleImport(e: Event) {
   }
 }
 
+/**
+ * 格式化用户八字基础信息，缺失字段时返回占位符。
+ * @param user 用户对象
+ * @returns 拼接后的八字信息文本
+ */
 function formatBaziInfo(user: any) {
   if (!user) return '-'
   const y = user.birth_year || ''
@@ -402,6 +516,20 @@ function formatBaziInfo(user: any) {
 }
 
 onMounted(() => {
-  if (isAdmin.value) fetchAllUsers()
+  ensureUserReady()
 })
+
+watch(
+  isAdmin,
+  (nextIsAdmin) => {
+    if (nextIsAdmin) {
+      fetchAllUsers()
+      return
+    }
+
+    users.value = []
+    hasLoadedUsers.value = false
+  },
+  { immediate: true }
+)
 </script>
