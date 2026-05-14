@@ -25,9 +25,9 @@
         <Plus class="w-5 h-5" />
       </button>
       <button
-        class="w-10 h-10 flex items-center justify-center rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] transition-colors"
-        @click="handleNewAnalysis"
-        :title="t('sidebar.newAnalysis')"
+        class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/30 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/40 transition-all"
+        @click="handleOpenAiBaziMaster"
+        :title="t('sidebar.aiMaster.shortTitle')"
       >
         <Star class="w-5 h-5" />
       </button>
@@ -155,13 +155,16 @@
             <Plus class="w-5 h-5 opacity-80 text-white" />
             {{ t('common.startChatCTA') }}
           </Button>
-          <!-- 新建分析 次按钮 薰衣草色线框 -->
+          <!-- AI 八字大师推广按钮 -->
           <Button
-            class="w-full h-11 flex items-center justify-center gap-2 rounded-lg border border-[#b67fda] text-[#b67fda] bg-white hover:bg-[#ecd8f6] hover:border-[#a06cc7] focus:outline-none focus:ring-2 focus:ring-[#b67fda]/30 text-base transition-all dark:border-[#b67fda] dark:text-[#b67fda] dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:border-[#a06cc7]"
-            @click="handleNewAnalysis"
+            class="relative w-full h-11 flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 px-4 text-sm font-semibold text-white shadow-md shadow-purple-500/25 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/35 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/50 transition-all dark:text-white"
+            @click="handleOpenAiBaziMaster"
           >
-            <Star class="w-5 h-5 opacity-80 text-[#b67fda]" />
-            {{ t('common.startAnalysisButton') }}
+            <Star class="w-4 h-4 text-yellow-200" />
+            {{ t('sidebar.aiMaster.button') }}
+            <span class="new-badge">
+              {{ t('sidebar.aiMaster.badge') }}
+            </span>
           </Button>
         </div>
         <!-- 功能菜单 Claude 风格 -->
@@ -426,9 +429,14 @@ const closeSidebarOnMobile = () => {
   }
 }
 
-const handleNewAnalysis = () => {
-  emit('set-active-tab', 'analysis')
-  router.push('/analysis')
+const AI_BAZI_MASTER_URL = 'https://ai.9day.tech/'
+
+/**
+ * 打开新的 AI 八字大师功能页，并在移动端关闭侧边栏。
+ */
+const handleOpenAiBaziMaster = () => {
+  trackFeatureUse('sidebar_ai_bazi_master', { action: 'click', surface: 'sidebar' })
+  window.open(AI_BAZI_MASTER_URL, '_blank', 'noopener,noreferrer')
   closeSidebarOnMobile()
 }
 const handleGoHome = () => {
@@ -531,5 +539,58 @@ const handleGoFengShuiFortune = () => {
   white-space: nowrap;
   z-index: 1000;
   pointer-events: none;
+}
+
+.new-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff7ed;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(249, 115, 22, 0.95));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(249, 115, 22, 0.35);
+  animation: badge-float 2.2s ease-in-out infinite;
+}
+
+.new-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 18%, rgba(255, 255, 255, 0.2) 38%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.18) 62%, transparent 82%);
+  transform: translateX(-160%);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+
+@keyframes badge-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    transform: translateY(-1px) scale(1.04);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.26), 0 8px 18px rgba(249, 115, 22, 0.42);
+  }
+}
+
+@keyframes badge-shine {
+  0%, 20% {
+    transform: translateX(-160%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  60%, 100% {
+    transform: translateX(160%);
+    opacity: 0;
+  }
 }
 </style>

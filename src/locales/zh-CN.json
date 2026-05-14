@@ -587,6 +587,11 @@
     "collapse": "收起侧边栏",
     "avatarAlt": "用户头像",
     "avatarAltDetailed": "用户头像 - 个人账户设置与资料管理",
+    "aiMaster": {
+      "shortTitle": "AI 八字大师",
+      "button": "AI 八字大师",
+      "badge": "NEW"
+    },
     "user": {
       "profile": "个人信息管理",
       "admin": "管理员菜单",

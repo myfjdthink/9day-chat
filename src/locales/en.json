@@ -619,6 +619,11 @@
     "collapse": "Collapse Sidebar",
     "avatarAlt": "User Avatar",
     "avatarAltDetailed": "User Avatar — Account Settings",
+    "aiMaster": {
+      "shortTitle": "AI Bazi Master",
+      "button": "AI Bazi Master",
+      "badge": "NEW"
+    },
     "user": {
       "profile": "Profile",
       "admin": "Admin Menu",
